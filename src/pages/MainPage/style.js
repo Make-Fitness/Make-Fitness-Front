@@ -5,6 +5,7 @@ export const root = css`
   margin: auto;
   max-width: max-content;
   max-height: max-content;
+  overflow-x: auto;
 `;
 
 export const container = css`
@@ -16,6 +17,7 @@ export const container = css`
   background-color: rgb(10, 10, 10);
   width: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const header = css`
