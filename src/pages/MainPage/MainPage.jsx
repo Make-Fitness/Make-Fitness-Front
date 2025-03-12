@@ -3,6 +3,7 @@ import * as s from './style';
 import React from 'react';
 
 function MainPage(props) {
+  
   return (
     <div css={s.container}>
         <div css={s.header}>
