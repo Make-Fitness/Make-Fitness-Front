@@ -1,41 +1,41 @@
 import { css } from "@emotion/react";
 
+export const root = css`
+
+  margin: auto;
+  max-width: max-content;
+  max-height: max-content;
+`;
+
 export const container = css`
-  
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   color: white;
-  background-color:rgb(10, 10, 10);
+  background-color: rgb(10, 10, 10);
   width: 100%;
   overflow-y: auto;
 `;
 
-
 export const header = css`
-
   display: flex;
-  justify-content: space-between; 
-  align-items: center; 
-  margin: 10px;
-  padding-top: 30px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem; 
+  padding-top: 2rem; 
   width: 100%;
-  background-color:rgb(10, 10, 10);
-  font-size: 17px;
-
+  background-color: rgb(10, 10, 10);
+  font-size: 2rem; 
 `;
 
 export const logo = css`
-
   display: flex;
   align-items: center;
-  padding-left: 30px;
-  padding-bottom: 40px;
+  padding-bottom: 1rem;
 
   & > img {
-
-    width: 140px; /* 로고 크기 조절 */
+    width: 20rem; 
   }
 
   &:hover {
@@ -45,19 +45,19 @@ export const logo = css`
 
 export const auth = css`
 
-  padding-top: 60px;
-  padding-right: 13%;
-  font-size: 16px;
+  padding-top: 5.5rem; 
+  padding-right: 1rem; 
+  font-size: 1.7rem; 
   font-weight: bold;
   cursor: pointer;
   color: white;
 `;
 
 export const navigation = css`
-
-  width: 75%;
+  width: 100%;
+  height: 6rem;
   background-color: red;
-  padding: 10px 0;
+  padding: 0.5rem 0;
 
   ul {
     display: flex;
@@ -69,46 +69,44 @@ export const navigation = css`
 
   li {
     position: relative;
-    margin: 0 100px;
-    font-size: 20px;
+    margin: 1rem 12rem;
+    font-size: 2.5rem; 
     font-weight: bold;
+    white-space: nowrap;
     cursor: pointer;
-    transition:  border-bottom 0.3s ease-in-out;
+    transition: ease-in-out;
 
     &:hover {
-    border-bottom: 1px solid white; /* 호버 시 줄 추가 */
-  }
+      border-bottom: 0.2rem solid white;
+    }
   }
 `;
 
 export const mainImgs = css`
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   align-items: center;
-  width: 75%;
+  width: 100%;
 `;
 
 export const mainImg = css`
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 100%; 
-  
   align-items: center;
-  
   flex-grow: 1;
 
   & > img {
-    width: 100%; 
-    height: 100%; 
+    width: 100%;
+    height: 100%;
   }
 `;
 
 export const footer = css`
   width: 100%;
   text-align: center;
-  padding: 15px;
+  padding: 1rem;
   background-color: #111;
-  font-size: 14px;
+  font-size: 2.5rem;
   color: #aaa;
 `;
