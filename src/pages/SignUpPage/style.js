@@ -61,9 +61,10 @@ export const form = css`
 export const socialLogin = css`
   display: flex;
   justify-content: space-between;
-  padding: 0 3.5rem;
-  width: calc(100% - 7rem);
+  width: calc(100%);
   margin-top: 2rem;
+  padding: 0.6;
+  gap: 5rem;
 `;
 
 export const googleLogin = css`
@@ -78,9 +79,11 @@ export const googleLogin = css`
   font-size: 1.3rem;
   font-weight: bold;
   text-align: center;
+  
 
   & > span {
-    width: 2.5rem;
+    margin: -3rem;
+    width: 4rem;
     margin-right: 0.875rem;  
   }
 `;
@@ -89,7 +92,8 @@ export const naverLogin = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: black;
+  background-color: #03c75a;
+  color: white;
   border: none;
   padding: 1rem 1.5rem;
   border-radius: 0.625rem;
@@ -101,7 +105,7 @@ export const naverLogin = css`
 
   & > img {
     padding-right: 1.5rem;
-    width: 2rem;
+    width: 1.5rem;
     margin-right: 0.875rem;
     color: green;
   }
