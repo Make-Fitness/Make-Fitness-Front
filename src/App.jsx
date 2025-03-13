@@ -3,6 +3,7 @@ import MainPage from "./pages/MainPage/MainPage"
 import { Global } from "@emotion/react";
 import { global } from "./styles/global.js"
 import SignUpPage from "./pages/SignUpPage/SignUpPage.jsx";
+import LogInPage from "./pages/LogInPage/LogInPage.jsx";
 
 function App() {
 
@@ -12,7 +13,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/*" element={<MainPage />} />
-          <Route path="/auth/signup*" element={<SignUpPage />} />          
+          <Route path="/auth/signup*" element={<SignUpPage />} />
+          <Route path="/auth/signin*" element={<LogInPage />} />
         </Routes>
       </Router>
     </>
