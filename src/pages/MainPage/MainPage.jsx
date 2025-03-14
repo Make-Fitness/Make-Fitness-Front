@@ -9,7 +9,7 @@ function MainPage(props) {
     <div css={s.root}>
       <div css={s.container}>
           <div css={s.header}>
-            <div css={s.logo}><img src="/logo.png" alt="메인 로고" /></div>
+            <div css={s.logo}><img src="/logo.png" alt="메인 로고" onClick={() => navigate("/auth")} /></div>
           <div css={s.signinbox}>
             <span css={s.signin} onClick={() => navigate("/auth/signin")}>로그인</span>
             <span css={s.signup} onClick={() => navigate("/auth/signup")}>회원가입</span>

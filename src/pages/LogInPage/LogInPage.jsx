@@ -9,7 +9,7 @@ const LogInPage = () => {
 
   return (
     <div css={s.container}>
-      <img src="/logo.png" alt="MAKE FITNESS" css={s.logo} />
+      <img src="/logo.png" alt="MAKE FITNESS" css={s.logo} onClick={() => navigate("/auth")}/>
 
       <form css={s.form}>
         <label>ID를 입력하세요</label>
