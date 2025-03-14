@@ -28,6 +28,36 @@ export const container = css`
 export const logo = css`
   width: 14rem;
   margin-bottom: 2rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const genderContainer = css`
+   display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 1rem; 
+  margin-top: 0.05rem; 
+`;
+
+export const genderBox = css`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 1rem;
+  font-size: 1.3rem;
+  color: white;
+  font-weight: bold;
+  white-space: nowrap; 
+
+
+`;
+
+export const genderInput = css`
+  transform: scale(1.2);
+  cursor: pointer;
 `;
 
 export const form = css`

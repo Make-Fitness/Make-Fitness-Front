@@ -4,6 +4,7 @@ import { Global } from "@emotion/react";
 import { global } from "./styles/global.js"
 import SignUpPage from "./pages/SignUpPage/SignUpPage.jsx";
 import LogInPage from "./pages/LogInPage/LogInPage.jsx";
+import { QueryClient } from "@tanstack/react-query";
 
 function App() {
 

@@ -28,6 +28,10 @@ export const container = css`
 export const logo = css`
   width: 14rem;
   margin-bottom: 2rem;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const form = css`
