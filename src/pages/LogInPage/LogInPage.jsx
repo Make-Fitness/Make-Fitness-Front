@@ -2,8 +2,11 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import * as s from "./style";
+import { useNavigate } from "react-router-dom"; // 페이지 이동을 위한 Hook
 
 const LogInPage = () => {
+  const navigate = useNavigate(); // 페이지 이동 함수
+
   return (
     <div css={s.container}>
       <img src="/logo.png" alt="MAKE FITNESS" css={s.logo} />
@@ -28,6 +31,13 @@ const LogInPage = () => {
 
         <button css={s.loginButton}>로그인</button>
       </form>
+
+      <div css={s.signupContainer}>
+        <span css={s.qtext}>계정이 없으신가요?</span>
+        <span css={s.highlightedText} onClick={() => navigate("/auth/signup")}>
+          가입하기
+        </span>
+      </div>
     </div>
   );
 };
