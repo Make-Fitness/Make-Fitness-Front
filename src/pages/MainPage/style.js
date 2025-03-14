@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { CiCompass1 } from "react-icons/ci";
 
 export const root = css`
 
@@ -39,6 +40,30 @@ export const logo = css`
   & > img {
     width: 20rem; 
   }
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const signinbox = css`
+  display:flex;
+  justify-content: space-between;
+  margin-top: 4rem;
+`;
+
+export const signin = css`
+  padding-right: 1rem;
+  font-size: 2rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const signup = css`
+  padding-right: 1rem;
+  font-size: 2rem;
 
   &:hover {
     cursor: pointer;

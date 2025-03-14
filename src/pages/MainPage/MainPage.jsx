@@ -1,15 +1,19 @@
 /**@jsxImportSource @emotion/react */
+import { useNavigate } from 'react-router-dom';
 import * as s from './style';
 import React from 'react';
 
 function MainPage(props) {
-  
+  const navigate = useNavigate();
   return (
     <div css={s.root}>
       <div css={s.container}>
           <div css={s.header}>
             <div css={s.logo}><img src="/logo.png" alt="메인 로고" /></div>
-            <div css={s.auth}>로그인 / 회원가입</div>
+          <div css={s.signinbox}>
+            <span css={s.signin} onClick={() => navigate("/auth/signin")}>로그인</span>
+            <span css={s.signup} onClick={() => navigate("/auth/signup")}>회원가입</span>
+          </div>
           </div>
           <div css={s.navigation}>
             <ul>
