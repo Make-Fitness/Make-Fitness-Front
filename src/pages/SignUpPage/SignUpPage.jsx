@@ -2,8 +2,10 @@ import { FcGoogle } from "react-icons/fc";
 import { SiNaver } from "react-icons/si";
 /**@jsxImportSource @emotion/react */
 import * as s from './style';
+import { useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
   return (
     <div css={s.container}>
       <img src="/logo.png" alt="MAKE FITNESS" css={s.logo} />
@@ -24,7 +26,7 @@ const SignUpPage = () => {
         <label>이메일주소</label>
         <input type="email" placeholder="이메일 입력" />
 
-        
+      </form> 
           <div css={s.socialLogin}>
             <button css={s.googleLogin}>
               <span><FcGoogle /></span>
@@ -37,9 +39,16 @@ const SignUpPage = () => {
           </div>
         
 
-        <button css={s.signUpButton}>회원가입</button>
-      </form>
+          <button css={s.signUpButton}>회원가입</button>
+
+          <div css={s.signinContainer}>
+              <span css={s.qtext}>계정이 이미 있으신가요?</span>
+              <span css={s.highlightedText} onClick={() => navigate("/auth/signin")}>
+                가입하기
+              </span>
+          </div>
     </div>
+    
   );
 };
 

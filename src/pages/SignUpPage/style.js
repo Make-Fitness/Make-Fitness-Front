@@ -129,3 +129,23 @@ export const signUpButton = css`
     background-color: #ff4747;
   }
 `;
+
+export const signinContainer = css`
+  padding-top: 1rem;
+  font-size: 1.3rem;
+`;
+
+export const qtext = css`
+  padding-top: 1rem;
+  padding-right: 1rem;
+`;
+
+export const highlightedText = css`
+  color:rgb(37, 102, 242);
+  font-weight: bold;
+
+  
+  &:hover {
+    cursor: pointer;
+  }
+`;
