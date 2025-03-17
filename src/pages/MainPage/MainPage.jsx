@@ -1,10 +1,15 @@
+
 /**@jsxImportSource @emotion/react */
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as s from './style';
-import React from 'react';
+import React, { useState } from 'react';
+import { MENUS } from '../../constants/menu';
 
 function MainPage(props) {
   const navigate = useNavigate();
+
+  const [role, setRole] = useState("manager");
+
   return (
     <div css={s.root}>
       <div css={s.container}>
@@ -17,11 +22,12 @@ function MainPage(props) {
           </div>
           <div css={s.navigation}>
             <ul>
-              <li>PT / 필라테스</li>
-              <li>위치</li>
-              <li>멤버십</li>
-              <li>강사진</li>
-              <li>리뷰</li>
+              {
+                MENUS[role].map(menu => (
+                  <Link to={menu.path}><li>{menu.name}</li></Link>
+                ))
+              }
+              
             </ul>
           </div>
           <div css={s.mainImgs}>

@@ -2,7 +2,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: "http://localhost:5173/",
+    baseURL: "http://localhost:8080/",
 });
 
 api.interceptors.request.use(config => {
@@ -18,3 +18,7 @@ export const setTokenLocalStorage = (name, token) => {
         localStorage.removeItem(name);
     }
 }
+
+export const joinApi = async (joinInfo) => {
+    return await api.post("/auth/signup", joinInfo);
+};

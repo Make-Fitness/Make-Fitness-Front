@@ -9,7 +9,7 @@ import { useJoinMutation } from "../../mutations/authMutation";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
-  const joinMutaion = useJoinMutation();
+  const joinMutation = useJoinMutation();
 
   const [selectedGender, setSelectedGender] = useState(null);
 
@@ -29,7 +29,8 @@ const SignUpPage = () => {
     passwordCheck: "",
     ph: "",
     email: "",
-  }); 
+  }
+); 
 
   const handleInputOnChange = (e) => {
     setInputValue(prev => ({
@@ -51,8 +52,13 @@ const SignUpPage = () => {
   const isErrors = () => {
     const isEmpty = Object.values(inputValue).map(value => !!value).includes(false);
     const isValid = Object.values(inputValidError).includes(true);
+
+    console.log("isEmpty:", isEmpty);
+    console.log("isValid:", isValid);
+    console.log("최종 반환값:", isEmpty || isValid);
+
     return isEmpty || isValid;
-} 
+};
 
   const handlePasswordOnFocus = () => {
     setInputValue(prev => ({
@@ -61,14 +67,16 @@ const SignUpPage = () => {
         passwordCheck: "",
     }));
   }
-
+  
   const handleJoinOnClick = () => {
     if(isErrors()) {
         alert("가입 정보를 다시 확인해주세요.");
+        console.log("가는데?")
         return;
+        
   }
 
-    joinMutaion.mutateAsync({
+  joinMutation.mutateAsync({
       username: inputValue.username, 
       email: inputValue.email, 
       password: inputValue.password,
@@ -191,7 +199,7 @@ const SignUpPage = () => {
         onChange={handleInputOnChange} 
         placeholder="휴대폰번호 입력" 
         css={s.input} 
-        regexp={/^01[016789]-?\d{3,4}-?\d{4}$/} 
+        regexp={ /^\d{11}$/} 
         inputValidError={inputValidError}
         setInputValidError={setInputValidError}
         errorMessage="휴대폰번호는 010-1234-5678 형식으로 입력하세요."
