@@ -112,6 +112,7 @@ export const googleLogin = css`
   
 
   & > span {
+    padding-top:0.3rem;
     margin: -3rem;
     width: 4rem;
     margin-right: 0.875rem;  
@@ -133,12 +134,22 @@ export const naverLogin = css`
   font-weight: bold;
   text-align: center;
 
-  & > img {
-    padding-right: 1.5rem;
-    width: 1.5rem;
-    margin-right: 0.875rem;
-    color: green;
+  & > span {
+    padding-top:0.3rem;
+    margin: -3rem;
+    width: 4rem;
+    margin-right: 0.875rem;  
   }
+`;
+
+export const letterg = css`
+  display: flex;
+  color: black;
+`;
+
+export const lettern = css`
+  display: flex;
+  padding-bottom:0.2rem;
 `;
 
 export const signUpButton = css`
