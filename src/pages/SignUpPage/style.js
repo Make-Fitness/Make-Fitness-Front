@@ -25,6 +25,16 @@ export const container = css`
   }
 `;
 
+export const errorText = css`
+  color: red;
+  font-size: 1rem;
+  margin-top: 0.25rem;
+`;
+
+export const inputError = css`
+  border: 2px solid red !important;
+`;
+
 export const logo = css`
   width: 14rem;
   margin-bottom: 2rem;
@@ -116,7 +126,15 @@ export const googleLogin = css`
     margin: -3rem;
     width: 4rem;
     margin-right: 0.875rem;  
+
+    & > svg {
+      height: 1.8rem;
+      width: 1.8rem;
+    
+    }
   }
+
+  
 `;
 
 export const naverLogin = css`

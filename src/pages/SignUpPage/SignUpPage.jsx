@@ -35,7 +35,7 @@ const SignUpPage = () => {
 
         switch (name) {
             case "nickname":
-                if (!/^[가-힣a-zA-Z]{2,20}$/.test(value)) {
+                if (!/^[가-힣a-zA-Z]{2,}$/.test(value)) {
                     errorMessage = "이름은 한글 또는 영어 2~20자로 입력하세요.";
                 }
                 break;
@@ -142,11 +142,11 @@ const SignUpPage = () => {
             <div css={s.socialLogin}>
                 <button css={s.googleLogin}>
                     <span><FcGoogle /></span> 
-                    <div>구글로 시작</div> 
+                    <div  css={s.letterg}>구글로 시작</div> 
                 </button>
                 <button css={s.naverLogin}>
                     <span><SiNaver /></span>  
-                    <div>네이버로 시작</div> 
+                    <div css={s.lettern}>네이버로 시작</div> 
                 </button>
             </div>
             
