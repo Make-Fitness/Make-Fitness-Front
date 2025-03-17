@@ -6,4 +6,3 @@ export const useJoinMutation = () => useMutation({
     mutationFn: joinApi,
     retry: 0,
 });
-
