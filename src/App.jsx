@@ -5,6 +5,7 @@ import { global } from "./styles/global.js"
 import SignUpPage from "./pages/SignUpPage/SignUpPage.jsx";
 import LogInPage from "./pages/LogInPage/LogInPage.jsx";
 import { QueryClient } from "@tanstack/react-query";
+import MakeFitnessMap from "./pages/anonymous/Map/MakeFitnessMap.jsx";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
           <Route path="/*" element={<MainPage />} />
           <Route path="/auth/signup*" element={<SignUpPage />} />
           <Route path="/auth/signin*" element={<LogInPage />} />
+          <Route path="/makefitness/map*" element={<MakeFitnessMap />} />
         </Routes>
       </Router>
     </>
