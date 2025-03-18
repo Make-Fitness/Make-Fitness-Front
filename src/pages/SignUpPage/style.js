@@ -20,9 +20,12 @@ export const container = css`
   left: 50%;
   transform: translate(-50%, -50%);
 
+
   @media (min-height: 700px) {
     height: auto;
   }
+
+  
 `;
 
 export const errorText = css`
@@ -82,7 +85,7 @@ export const form = css`
   }
 
   input {
-    width: 96%;
+    width: 100%;
     padding: 1.125rem;
     border: none;
     border-radius: 0.625rem;
@@ -151,6 +154,7 @@ export const naverLogin = css`
   font-size: 1.3rem;
   font-weight: bold;
   text-align: center;
+  
 
   & > span {
     padding-top:0.3rem;
@@ -163,11 +167,13 @@ export const naverLogin = css`
 export const letterg = css`
   display: flex;
   color: black;
+  white-space: nowrap;
 `;
 
 export const lettern = css`
   display: flex;
   padding-bottom:0.2rem;
+  white-space: nowrap;
 `;
 
 export const signUpButton = css`

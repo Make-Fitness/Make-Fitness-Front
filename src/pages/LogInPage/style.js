@@ -34,6 +34,8 @@ export const logo = css`
   }
 `;
 
+
+
 export const form = css`
   display: flex;
   flex-direction: column;
@@ -46,7 +48,7 @@ export const form = css`
   }
 
   input {
-    width: 96%;
+    width: 95%;
     padding: 1.125rem;
     border: none;
     border-radius: 0.625rem;
@@ -68,6 +70,7 @@ export const socialLogin = css`
   gap: 5rem;
 `;
 
+
 export const googleLogin = css`
   display: flex;
   align-items: center;
@@ -80,34 +83,50 @@ export const googleLogin = css`
   font-size: 1.3rem;
   font-weight: bold;
   text-align: center;
-  background-color: white;
-  padding: 1rem;
+  
 
   & > span {
-    width: 2rem;
-    margin-right: 0.875rem;
+    padding-top:0.3rem;
+    margin: -3rem;
+    width: 4rem;
+    margin-right: 0.875rem;  
+
+    & > svg {
+      height: 1.8rem;
+      width: 1.8rem;
+    
+    }
   }
+
+  
 `;
 
 export const naverLogin = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   background-color: #03c75a;
+  color: white;
   border: none;
+  padding: 1rem 1.5rem;
   border-radius: 0.625rem;
   cursor: pointer;
   width: 48%;
   font-size: 1.3rem;
   font-weight: bold;
   text-align: center;
-  padding: 1rem;
 
-  & > img {
-    width: 2rem;
-    margin-right: 0.875rem;
+  & > span {
+    padding-top:0.3rem;
+    margin: -3rem;
+    width: 4rem;
+    margin-right: 0.875rem;  
   }
+`;
+
+export const letterg = css`
+  display: flex;
+  color: black;
 `;
 
 export const loginButton = css`

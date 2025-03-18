@@ -8,6 +8,16 @@ export const root = css`
   max-height: max-content;
   overflow-x: auto;
 `;
+export const logout = css`
+ color: white;
+ background-color: black;
+ box-shadow: none;
+ border: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 export const container = css`
   display: flex;
@@ -60,6 +70,10 @@ export const signin = css`
     cursor: pointer;
   }
 `;
+
+export const welcome = css`
+  color: white;
+`
 
 export const signup = css`
   padding-right: 1rem;

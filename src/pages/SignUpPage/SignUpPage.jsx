@@ -83,6 +83,7 @@ const SignUpPage = () => {
     };
 
     const handleJoinOnClick = () => {
+        navigate("/auth/signin"); 
         if (isErrors()) {
             alert("가입 정보를 다시 확인해주세요.");
             return;

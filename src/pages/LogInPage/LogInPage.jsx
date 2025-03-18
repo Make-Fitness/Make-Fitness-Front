@@ -1,35 +1,80 @@
-/** @jsxImportSource @emotion/react */
-import React from "react";
 import { FcGoogle } from "react-icons/fc";
+import { SiNaver } from "react-icons/si";
+/** @jsxImportSource @emotion/react */
+import React, { useState } from "react";
 import * as s from "./style";
-import { useNavigate } from "react-router-dom"; // 페이지 이동을 위한 Hook
+import { useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../mutations/authMutation";
+import Swal from "sweetalert2"; // Swal 추가
 
 const LogInPage = () => {
-  const navigate = useNavigate(); // 페이지 이동 함수
+  const navigate = useNavigate();
+  const [message, setMessage] = useState(null);
+  const loginMutation = useLoginMutation();
+
+  // 토큰 저장 함수
+  const setTokenLocalStorage = (name, token) => {
+    localStorage.setItem("tokenName", name);
+    localStorage.setItem("accessToken", token);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    
+    const username = e.target.elements.username.value.trim();
+    const password = e.target.elements.password.value.trim();
+
+    if (!username || !password) {
+      setMessage("아이디와 비밀번호를 입력하세요.");
+      return;
+    }
+
+    try {
+      const response = await loginMutation.mutateAsync({ username, password });
+      const tokenName = response.data.name;
+      const accessToken = response.data.token;
+
+      setTokenLocalStorage(tokenName, accessToken);
+
+      await Swal.fire({
+        icon: "success",
+        text: "로그인 성공",
+        timer: 1000,
+        position: "center",
+        showConfirmButton: false,
+      });
+
+      navigate("/auth/main"); // 로그인 성공 후 이동할 페이지
+    } catch (error) {
+      setMessage("로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.");
+    }
+  };
 
   return (
     <div css={s.container}>
-      <img src="/logo.png" alt="MAKE FITNESS" css={s.logo} onClick={() => navigate("/auth")}/>
-
-      <form css={s.form}>
+      <img src="/logo.png" alt="MAKE FITNESS" css={s.logo} onClick={() => navigate("/auth")} />
+      
+      <form css={s.form} onSubmit={handleLogin}>
         <label>ID를 입력하세요</label>
-        <input type="text" placeholder="ID 입력" />
+        <input type="text" name="username" placeholder="ID 입력" />
 
         <label>비밀번호를 입력하세요</label>
-        <input type="password" placeholder="비밀번호 입력" />
+        <input type="password" name="password" placeholder="비밀번호 입력" />
+
+        {message && <div css={s.message}>{message}</div>}
 
         <div css={s.socialLogin}>
           <button css={s.googleLogin}>
             <span><FcGoogle /></span>
-            구글로 로그인
+            <div css={s.letterg}>구글로 로그인</div>
           </button>
           <button css={s.naverLogin}>
-            <img src="/navericon.png" alt="네이버 아이콘" />
-            네이버로 로그인
+            <span><SiNaver /></span>
+            <div>네이버로 로그인</div>
           </button>
         </div>
 
-        <button css={s.loginButton}>로그인</button>
+        <button type="submit" css={s.loginButton}>로그인</button>
       </form>
 
       <div css={s.signupContainer}>
