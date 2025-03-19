@@ -18,9 +18,12 @@ const LogInPage = () => {
     localStorage.setItem("accessToken", token);
   };
 
+  const handleOAuth2LoginOnClick = (provider) => {
+    window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
+}
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    
     const username = e.target.elements.username.value.trim();
     const password = e.target.elements.password.value.trim();
 
@@ -64,11 +67,11 @@ const LogInPage = () => {
         {message && <div css={s.message}>{message}</div>}
 
         <div css={s.socialLogin}>
-          <button css={s.googleLogin}>
+          <button css={s.googleLogin} onClick={() => handleOAuth2LoginOnClick("google")}>
             <span><FcGoogle /></span>
             <div css={s.letterg}>구글로 로그인</div>
           </button>
-          <button css={s.naverLogin}>
+          <button css={s.naverLogin} onClick={() => handleOAuth2LoginOnClick("naver")}>
             <span><SiNaver /></span>
             <div>네이버로 로그인</div>
           </button>
