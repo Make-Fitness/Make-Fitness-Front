@@ -21,6 +21,9 @@ export const loginApi = async (loginInfo) => {
         if (response.data.nickname) {
             localStorage.setItem("nickname", response.data.nickname);
         }
+        if (response.data.roll_name) {
+            localStorage.setItem("roll_name", response.data.roll_name);
+        }
 
         return response;
     } catch (error) {
@@ -33,4 +36,5 @@ export const loginApi = async (loginInfo) => {
 export const logout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("nickname");
+    localStorage.removeItem("roll_name");
 };

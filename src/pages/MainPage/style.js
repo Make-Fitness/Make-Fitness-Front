@@ -106,6 +106,8 @@ export const navigation = css`
     list-style: none;
     padding: 0;
     margin: 0;
+    border: none;
+    outline: none;
   }
 
   li {
@@ -116,10 +118,23 @@ export const navigation = css`
     white-space: nowrap;
     cursor: pointer;
     transition: ease-in-out;
+    text-decoration: none;
+  }
 
-    &:hover {
-      border-bottom: 0.2rem solid white;
-    }
+  li a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  li:hover::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 2px;
+    background-color: white;
   }
 `;
 
