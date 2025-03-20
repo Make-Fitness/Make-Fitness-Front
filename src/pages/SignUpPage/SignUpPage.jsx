@@ -103,7 +103,7 @@ const SignUpPage = () => {
 
     return (
         <div css={s.container}>
-            <img src="/logo.png" alt="MAKE FITNESS" css={s.logo} onClick={() => navigate("/auth")} />
+            <img src="/main/logo.png" alt="MAKE FITNESS" css={s.logo} onClick={() => navigate("/auth")} />
             <form css={s.form}>
                 <label css={s.label}>이름을 입력하세요</label>
                 <ValidInput name="nickname" value={inputValue.nickname} onChange={handleInputOnChange} type="text" placeholder="이름 입력" css={s.input} />

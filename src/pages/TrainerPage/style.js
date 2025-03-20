@@ -1,11 +1,12 @@
 import { css } from "@emotion/react";
 
+
 export const root = css`
 
   margin: auto;
   max-width: max-content;
   max-height: max-content;
-  overflow-x: hidden;
+  overflow-x: auto;
 `;
 
 export const container = css`
@@ -108,69 +109,169 @@ export const navigation = css`
     }
   }
 `;
+export const dropdownMenu = css`
 
-export const changeButton = css`
-  margin-top: 10px;  
-  padding: 8px 16px;
-  font-size: 16px;
-  font-weight: bold;
-  color: white;
-  background-color: #d32f2f;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s;
+position: absolute;
+  top: 2.5rem;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  list-style: none;
+  display: block;
+  visibility: visible;
+  z-index: 1000;
 
-  &:hover {
-    background-color: #b71c1c;
+  li {
+    padding: 8px;
+    cursor: pointer;
+    color: black;
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
   }
 `;
 
-export const formContainer = css`
+export const topGroup = css`
+  width: fit-content;
+  cursor: default;
+`;
+
+export const topimg = css`
   display: flex;
   flex-direction: column;
-  width: 300px;
-  gap: 8px;
-  
-  h1 {
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-  }
+  align-items: center;
+  height: 30rem;
 
-  label {
-    font-size: 18px;
-     }
+  img {
+    height: 100%;
+  }
 `;
 
-
-export const genderRow = css`
+export const mainImgs2 = css`
   display: flex;
-  gap: 40px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: auto;
 
-  label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 16px;
+  img {
+    display: block;
+    width: 100%;        
+    max-width: 100%;    
+    height: auto;
   }
 `;
 
-export const input = css`
+export const mainImgs3 = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  height: 50px;
-  padding: 10px;
-  border: 1px solid #666;
-  border-radius: 8px;
-  font-size: 14px;
-  background-color: #222;
-  color: white;
-  font-size: 16px;
+  height: auto;
 
-  &:focus {
-    outline: none;
-    border-color: #d32f2f;
+  img {
+    display: block;
+    width: 100%;        
+    max-width: 100%;    
+    height: auto;
   }
+`;
+
+
+export const mainImgs4 = css`
+  display: flex;
+  flex-direction: row;    
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 2rem;         
+  padding: 2rem; 
+
+  img {
+    width: 25rem;   
+    height: auto;   
+    display: block;
+    object-fit: cover; 
+  }
+`;
+
+
+export const toptext1 = css`
+  display: center;
+  justify-content: center;
+  align-items: center;
+  padding-top: 7rem;
+  width: auto;
+  height: auto;
+  font-size: 10rem;
+`;
+
+export const toptext2 = css`
+  display: center;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10rem;
+  width: auto;
+  height: auto;
+  font-size: 5rem;
+`;
+
+export const toptext3 = css`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  font-size: 3rem;
+`;
+
+export const toptext4 = css`
+  width: 25rem;
+  height: auto;
+  font-size: 3rem;
+  text-align: center;
+`;
+
+export const managerIntroduceTitle = css`
+  font-size: 3rem;
+  text-align: center;
+`;
+
+export const toptext5 = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10rem;
+  width: 100%;
+  font-size: 2rem;
+  background-color: #ffffff05;
+`;
+
+export const topTextGroup6 = css`
+  padding-left: 3rem;
+  flex-grow: 1;
+`;
+
+export const toptext6 = css`
+  display: flex;
+  flex-direction: column;
+  padding-left: 2rem;
+  padding-bottom: 0.5rem;
+  color: white;
+  font-size: 1.6rem;
+  line-height: 1.5;
+`;
+
+export const toptext7 = css`
+  display: flex;
+  flex-direction: column;
+  padding-left: 2rem;
+  padding-bottom: 0.5rem;
+  color: white;
+  font-size: 2rem;
+  line-height: 1.5;
+  font-weight: 750;
 `;
 
 export const footer = css`

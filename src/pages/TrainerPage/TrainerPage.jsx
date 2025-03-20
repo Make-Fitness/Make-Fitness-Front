@@ -10,34 +10,12 @@ function TrainerPage() {
   const navigate = useNavigate();
   const [role, setRole] = useState("customer");
 
-  return (
-    <div css={s.root}>
-        <div css={s.container}>
-
-        <div css={s.header}>
-          <div css={s.logo}>
-            <img
-              src="/Main/logo.png"
-              alt="메인 로고"
-              onClick={() => navigate("/auth")}
-            />
-          </div>
-          <div css={s.signinbox}>
-            <span css={s.signin} onClick={() => navigate("/auth/signin")}>로그인</span>
-            <span css={s.signup} onClick={() => navigate("/auth/signup")}>회원가입</span>
-          </div>
-        </div>
-
-        
-        <div css={s.navigation}>
-          <ul>
-            {MENUS[role]?.map(menu => (
-              <li key={menu.id}>
-                <Link to={menu.path}>{menu.name}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+return (
+    <div>
+      <div css={root}>
+        <div css={container}>
+          <HeaderPage />
+    </div>
 
         <div css={s.topimg}>
           <img src="/Trainer/ppmain.jpg" alt="메인 이미지1" />
@@ -111,12 +89,14 @@ function TrainerPage() {
           </div>
         </div>
           
-        <div css={s.mainImgs2}>
-          <div css={s.mainImgs}><img src="/Trainer/ppmain_3.jpg" alt="메인 이미지3" /></div>
-          <div css={s.mainImgs}><img src="/Trainer/ppmain_3.jpg" alt="메인 이미지3" /></div>
-          <div css={s.mainImgs}><img src="/Trainer/ppmain_3.jpg" alt="메인 이미지3" /></div>
-          <div css={s.mainImgs}><img src="/Trainer/ppmain_3.jpg" alt="메인 이미지3" /></div>
-        </div>
+        
+          <div css={s.mainImgs2}><img src="/Trainer/ppmain1.jpg" alt="메인 이미지3" /></div>
+          <div css={s.mainImgs2}><img src="/Trainer/ppmain2.jpg" alt="메인 이미지3" /></div>
+          <div css={s.mainImgs2}><img src="/Trainer/ppmain3.jpg" alt="메인 이미지3" /></div>
+          <div css={s.mainImgs2}><img src="/Trainer/ppmain4.jpg" alt="메인 이미지3" /></div>
+          <div css={s.mainImgs2}><img src="/Trainer/ppmain5.jpg" alt="메인 이미지3" /></div>
+          <div css={s.mainImgs2}><img src="/Trainer/ppmain6.jpg" alt="메인 이미지3" /></div>
+        
         
         <div css={s.footer}>
           <p>© MAKE FITNESS. All rights reserved.</p>

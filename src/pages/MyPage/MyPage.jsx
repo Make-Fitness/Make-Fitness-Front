@@ -13,7 +13,7 @@ function MyPage() {
       <div css={s.container}>
         <div css={s.header}>
           <div css={s.logo}>
-            <img src="/Main/logo.png" alt="메인 로고" onClick={() => navigate("/auth")} />
+            <img src="/main/logo.png" alt="메인 로고" onClick={() => navigate("/auth")} />
           </div>
           <div css={s.signinbox}>
             <span css={s.signin} onClick={() => navigate("/auth/signin")}>로그인</span>
