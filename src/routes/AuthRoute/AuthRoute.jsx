@@ -14,4 +14,4 @@ function AuthRoute() {
     );
 }
 
-export default AuthRoute;
+export default AuthRoute;  

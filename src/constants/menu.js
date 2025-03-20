@@ -23,7 +23,7 @@ export const MENUS = {
     {
       id: "my_page",
       name: "마이페이지",
-      path: "/mypage",
+      path: "/makefitness/mypage",
     },
   ],
   manager: [
@@ -50,14 +50,14 @@ export const MENUS = {
     {
       id: "my_page",
       name: "마이페이지",
-      path: "/mypage",
+      path: "/makefitness/mypage",
     },
   ],
   customer: [
     {
       id: "instructors",
       name: "강사진",
-      path: "/강사진 페이지 주소",
+      path: "/makefitness/trainerpage",
     },
     {
       id: "class_reservation",
@@ -67,7 +67,7 @@ export const MENUS = {
     {
       id: "membership",
       name: "멤버쉽",
-      path: "/멤버쉽 페이지 주소",
+      path: "/makefitness/membership",
     },
     {
       id: "reviews",
@@ -77,7 +77,7 @@ export const MENUS = {
     {
       id: "my_page",
       name: "마이페이지",
-      path: "/mypage",
+      path: "/makefitness/mypage",
     },
   ],
   anonymous: [
@@ -89,17 +89,17 @@ export const MENUS = {
     {
       id: "location",
       name: "위치",
-      path: "/위치 페이지 주소",
+      path: "/makefitness/map",
     },
     {
       id: "membership",
       name: "멤버쉽",
-      path: "/멤버쉽 페이지 주소",
+      path: "/makefitness/membership",
     },
     {
       id: "instructors",
       name: "강사진",
-      path: "/강사진 페이지 주소",
+      path: "/makefitness/trainerpage",
     },
     {
       id: "reviews",
