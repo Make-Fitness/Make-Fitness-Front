@@ -1,9 +1,19 @@
 import { css } from "@emotion/react";
 
+export const mapContainer = css`
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;  /* 부모 요소 크기에 맞추기 */
+    height: 600px;
+    overflow: hidden;
+`;
+
 export const box = css`
     box-sizing: border-box;
     display: flex;
-    flex-direction: column;
+    align-items: center;
 `;
 
 export const title = css`
@@ -26,14 +36,15 @@ export const addressbox = css`
     flex-direction: column;
     justify-content: center;
     align-items: center; 
+    width: 50%;
     font-size: 2rem;
 `;
 
 export const contentWrapper = css`
     display: flex;
     flex-direction: column;
-    align-items: flex-start; 
-    width: 50%;
+    align-items: flex-start;
+    width: 90rem;
 `;
 
 export const address = css`

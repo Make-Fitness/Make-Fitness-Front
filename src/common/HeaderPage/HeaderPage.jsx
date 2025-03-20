@@ -61,8 +61,7 @@ const roleMapping = {
   };
   
   return (
-    <div css={s.root}>
-      <div css={s.container}>
+      <div>
         <div css={s.header}>
           <div css={s.logo}>
             <img src="/logo.png" alt="메인 로고" onClick={() => navigate("/")} />
@@ -90,7 +89,6 @@ const roleMapping = {
           </ul>
         </div>
       </div>
-    </div>
   );
 }
 
