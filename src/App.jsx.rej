@@ -1,0 +1,9 @@
+diff a/src/App.jsx b/src/App.jsx	(rejected hunks)
+@@ -4,6 +4,7 @@
+ import { global } from "./styles/global.js"
+ import SignUpPage from "./pages/SignUpPage/SignUpPage.jsx";
+ import LogInPage from "./pages/LogInPage/LogInPage.jsx";
++import TrainerMain from "./pages/TrainerPage/TrainerMain.jsx";
+ 
+ function App() {
+ 
