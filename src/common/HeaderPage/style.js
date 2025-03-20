@@ -116,12 +116,21 @@ export const navigation = css`
     white-space: nowrap;
     cursor: pointer;
     transition: ease-in-out;
+    
+    border-bottom: none !important;
+  }
 
-    &:hover {
-      border-bottom: 0.2rem solid white;
-    }
+  li a {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    color: white; 
+  }
+
+  li:hover {
+    border-bottom: 0.2rem solid white !important;
   }
 `;
+
 
 export const mainImgs = css`
   display: flex;

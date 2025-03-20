@@ -65,7 +65,7 @@ const roleMapping = {
       <div css={s.container}>
         <div css={s.header}>
           <div css={s.logo}>
-            <img src="/logo.png" alt="메인 로고" onClick={() => navigate("/")} />
+            <img src="/main/logo.png" alt="메인 로고" onClick={() => navigate("/")} />
           </div>
           <div css={s.signinbox}>
             {nickname ? (
