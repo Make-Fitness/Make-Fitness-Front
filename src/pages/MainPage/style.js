@@ -151,6 +151,7 @@ export const mainImg = css`
   width: 100%;
   align-items: center;
   flex-grow: 1;
+  margin-bottom: 10px;
 
   & > img {
     width: 100%;
