@@ -1,11 +1,16 @@
 /**@jsxImportSource @emotion/react */
-import { useNavigate } from 'react-router-dom';
 import * as s from './style';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import HeaderPage from '../../common/HeaderPage/HeaderPage';
+import { MENUS } from '../../constants/menu';
 
-// 역할(role)과 해당하는 사용자 그룹을 매핑하는 객체
+
+
+
+function HeaderPage(props) {
+ 
+  // 역할(role)과 해당하는 사용자 그룹을 매핑하는 객체
 const roleMapping = {
   "ROLE_CUSTOMER": "customer", // 고객 역할
   "ROLE_MANAGER": "manager", // 관리자 역할
@@ -13,8 +18,6 @@ const roleMapping = {
   "ROLE_ANONYMOUS": "anonymous", // 로그인하지 않은 사용자 역할
 };
 
-
-function MainPage() {
   const navigate = useNavigate(); // 페이지 이동을 위한 훅 사용
   const [nickname, setNickname] = useState(() => localStorage.getItem("nickname") || ""); 
   const [role, setRole] = useState(() => {
@@ -56,23 +59,41 @@ function MainPage() {
     setRole("anonymous");
     navigate("/auth/signin");
   };
-
+  
   return (
     <div css={s.root}>
       <div css={s.container}>
-        <HeaderPage />
-
-        <div css={s.mainImgs}>
-          <div css={s.mainImg}><img src="/Main.png" alt="메인 이미지" /></div>
-          <div css={s.mainImg}><img src="/main2.png" alt="메인2 이미지" /></div>
-          <div css={s.mainImg}><img src="/main3.png" alt="메인3 이미지" /></div>
+        <div css={s.header}>
+          <div css={s.logo}>
+            <img src="/logo.png" alt="메인 로고" onClick={() => navigate("/auth")} />
+          </div>
+          <div css={s.signinbox}>
+            {nickname ? (
+              <span css={s.welcome}>
+                {nickname}님 환영합니다 <button onClick={handleLogout} css={s.logout}>로그아웃</button>
+              </span>
+            ) : (
+              <>
+                <span css={s.signin} onClick={() => navigate("/auth/signin")}>로그인</span>
+                <span css={s.signup} onClick={() => navigate("/auth/signup")}>회원가입</span>
+              </>
+            )}
+          </div>
         </div>
-        <div css={s.footer}>
-          <p>© MAKE FITNESS. All rights reserved.</p>
+        <div css={s.navigation}>
+          <ul>
+            {MENUS[role]?.map(menu => (
+              <li key={menu.id}>
+                <Link to={menu.path}>{menu.name}</Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
   );
 }
 
-export default MainPage;
+
+
+export default HeaderPage;

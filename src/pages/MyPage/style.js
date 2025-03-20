@@ -1,22 +1,11 @@
 import { css } from "@emotion/react";
-import { CiCompass1 } from "react-icons/ci";
 
 export const root = css`
 
   margin: auto;
   max-width: max-content;
   max-height: max-content;
-  overflow-x: auto;
-`;
-export const logout = css`
- color: white;
- background-color: black;
- box-shadow: none;
- border: none;
-
-  &:hover {
-    cursor: pointer;
-  }
+  overflow-x: hidden;
 `;
 
 export const container = css`
@@ -71,10 +60,6 @@ export const signin = css`
   }
 `;
 
-export const welcome = css`
-  color: white;
-`
-
 export const signup = css`
   padding-right: 1rem;
   font-size: 2rem;
@@ -116,30 +101,75 @@ export const navigation = css`
     white-space: nowrap;
     cursor: pointer;
     transition: ease-in-out;
-
+   
+  
     &:hover {
       border-bottom: 0.2rem solid white;
     }
   }
 `;
 
-export const mainImgs = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
+export const changeButton = css`
+  margin-top: 10px;  
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #d32f2f;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background-color: #b71c1c;
+  }
 `;
 
-export const mainImg = css`
+export const formContainer = css`
   display: flex;
-  justify-content: center;
-  width: 100%;
-  align-items: center;
-  flex-grow: 1;
+  flex-direction: column;
+  width: 300px;
+  gap: 8px;
+  
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+  }
 
-  & > img {
-    width: 100%;
-    height: 100%;
+  label {
+    font-size: 18px;
+     }
+`;
+
+
+export const genderRow = css`
+  display: flex;
+  gap: 40px;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 16px;
+  }
+`;
+
+export const input = css`
+  width: 100%;
+  height: 50px;
+  padding: 10px;
+  border: 1px solid #666;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #222;
+  color: white;
+  font-size: 16px;
+
+  &:focus {
+    outline: none;
+    border-color: #d32f2f;
   }
 `;
 
