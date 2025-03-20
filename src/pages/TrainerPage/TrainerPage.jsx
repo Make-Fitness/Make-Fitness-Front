@@ -126,4 +126,5 @@ function TrainerPage() {
     </div>
   );
 }
+
 export default TrainerPage;
