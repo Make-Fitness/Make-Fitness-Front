@@ -1,74 +1,99 @@
 /**@jsxImportSource @emotion/react */
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as s from './style';
 import React, { useState, useEffect } from 'react';
+import { MENUS } from '../../constants/menu';
 import axios from 'axios';
-import HeaderPage from '../../common/HeaderPage/HeaderPage';
-
-// 역할(role)과 해당하는 사용자 그룹을 매핑하는 객체
-const roleMapping = {
-  "ROLE_CUSTOMER": "customer", // 고객 역할
-  "ROLE_MANAGER": "manager", // 관리자 역할
-  "ROLE_MASTER": "master", // 최고 관리자 역할
-  "ROLE_ANONYMOUS": "anonymous", // 로그인하지 않은 사용자 역할
-};
-
 
 function MainPage() {
-  const navigate = useNavigate(); // 페이지 이동을 위한 훅 사용
-  const [nickname, setNickname] = useState(() => localStorage.getItem("nickname") || ""); 
+  const navigate = useNavigate();
+  const [nickname, setNickname] = useState("");
+
+  const roleMapping = {  // roleMapping을 먼저 정의
+    "ROLE_CUSTOMER": "customer",
+    "ROLE_MANAGER": "manager",
+    "ROLE_MASTER": "master",
+    "ROLE_ANONYMOUS": "anonymous"
+  };
+  
   const [role, setRole] = useState(() => {
-    const storedRole = localStorage.getItem("rolename");
-    return storedRole in roleMapping ? roleMapping[storedRole] : "anonymous";
+    const storedRole = localStorage.getItem("role");
+    return roleMapping[storedRole] || "anonymous";
   });
 
-  // 페이지가 로드될 때 localStorage에서 사용자 정보를 불러옴
   useEffect(() => {
-    const storedNickname = localStorage.getItem("nickname") || "";
-    const storedRole = localStorage.getItem("rolename") || "ROLE_ANONYMOUS";
+    const storedNickname = localStorage.getItem("nickname");
+    const storedRole = localStorage.getItem("role");
+  
+    if (storedNickname) {
+      setNickname(storedNickname);
+    }
+    if (storedRole && roleMapping[storedRole]) {
+      setRole(roleMapping[storedRole]);
+    }
+  }, []); // role을 의존성에서 제거하여 무한 리렌더링 방지
 
-    // 현재 상태와 다를 때만 업데이트 (불필요한 상태 변경 방지)
-    if (nickname !== storedNickname) setNickname(storedNickname);
-    if (role !== roleMapping[storedRole]) setRole(roleMapping[storedRole]);
-  }, []); // 의존성 배열을 빈 배열로 유지하여 최초 실행 시에만 동작
-
-  // 로그인 함수 - 서버에 로그인 요청을 보내고 사용자 정보를 저장
   const handleLogin = async (email, password) => {
     try {
-      const response = await axios.post("/auth/signin", { email, password }); // 서버로 로그인 요청
-      const { nickname, roleName, token } = response.data; // 응답에서 필요한 데이터 추출
-
+      const response = await axios.post("/auth/signin", { email, password });
+      const { nickname, roleName, token } = response.data;
+  
+      const mappedRole = roleMapping[roleName] || "anonymous";
+  
       localStorage.setItem("nickname", nickname);
-      localStorage.setItem("rolename", roleName);
+      localStorage.setItem("role", roleName);
       localStorage.setItem("accessToken", token);
-
+  
       setNickname(nickname);
-      setRole(roleMapping[roleName] || "anonymous");
+      setRole(mappedRole);
     } catch (error) {
       console.error("로그인 오류:", error);
     }
   };
 
-  // 로그아웃 함수 - 로컬 스토리지를 초기화하고 로그인 페이지로 이동
   const handleLogout = () => {
-    localStorage.clear();
-    setNickname("");
+    localStorage.clear(); // 모든 저장된 로컬스토리지 데이터 제거
+    setNickname(""); 
     setRole("anonymous");
-    navigate("/auth/signin");
+    navigate("/auth/signin"); 
   };
 
   return (
-    <div css={s.root}>
-      <div css={s.container}>
-        <HeaderPage />
-
-        <div css={s.mainImgs}>
+    <div css={s.root}> {/* 전체 페이지 스타일 적용 */}
+      <div css={s.container}> {/* 컨테이너 스타일 적용 */}
+        <div css={s.header}> {/* 헤더 영역 */}
+          <div css={s.logo}> {/* 로고 영역 */}
+            <img src="/logo.png" alt="메인 로고" onClick={() => navigate("/auth")} /> {/* 로고 클릭 시 로그인 페이지로 이동 */}
+          </div>
+          <div css={s.signinbox}> {/* 로그인/회원가입 또는 환영 메시지 */}
+            {nickname ? (
+              <span css={s.welcome}> {/* 로그인 시 닉네임 표시 */}
+                {nickname}님 환영합니다 <button onClick={handleLogout} css={s.logout}>로그아웃</button>
+              </span>
+            ) : (
+              <>
+                <span css={s.signin} onClick={() => navigate("/auth/signin")}>로그인</span> {/* 로그인 버튼 */}
+                <span css={s.signup} onClick={() => navigate("/auth/signup")}>회원가입</span> {/* 회원가입 버튼 */}
+              </>
+            )}
+          </div>
+        </div>
+        <div css={s.navigation}> {/* 네비게이션 영역 */}
+          <ul>
+            {MENUS[role]?.map(menu => (
+              <li key={menu.id}> {/* 역할(role)에 따라 네비게이션 메뉴 출력 */}
+                <Link to={menu.path}>{menu.name}</Link> {/* 메뉴 클릭 시 해당 경로로 이동 */}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div css={s.mainImgs}> {/* 메인 이미지 영역 */}
           <div css={s.mainImg}><img src="/Main.png" alt="메인 이미지" /></div>
           <div css={s.mainImg}><img src="/main2.png" alt="메인2 이미지" /></div>
           <div css={s.mainImg}><img src="/main3.png" alt="메인3 이미지" /></div>
         </div>
-        <div css={s.footer}>
-          <p>© MAKE FITNESS. All rights reserved.</p>
+        <div css={s.footer}> {/* 푸터 영역 */}
+          <p>© MAKE FITNESS. All rights reserved.</p> {/* 저작권 표시 */}
         </div>
       </div>
     </div>

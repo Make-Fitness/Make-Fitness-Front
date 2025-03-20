@@ -1,19 +1,24 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import MainPage from "./pages/MainPage/MainPage"
 import { Global } from "@emotion/react";
-import { global } from "./styles/global.js";
-import AuthRoute from "./routes/AuthRoute/AuthRoute.jsx";
-import MainRoute from "./routes/MainRoute/MainRoute.jsx";
+import { global } from "./styles/global.js"
+import SignUpPage from "./pages/SignUpPage/SignUpPage.jsx";
+import LogInPage from "./pages/LogInPage/LogInPage.jsx";
 
 function App() {
+
   return (
-    <Router> {/* ✅ Router는 최상위에서 한 번만 선언 */}
-      <Global styles={global} /> {/* ✅ 전역 스타일은 Router 바깥에 있어도 무방 */}
-      <Routes>
-        <Route path="/auth*" element={<AuthRoute />} />
-        <Route path="/*" element={<MainRoute />} />
-      </Routes>
-    </Router>
-  );
+    <>
+      <Global styles={global} />
+      <Router>
+        <Routes>
+          <Route path="/*" element={<MainPage />} />
+          <Route path="/auth/signup" element={<SignUpPage />} />
+          <Route path="/auth/signin" element={<LogInPage />} />
+        </Routes>
+      </Router>
+    </>
+  )
 }
 
-export default App;
+export default App

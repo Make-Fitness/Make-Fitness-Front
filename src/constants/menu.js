@@ -67,7 +67,7 @@ export const MENUS = {
     {
       id: "membership",
       name: "멤버쉽",
-      path: "/makefitness/membership",
+      path: "/멤버쉽 페이지 주소",
     },
     {
       id: "reviews",
@@ -94,7 +94,7 @@ export const MENUS = {
     {
       id: "membership",
       name: "멤버쉽",
-      path: "/makefitness/membership",
+      path: "/멤버쉽 페이지 주소",
     },
     {
       id: "instructors",
