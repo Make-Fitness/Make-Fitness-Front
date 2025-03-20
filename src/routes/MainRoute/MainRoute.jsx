@@ -9,11 +9,11 @@ import TrainerPage from '../../pages/TrainerPage/TrainerPage';
 function MainRoute() {
     return (
         <Routes>
-            <Route path="/" element={<MainPage />} />
-            <Route path="/makefitness/membership" element={<Membership />} />
-            <Route path="/makefitness/map" element={<MapPage />} />
-            <Route path="/makefitness/mypage" element={<MyPage />} />
-            <Route path="/makefitness/trainerpage" element={<TrainerPage />} />
+            <Route path="*" element={<MainPage />} />
+            <Route path="makefitness/membership" element={<Membership />} />
+            <Route path="makefitness/map" element={<MapPage />} />
+            <Route path="makefitness/mypage" element={<MyPage />} />
+            <Route path="makefitness/trainerpage" element={<TrainerPage />} />
         </Routes>
     );
 }

@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MainPage from "./pages/MainPage/MainPage"
 import { Global } from "@emotion/react";
 import { global } from "./styles/global.js"
-import SignUpPage from "./pages/SignUpPage/SignUpPage.jsx";
-import LogInPage from "./pages/LogInPage/LogInPage.jsx";
+import AuthRoute from "./routes/AuthRoute/AuthRoute.jsx";
+import MainRoute from "./routes/MainRoute/MainRoute.jsx";
+
 
 function App() {
 
@@ -11,11 +11,10 @@ function App() {
     <>
       <Global styles={global} />
       <Router>
-        <Routes>
-          <Route path="/*" element={<MainPage />} />
-          <Route path="/auth/signup" element={<SignUpPage />} />
-          <Route path="/auth/signin" element={<LogInPage />} />
-        </Routes>
+      <Routes>
+					<Route path="/auth/*" element={<AuthRoute />} />
+					<Route path="/*" element={<MainRoute />} />
+				</Routes>
       </Router>
     </>
   )
