@@ -118,8 +118,6 @@ function TrainerPage() {
           <div css={s.mainImgs}><img src="/Trainer/ppmain_3.jpg" alt="메인 이미지3" /></div>
           <div css={s.mainImgs}><img src="/Trainer/ppmain_3.jpg" alt="메인 이미지3" /></div>
         </div>
-
-
         
         <div css={s.footer}>
           <p>© MAKE FITNESS. All rights reserved.</p>
