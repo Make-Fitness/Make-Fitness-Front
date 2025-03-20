@@ -63,7 +63,7 @@ function MainPage() {
       <div css={s.container}> {/* 컨테이너 스타일 적용 */}
         <div css={s.header}> {/* 헤더 영역 */}
           <div css={s.logo}> {/* 로고 영역 */}
-            <img src="/logo.png" alt="메인 로고" onClick={() => navigate("/auth")} /> {/* 로고 클릭 시 로그인 페이지로 이동 */}
+            <img src="/main/logo.png" alt="메인 로고" onClick={() => navigate("/auth")} /> {/* 로고 클릭 시 로그인 페이지로 이동 */}
           </div>
           <div css={s.signinbox}> {/* 로그인/회원가입 또는 환영 메시지 */}
             {nickname ? (
