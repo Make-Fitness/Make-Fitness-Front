@@ -2,10 +2,9 @@ import { css } from "@emotion/react";
 
 
 export const root = css`
-
   margin: auto;
-  max-width: max-content;
-  max-height: max-content;
+  max-width: 100%;
+  max-height: 100%;
   overflow-x: auto;
 `;
 
@@ -134,6 +133,8 @@ position: absolute;
 `;
 
 export const topGroup = css`
+  display: block;
+  margin-left: 30rem;
   width: fit-content;
   cursor: default;
 `;

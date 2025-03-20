@@ -2,35 +2,44 @@
 import { Link, useNavigate } from 'react-router-dom';
 import * as s from './style';
 import React, { useState } from 'react';
-import { MENUS } from "../../constants/menu";
+import HeaderPage from "../../common/HeaderPage/HeaderPage";
+import { useEffect } from "react";
 
 function MyPage() {
   const navigate = useNavigate();
-  const [role, setRole] = useState("customer");
+  const [nickname, setNickname] = useState("");
 
-  return (
-    <div css={s.root}>
-      <div css={s.container}>
-        <div css={s.header}>
-          <div css={s.logo}>
-            <img src="/main/logo.png" alt="메인 로고" onClick={() => navigate("/auth")} />
-          </div>
-          <div css={s.signinbox}>
-            <span css={s.signin} onClick={() => navigate("/auth/signin")}>로그인</span>
-            <span css={s.signup} onClick={() => navigate("/auth/signup")}>회원가입</span>
-          </div>
-        </div>
+  const roleMapping = {
+    "ROLE_CUSTOMER": "customer",
+    "ROLE_MANAGER": "manager",
+    "ROLE_MASTER": "master",
+    };
 
-        <div css={s.navigation}>
-          <ul>
-            {MENUS[role]?.map(menu => (
-              <li key={menu.id}>
-                <Link to={menu.path}>{menu.name}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>                     
-        <div css={s.formContainer}>
+  const [role, setRole] = useState(() => {
+    const storedRole = localStorage.getItem("role");
+    return roleMapping[storedRole] || "anonymous";
+  });
+
+  useEffect(() => {
+    const storedNickname = localStorage.getItem("nickname");
+    const storedRole = localStorage.getItem("role");
+
+    if (storedNickname) {
+      setNickname(storedNickname);
+    }
+    if (storedRole) {
+      setRole(roleMapping[storedRole] || "anonymous");
+    }
+  }, []);
+
+return (
+  
+    <div>
+      <div css={s.root}>
+        <div css={s.container}>
+          <HeaderPage />
+      </div>
+       <div css={s.formContainer}>
           <h1>내 정보 변경</h1>
           <label htmlFor="username">이름</label>
           <input id="username" type="text" placeholder="이름을 입력하세요" />

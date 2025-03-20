@@ -1,28 +1,54 @@
 /**@jsxImportSource @emotion/react */
-import { Link, useNavigate } from 'react-router-dom';
-import * as s from './style';
-import React, { useState } from 'react';
-import { MENUS } from "../../constants/menu";
-
+import { Link, useNavigate } from "react-router-dom";
+import * as s from "./style";
+import React, { useState, createContext } from "react";
+import HeaderPage from "../../common/HeaderPage/HeaderPage";
+import { useEffect } from "react";
 
 
 function TrainerPage() {
   const navigate = useNavigate();
-  const [role, setRole] = useState("customer");
+  const [nickname, setNickname] = useState("");
+
+  const roleMapping = {
+    "ROLE_CUSTOMER": "customer",
+    "ROLE_MANAGER": "manager",
+    "ROLE_MASTER": "master",
+    "ROLE_ANONYMOUS": "anonymous",
+  };
+
+  const [role, setRole] = useState(() => {
+    const storedRole = localStorage.getItem("role");
+    return roleMapping[storedRole] || "anonymous";
+  });
+
+  useEffect(() => {
+    const storedNickname = localStorage.getItem("nickname");
+    const storedRole = localStorage.getItem("role");
+
+    if (storedNickname) {
+      setNickname(storedNickname);
+    }
+    if (storedRole) {
+      setRole(roleMapping[storedRole] || "anonymous");
+    }
+  }, []);
 
 return (
+  
     <div>
-      <div css={root}>
-        <div css={container}>
+      <div css={s.root}>
+        <div css={s.container}>
           <HeaderPage />
-    </div>
-
+      </div>
+    
         <div css={s.topimg}>
           <img src="/Trainer/ppmain.jpg" alt="메인 이미지1" />
         </div>
         <div css={s.topGroup}>
           <div css={s.toptext1}>START YOUR FIT</div>
           <div css={s.toptext2}>근력운동 시작을 위한 모든것</div>
+        
       
           <h2 css={s.managerIntroduceTitle}>
             강사진 소개

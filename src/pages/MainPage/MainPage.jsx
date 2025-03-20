@@ -7,7 +7,7 @@ import axios from 'axios';
 
 function MainPage() {
   const navigate = useNavigate();
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState("customer");
 
   const roleMapping = {  // roleMapping을 먼저 정의
     "ROLE_CUSTOMER": "customer",
