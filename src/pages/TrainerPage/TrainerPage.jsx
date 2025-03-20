@@ -111,7 +111,6 @@ function TrainerPage() {
           </div>
         </div>
           
-          
         <div css={s.mainImgs2}>
           <div css={s.mainImgs}><img src="/Trainer/ppmain_3.jpg" alt="메인 이미지3" /></div>
           <div css={s.mainImgs}><img src="/Trainer/ppmain_3.jpg" alt="메인 이미지3" /></div>
@@ -127,5 +126,4 @@ function TrainerPage() {
     </div>
   );
 }
-
 export default TrainerPage;
