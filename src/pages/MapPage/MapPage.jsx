@@ -14,9 +14,10 @@ function MapPage() {
   
   return (
     <div>
-      <div css={root}>
-        <div css={container}>
+      <div css={s.root}>
+        <div css={s.container}>
           <HeaderPage />
+        </div>
       
           <div css={s.title}>MakeFitness 오시는 길</div>
             {
@@ -83,8 +84,6 @@ function MapPage() {
           </div>
         </div>
       </div>
-        
-    </div>
   );
 }
 

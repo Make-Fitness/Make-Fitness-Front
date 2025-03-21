@@ -1,11 +1,31 @@
 import { css } from "@emotion/react";
 
+export const root = css`
+
+  margin: auto;
+  max-width: max-content;
+  max-height: max-content;
+  overflow-x: hidden;
+`;
+
+export const container = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  background-color: rgb(10, 10, 10);
+  width: 100%;
+  max-width: 100vw;  /* ✅ 추가 */
+  overflow-x: hidden; 
+  overflow-y: auto;
+`;
 export const mapContainer = css`
     box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;  /* 부모 요소 크기에 맞추기 */
+    width: 100%;  
     height: 600px;
     overflow: hidden;
 `;
@@ -38,6 +58,7 @@ export const addressbox = css`
     align-items: center; 
     width: 50%;
     font-size: 2rem;
+    padding-left:30rem;
 `;
 
 export const contentWrapper = css`

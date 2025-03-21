@@ -1,105 +1,25 @@
 import { css } from "@emotion/react";
 
-export const logo = css`
+export const root = css`
+
+  margin: auto;
+  max-width: max-content;
+  max-height: max-content;
+  overflow-x: auto;
+`;
+
+export const container = css`
   display: flex;
-  align-items: center;
-  padding-bottom: 1rem;
-
-  & > img {
-    width: 20rem; 
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-export const signinbox = css`
-  display:flex;
+  flex-direction: column;
   justify-content: space-between;
-  margin-top: 4rem;
-`;
-
-export const signin = css`
-  padding-right: 1rem;
-  font-size: 2rem;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-export const signup = css`
-  padding-right: 1rem;
-  font-size: 2rem;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-export const auth = css`
-
-  padding-top: 5.5rem; 
-  padding-right: 1rem; 
-  font-size: 1.7rem; 
-  font-weight: bold;
-  cursor: pointer;
+  align-items: center;
   color: white;
-`;
-
-export const navigation = css`
+  background-color: rgb(10, 10, 10);
   width: 100%;
-  height: 6rem;
-  background-color: red;
-  padding: 0.5rem 0;
-
-  ul {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  li {
-    position: relative;
-    margin: 1rem 12rem;
-    font-size: 2.5rem; 
-    font-weight: bold;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: ease-in-out;
-   
-  
-    &:hover {
-      border-bottom: 0.2rem solid white;
-    }
-  }
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
-export const dropdownMenu = css`
 
-position: absolute;
-  top: 2.5rem;
-  left: 0;
-  background-color: white;
-  border: 1px solid #ddd;
-  padding: 10px;
-  list-style: none;
-  display: block;
-  visibility: visible;
-  z-index: 1000;
-
-  li {
-    padding: 8px;
-    cursor: pointer;
-    color: black;
-
-    &:hover {
-      background-color: #f0f0f0;
-    }
-  }
-`;
 
 export const topGroup = css`
   display: flex;

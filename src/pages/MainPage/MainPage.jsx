@@ -36,11 +36,10 @@ function MainPage() {
   };
 
   return (
-    <div css={s.root}> {/* 전체 페이지 스타일 적용 */}
       <div css={s.root}>
         <div css={s.container}>
           <HeaderPage />
-      </div>
+        </div>
         <div css={s.mainImgs}> {/* 메인 이미지 영역 */}
           <div css={s.mainImg}><img src="/main/Main.png" alt="메인 이미지" /></div>
           <div css={s.mainImg}><img src="/main/PT_1.jpg" alt="메인2 이미지" /></div>
@@ -51,7 +50,6 @@ function MainPage() {
           <p>© MAKE FITNESS. All rights reserved.</p> {/* 저작권 표시 */}
         </div>
       </div>
-    </div>
   );
 }
 
