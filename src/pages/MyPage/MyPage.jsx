@@ -1,84 +1,73 @@
 /**@jsxImportSource @emotion/react */
-import { Link, useNavigate } from 'react-router-dom';
-import * as s from './style';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import * as s from "./style";
 import HeaderPage from "../../common/HeaderPage/HeaderPage";
-
 
 function MyPage() {
   const navigate = useNavigate();
-  const [nickname, setNickname] = useState("");
-
-  const roleMapping = {
-    "ROLE_CUSTOMER": "customer",
-    "ROLE_MANAGER": "manager",
-    "ROLE_MASTER": "master",
-  };
-
-  const [role, setRole] = useState(() => {
-    const storedRole = localStorage.getItem("role");
-    return roleMapping[storedRole] || "anonymous";
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    membership: ""
   });
 
   useEffect(() => {
     const storedNickname = localStorage.getItem("nickname");
-    const storedRole = localStorage.getItem("role");
-
-    if (storedNickname) {
-      setNickname(storedNickname);
-    }
-    if (storedRole) {
-      setRole(roleMapping[storedRole] || "");
-    }
+    if (storedNickname) setForm((prev) => ({ ...prev, name: storedNickname }));
   }, []);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdate = (type) => {
+    alert(`${type}이(가) 변경되었습니다.`);
+  };
 
   return (
     <div>
-      <div css={s.root}>
-        <div css={s.container}>
-          <HeaderPage />
-        </div>
-        
-        <div css={s.containerStyle}>
+    <div css={s.root}>
+      <div css={s.container}>
+        <HeaderPage />
+    </div>
+      <div css ={s.topcon}>
+        <div css={s.maincontainer}>
           <h2>내정보</h2>
-          <div css={formStyle}>
-            <label css={s.labelStyle} htmlFor="username">이름</label>
-            <input css={s.inputStyle} id="username" type="text" placeholder="이름을 입력하세요" />
-
-            <label css={s.labelStyle}>성별</label>
-            <div css={s.genderRowStyle}>
-              <label>
-                <input type="radio" name="gender" value="male" /> 남성
-              </label>
-              <label>
-                <input type="radio" name="gender" value="female" /> 여성
-              </label>
-            </div>
-
-            <label css={s.labelStyle} htmlFor="phone">전화번호</label>
-            <input css={s.inputStyle} id="phone" type="text" placeholder="전화번호 입력" />
-            <button css={s.buttonStyle}>변경</button>
-
-            <label css={s.labelStyle} htmlFor="password">비밀번호</label>
-            <input css={s.inputStyle} id="password" type="password" placeholder="비밀번호 입력" />
-
-            <label css={s.labelStyle} htmlFor="passwordConfirm">비밀번호 확인</label>
-            <input css={s.inputStyle} id="passwordConfirm" type="password" placeholder="비밀번호 재입력" />
-            <button css={s.buttonStyle}>변경</button>
-
-            <label css={s.labelStyle} htmlFor="membership">이용중인 회원권</label>
-            <input css={s.inputStyle} id="membership" type="text" placeholder="회원권 정보" />
-
-            <button css={s.buttonStyle}>멤버십 변경</button>
-            <button css={s.buttonStyle}>회원권 변경</button>
+            <label>이름</label>
+            <input css={s.input} type="text" name="name" value={form.name} onChange={handleChange} />
+          
+          
+            <label>전화번호</label>
+          <div css={s.numbercontainer}>
+            <input css={s.input} type="text" name="phone" value={form.phone} onChange={handleChange} />
+            <button css={s.button2} onClick={() => handleUpdate("전화번호")}>변경</button>
           </div>
+          
+            <label>비밀번호</label>
+                    
+          <input css={s.input} type="password" name="password" value={form.password} onChange={handleChange} />
+          <label>비밀번호 확인</label>
+          <div css={s.passwordcon}>
+            <input css={s.input} type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} />
+            <button css={s.button2} onClick={() => handleUpdate("비밀번호")}>변경</button>
+          </div>
+          <label>이용중인 회원권</label>
+          <input css={s.input2} type="text" name="membership" value={form.membership} onChange={handleChange} />
+          <div css={s.buttonContainer}>
+            <button css={s.button} onClick={() => handleUpdate("멤버십")}>멤버십 변경</button>
+            <button css={s.button} onClick={() => handleUpdate("회원권")}>회원권 변경</button>
+            </div>
         </div>
-
-        <div css={s.footer}>
-          <p>© MAKE FITNESS. All rights reserved.</p>
         </div>
       </div>
+      <div css={s.footer}>
+        <p>© MAKE FITNESS. All rights reserved.</p>
+      </div>
     </div>
+   
   );
 }
 
