@@ -89,15 +89,21 @@ const SignUpPage = () => {
         }
     
         try {
-            const response = await joinMutation.mutateAsync(inputValue); // ✅ `await`으로 비동기 처리
-    
-            await new Promise((resolve) => setTimeout(resolve, 100)); // ✅ 약간의 딜레이 추가 (UI 안정화)
-    
-            alert("가입해 주셔서 감사합니다."); // ✅ alert을 먼저 실행
-    
+            const response = await joinMutation.mutateAsync(inputValue); 
+            await new Promise((resolve) => setTimeout(resolve, 100)); 
+            alert("가입해 주셔서 감사합니다."); 
             navigate("/auth/signin");
         } catch (error) {
             console.error("회원가입 오류:", error.response || error);
+            if (error.response && error.response.status === 400) {
+                const errorMessages = error.response.data; 
+                if (Array.isArray(errorMessages)) {
+                    alert(errorMessages[0].message);
+                } else {
+                    alert(errorMessages.message || "회원가입 중 오류가 발생했습니다.");
+                }
+                return;
+            }
             alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
     };
