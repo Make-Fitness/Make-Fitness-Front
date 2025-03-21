@@ -1,13 +1,5 @@
 import { css } from "@emotion/react";
 
-export const root = css`
-  display: block;
-  max-width: fit-content;
-  max-height: fit-content;
-  overflow-x: hidden;
-  overflow-y: hidden;
-`;
-
 export const topcon = css`
   display: flex;
   justify-content: center;
