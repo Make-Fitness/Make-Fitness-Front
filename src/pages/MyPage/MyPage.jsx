@@ -1,9 +1,9 @@
 /**@jsxImportSource @emotion/react */
 import { Link, useNavigate } from 'react-router-dom';
 import * as s from './style';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HeaderPage from "../../common/HeaderPage/HeaderPage";
-import { useEffect } from "react";
+
 
 function MyPage() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ function MyPage() {
     "ROLE_CUSTOMER": "customer",
     "ROLE_MANAGER": "manager",
     "ROLE_MASTER": "master",
-    };
+  };
 
   const [role, setRole] = useState(() => {
     const storedRole = localStorage.getItem("role");
@@ -28,53 +28,58 @@ function MyPage() {
       setNickname(storedNickname);
     }
     if (storedRole) {
-      setRole(roleMapping[storedRole] || "anonymous");
+      setRole(roleMapping[storedRole] || "");
     }
   }, []);
 
-return (
-  
+  return (
     <div>
       <div css={s.root}>
         <div css={s.container}>
           <HeaderPage />
-      </div>
-       <div css={s.formContainer}>
-          <h1>내 정보 변경</h1>
-          <label htmlFor="username">이름</label>
-          <input id="username" type="text" placeholder="이름을 입력하세요" />
+        </div>
+        
+        <div css={s.containerStyle}>
+          <h2>내정보</h2>
+          <div css={formStyle}>
+            <label css={s.labelStyle} htmlFor="username">이름</label>
+            <input css={s.inputStyle} id="username" type="text" placeholder="이름을 입력하세요" />
 
-          <label>성별</label>
-          <div css={s.genderRow}>
-            <label>
-              <input type="radio" name="gender" value="male" />
-              남성
-            </label>
-            <label>
-              <input type="radio" name="gender" value="female" />
-              여성
-            </label>
+            <label css={s.labelStyle}>성별</label>
+            <div css={s.genderRowStyle}>
+              <label>
+                <input type="radio" name="gender" value="male" /> 남성
+              </label>
+              <label>
+                <input type="radio" name="gender" value="female" /> 여성
+              </label>
+            </div>
+
+            <label css={s.labelStyle} htmlFor="phone">전화번호</label>
+            <input css={s.inputStyle} id="phone" type="text" placeholder="전화번호 입력" />
+            <button css={s.buttonStyle}>변경</button>
+
+            <label css={s.labelStyle} htmlFor="password">비밀번호</label>
+            <input css={s.inputStyle} id="password" type="password" placeholder="비밀번호 입력" />
+
+            <label css={s.labelStyle} htmlFor="passwordConfirm">비밀번호 확인</label>
+            <input css={s.inputStyle} id="passwordConfirm" type="password" placeholder="비밀번호 재입력" />
+            <button css={s.buttonStyle}>변경</button>
+
+            <label css={s.labelStyle} htmlFor="membership">이용중인 회원권</label>
+            <input css={s.inputStyle} id="membership" type="text" placeholder="회원권 정보" />
+
+            <button css={s.buttonStyle}>멤버십 변경</button>
+            <button css={s.buttonStyle}>회원권 변경</button>
           </div>
+        </div>
 
-          <label htmlFor="password">변경 비밀번호</label>
-          <input id="password" type="text" placeholder="변경할 비밀번호를 입력하세요." />
-
-          <label htmlFor="passwordConfirm">비밀번호 확인</label>
-          <input id="passwordConfirm" type="text" placeholder="변경할 비밀번호를 재입력하세요." />
-
-          <label htmlFor="membership">현재 이용중인 회원권</label>
-          <input id="membership" type="text" placeholder="." />
-
-          <label htmlFor="Nextpaymentdate">다음 결제일</label>
-          <input id="Nextpaymentdate" type="text" placeholder="." />
+        <div css={s.footer}>
+          <p>© MAKE FITNESS. All rights reserved.</p>
         </div>
       </div>
-
-      <div css={s.footer}>
-        <p>© MAKE FITNESS. All rights reserved.</p>
-      </div>
     </div>
-);
+  );
 }
 
 export default MyPage;

@@ -1,36 +1,5 @@
 import { css } from "@emotion/react";
 
-
-export const root = css`
-  margin: auto;
-  max-width: 100%;
-  max-height: 100%;
-  overflow-x: auto;
-`;
-
-export const container = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  background-color: rgb(10, 10, 10);
-  width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-`;
-
-export const header = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 1rem; 
-  padding-top: 2rem; 
-  width: 100%;
-  background-color: rgb(10, 10, 10);
-  font-size: 2rem; 
-`;
-
 export const logo = css`
   display: flex;
   align-items: center;
@@ -134,7 +103,7 @@ position: absolute;
 
 export const topGroup = css`
   display: block;
-  margin-left: 30rem;
+  padding-left: 35rem;
   width: fit-content;
   cursor: default;
 `;
@@ -237,16 +206,17 @@ export const toptext4 = css`
 export const managerIntroduceTitle = css`
   font-size: 3rem;
   text-align: center;
+  margin-bottom: 5rem;
 `;
 
 export const toptext5 = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10rem;
   width: 100%;
   font-size: 2rem;
-  background-color: #ffffff05;
+  background-color: #1E1E1E;
+  margin-bottom: 5rem;
 `;
 
 export const topTextGroup6 = css`
