@@ -47,7 +47,7 @@ const LogInPage = () => {
         showConfirmButton: false,
       });
 
-      navigate("/auth/main"); // 로그인 성공 후 이동할 페이지
+      navigate("/"); // 로그인 성공 후 이동할 페이지
     } catch (error) {
       setMessage("로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.");
     }
@@ -55,7 +55,7 @@ const LogInPage = () => {
 
   return (
     <div css={s.container}>
-      <img src="/main/logo.png" alt="MAKE FITNESS" css={s.logo} onClick={() => navigate("/auth")} />
+      <img src="/main/logo.png" alt="MAKE FITNESS" css={s.logo} onClick={() => navigate("/")} />
       
       <form css={s.form} onSubmit={handleLogin}>
         <label>ID를 입력하세요</label>

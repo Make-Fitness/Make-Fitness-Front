@@ -10,10 +10,9 @@ function Membership() {
    const navigate = useNavigate();
 
   return (
-    <div css={s.root}>
-      {/* 네비게이션 바가 화면 상단에 고정되도록 설정 */}
-      <div css={s.headerWrapper}>
-        <HeaderPage />
+    <div css={s.root}> {/* 전체 페이지 스타일 적용 */}
+        <div css={s.container}>
+          <HeaderPage />
       </div>
 
       <div css={s.container}>

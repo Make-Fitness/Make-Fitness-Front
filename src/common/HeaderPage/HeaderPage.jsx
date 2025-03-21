@@ -1,65 +1,65 @@
 /**@jsxImportSource @emotion/react */
 import * as s from './style';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { MENUS } from '../../constants/menu';
 
-
-
-
 function HeaderPage(props) {
- 
-  // 역할(role)과 해당하는 사용자 그룹을 매핑하는 객체
-const roleMapping = {
-  "ROLE_CUSTOMER": "customer", // 고객 역할
-  "ROLE_MANAGER": "manager", // 관리자 역할
-  "ROLE_MASTER": "master", // 최고 관리자 역할
-  "ROLE_ANONYMOUS": "anonymous", // 로그인하지 않은 사용자 역할
-};
+  const roleMapping = {
+    "ROLE_CUSTOMER": "customer",
+    "ROLE_MANAGER": "manager",
+    "ROLE_MASTER": "master",
+    "ROLE_ANONYMOUS": "anonymous",
+  };
 
-  const navigate = useNavigate(); // 페이지 이동을 위한 훅 사용
-  const [nickname, setNickname] = useState(() => localStorage.getItem("nickname") || ""); 
+  const navigate = useNavigate();
+  const [nickname, setNickname] = useState(localStorage.getItem("nickname") || ""); 
   const [role, setRole] = useState(() => {
-    const storedRole = localStorage.getItem("rolename");
-    return storedRole in roleMapping ? roleMapping[storedRole] : "anonymous";
+    const storedRole = localStorage.getItem("roleName") || "ROLE_ANONYMOUS";
+    return roleMapping[storedRole] || "anonymous";
   });
 
-  // 페이지가 로드될 때 localStorage에서 사용자 정보를 불러옴
   useEffect(() => {
     const storedNickname = localStorage.getItem("nickname") || "";
-    const storedRole = localStorage.getItem("rolename") || "ROLE_ANONYMOUS";
+    const storedRole = localStorage.getItem("roleName") || "ROLE_ANONYMOUS";
+    const mappedRole = roleMapping[storedRole] || "anonymous";
 
-    // 현재 상태와 다를 때만 업데이트 (불필요한 상태 변경 방지)
-    if (nickname !== storedNickname) setNickname(storedNickname);
-    if (role !== roleMapping[storedRole]) setRole(roleMapping[storedRole]);
-  }, []); // 의존성 배열을 빈 배열로 유지하여 최초 실행 시에만 동작
+    console.log("LocalStorage roleName:", storedRole);
+    console.log("Mapped Role:", mappedRole);
+    console.log("MENUS[role]:", MENUS[mappedRole]);
 
-  // 로그인 함수 - 서버에 로그인 요청을 보내고 사용자 정보를 저장
+    setNickname(storedNickname);
+    setRole(mappedRole);
+  }, []); // ✅ 한 번 실행 후, 상태 업데이트 발생 시 다시 실행됨
+
   const handleLogin = async (email, password) => {
     try {
-      const response = await axios.post("/auth/signin", { email, password }); // 서버로 로그인 요청
-      const { nickname, roleName, token } = response.data; // 응답에서 필요한 데이터 추출
+      const response = await axios.post("/auth/signin", { email, password });
+      const { nickname, token, roll_name, roleName } = response.data;
 
       localStorage.setItem("nickname", nickname);
-      localStorage.setItem("rolename", roleName);
+      localStorage.setItem("roleName", roll_name || roleName);  // ✅ roleName으로 저장
       localStorage.setItem("accessToken", token);
 
       setNickname(nickname);
-      setRole(roleMapping[roleName] || "anonymous");
+      setRole(roleMapping[(roll_name || roleName)] || "anonymous");
+
+      // 강제 새로고침 (페이지 상태를 확실히 반영)
+      window.location.reload();
     } catch (error) {
       console.error("로그인 오류:", error);
     }
   };
 
-  // 로그아웃 함수 - 로컬 스토리지를 초기화하고 로그인 페이지로 이동
   const handleLogout = () => {
     localStorage.clear();
     setNickname("");
     setRole("anonymous");
     navigate("/auth/signin");
+    window.location.reload(); // 로그아웃 후 새로고침
   };
-  
+
   return (
       <div>
         <div css={s.header}>
@@ -85,13 +85,11 @@ const roleMapping = {
               <li key={menu.id}>
                 <Link to={menu.path}>{menu.name}</Link>
               </li>
-            ))}
+            )) || <li>메뉴 없음</li>}  {/* 만약 undefined이면 기본값 표시 */}
           </ul>
         </div>
       </div>
   );
 }
-
-
 
 export default HeaderPage;

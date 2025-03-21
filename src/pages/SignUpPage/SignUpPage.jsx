@@ -82,28 +82,29 @@ const SignUpPage = () => {
                Object.values(inputValue).some(value => value.trim() === "");
     };
 
-    const handleJoinOnClick = () => {
-        navigate("/auth/signin"); 
+    const handleJoinOnClick = async () => {
         if (isErrors()) {
             alert("가입 정보를 다시 확인해주세요.");
             return;
         }
-
-        joinMutation.mutate(inputValue, {
-            onSuccess: (response) => {
-                alert("가입해 주셔서 감사합니다.");
-                navigate(`/auth/login?username=${response.data.username}`);
-            },
-            onError: (error) => {
-                console.error("회원가입 오류:", error.response || error);
-                alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
-            }
-        });
+    
+        try {
+            const response = await joinMutation.mutateAsync(inputValue); // ✅ `await`으로 비동기 처리
+    
+            await new Promise((resolve) => setTimeout(resolve, 100)); // ✅ 약간의 딜레이 추가 (UI 안정화)
+    
+            alert("가입해 주셔서 감사합니다."); // ✅ alert을 먼저 실행
+    
+            navigate("/auth/signin");
+        } catch (error) {
+            console.error("회원가입 오류:", error.response || error);
+            alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
+        }
     };
 
     return (
         <div css={s.container}>
-            <img src="/main/logo.png" alt="MAKE FITNESS" css={s.logo} onClick={() => navigate("/auth")} />
+            <img src="/main/logo.png" alt="MAKE FITNESS" css={s.logo} onClick={() => navigate("/")} />
             <form css={s.form}>
                 <label css={s.label}>이름을 입력하세요</label>
                 <ValidInput name="nickname" value={inputValue.nickname} onChange={handleInputOnChange} type="text" placeholder="이름 입력" css={s.input} />

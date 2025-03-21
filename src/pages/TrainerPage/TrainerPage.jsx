@@ -7,32 +7,6 @@ import { useEffect } from "react";
 
 
 function TrainerPage() {
-  const navigate = useNavigate();
-  const [nickname, setNickname] = useState("");
-
-  const roleMapping = {
-    "ROLE_CUSTOMER": "customer",
-    "ROLE_MANAGER": "manager",
-    "ROLE_MASTER": "master",
-    "ROLE_ANONYMOUS": "anonymous",
-  };
-
-  const [role, setRole] = useState(() => {
-    const storedRole = localStorage.getItem("role");
-    return roleMapping[storedRole] || "anonymous";
-  });
-
-  useEffect(() => {
-    const storedNickname = localStorage.getItem("nickname");
-    const storedRole = localStorage.getItem("role");
-
-    if (storedNickname) {
-      setNickname(storedNickname);
-    }
-    if (storedRole) {
-      setRole(roleMapping[storedRole] || "anonymous");
-    }
-  }, []);
 
 return (
   

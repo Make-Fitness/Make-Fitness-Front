@@ -3,11 +3,14 @@ import { css } from "@emotion/react";
 export const container = css`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
+  color: white;
+  background-color: rgb(10, 10, 10);
   width: 100%;
-  padding: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 10rem;
 `;
 
 export const title = css`
@@ -15,7 +18,6 @@ export const title = css`
   font-weight: bold;
   text-align: center;
   margin-bottom: 5rem;
-  margin-top: -15rem;
 `;
 
 export const buttonGrid = css`
