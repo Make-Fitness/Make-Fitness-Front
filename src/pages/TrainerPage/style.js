@@ -102,9 +102,10 @@ position: absolute;
 `;
 
 export const topGroup = css`
-  display: block;
-  padding-left: 35rem;
-  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   cursor: default;
 `;
 
@@ -172,8 +173,6 @@ export const toptext1 = css`
   justify-content: center;
   align-items: center;
   padding-top: 7rem;
-  width: auto;
-  height: auto;
   font-size: 10rem;
 `;
 
@@ -213,7 +212,7 @@ export const toptext5 = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 80rem;
   font-size: 2rem;
   background-color: #1E1E1E;
   margin-bottom: 5rem;
