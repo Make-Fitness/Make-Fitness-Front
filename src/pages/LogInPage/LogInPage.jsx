@@ -18,10 +18,6 @@ const LogInPage = () => {
     localStorage.setItem("accessToken", token);
   };
 
-  const handleOAuth2LoginOnClick = (provider) => {
-    window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
-}
-
   const handleLogin = async (e) => {
     e.preventDefault();
     const username = e.target.elements.username.value.trim();
@@ -52,6 +48,9 @@ const LogInPage = () => {
       setMessage("로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.");
     }
   };
+    const handleOAuth2LoginOnClick = (provider) => {
+      window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
+  }
 
   return (
     <div css={s.container}>
@@ -67,11 +66,11 @@ const LogInPage = () => {
         {message && <div css={s.message}>{message}</div>}
 
         <div css={s.socialLogin}>
-          <button css={s.googleLogin} onClick={() => handleOAuth2LoginOnClick("google")}>
+          <button type="button" css={s.googleLogin} onClick={() => handleOAuth2LoginOnClick("google")}>
             <span><FcGoogle /></span>
             <div css={s.letterg}>구글로 로그인</div>
           </button>
-          <button css={s.naverLogin} onClick={() => handleOAuth2LoginOnClick("naver")}>
+          <button type="button" css={s.naverLogin} onClick={() => handleOAuth2LoginOnClick("naver")}>
             <span><SiNaver /></span>
             <div>네이버로 로그인</div>
           </button>
