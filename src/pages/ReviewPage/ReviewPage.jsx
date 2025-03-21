@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import HeaderPage from "../../common/HeaderPage/HeaderPage";
 import FooterPage from "../../common/FooterPage/FooterPage";
 import * as s from "./style";
@@ -20,11 +19,11 @@ const ReviewPage = () => {
 
   return (
     <div css={s.root}>
-      <div css={s.container}>
-        <HeaderPage />
-        <div css={s.mainImgs}>
-          <div css={s.mainImg}><img src="/main/PT_3.jpg" alt="메인4 이미지" /></div>
-        </div>
+        <div css={s.container}>
+          <HeaderPage />
+            <div css={s.mainImg}><img src="/main/PT_3.jpg" alt="메인4 이미지" /></div>
+          
+        
 
         <div css={s.reviewList}>
           <h2>리뷰 목록</h2>
@@ -59,10 +58,9 @@ const ReviewPage = () => {
           />
           <button css={s.submitButton} onClick={handleReviewSubmit}>등록</button>
         </div>
-
-        <FooterPage />
-      </div>
-    </div>
+          <FooterPage />
+          </div>
+        </div>
   );
 };
 

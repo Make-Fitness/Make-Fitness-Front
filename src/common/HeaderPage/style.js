@@ -1,13 +1,6 @@
 import { css } from "@emotion/react";
-import { CiCompass1 } from "react-icons/ci";
 
-export const root = css`
 
-  margin: auto;
-  max-width: max-content;
-  max-height: max-content;
-  overflow-x: auto;
-`;
 export const logout = css`
  color: white;
  background-color: black;
@@ -19,17 +12,6 @@ export const logout = css`
   }
 `;
 
-export const container = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  background-color: rgb(10, 10, 10);
-  width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-`;
 
 export const header = css`
   display: flex;
@@ -37,7 +19,8 @@ export const header = css`
   align-items: center;
   margin: 1rem; 
   padding-top: 2rem; 
-  width: 100%;
+  max-width:100%;
+  min-width:100%;
   background-color: rgb(10, 10, 10);
   font-size: 2rem; 
 `;

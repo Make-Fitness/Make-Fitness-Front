@@ -4,6 +4,7 @@ import * as s from "./style";
 import React, { useState, createContext } from "react";
 import HeaderPage from "../../common/HeaderPage/HeaderPage";
 import { useEffect } from "react";
+import FooterPage from "../../common/FooterPage/FooterPage";
 
 
 function TrainerPage() {
@@ -14,7 +15,7 @@ return (
       <div css={s.root}>
         <div css={s.container}>
           <HeaderPage />
-      </div>
+        </div>
     
         <div css={s.topimg}>
           <img src="/Trainer/ppmain.jpg" alt="메인 이미지1" />
@@ -99,7 +100,7 @@ return (
         
         
         <div css={s.footer}>
-          <p>© MAKE FITNESS. All rights reserved.</p>
+          <FooterPage/>
         </div>
 
       </div>

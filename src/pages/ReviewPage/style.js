@@ -1,32 +1,24 @@
 import { css } from "@emotion/react";
 
 export const root = css`
-  margin: auto;
-  max-width: 110rem;
+ margin: auto;
+  max-width: max-content;
+  max-height: max-content;
   overflow-x: hidden;
-  font-size: 1.2rem;
-  background-color: #0a0a0a;
-  color: white;
 `;
 
 export const container = css`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-  min-height: 100vh;
-  font-size: 1.2rem;
-`;
-
-export const header = css`
-  display: flex;
   justify-content: space-between;
   align-items: center;
+  color: white;
+  background-color: rgb(10, 10, 10);
   width: 100%;
-  padding: 2rem;
-  background-color: #0a0a0a;
-  font-size: 1.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
+
 
 export const mainImgs = css`
   display: flex;
@@ -44,8 +36,8 @@ export const mainImg = css`
   margin-bottom: 10px;
 
   & > img {
-    width: 100%;
-    height: 100%;
+    max-width:83%
+    
   }
 `;
 

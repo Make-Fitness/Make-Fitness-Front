@@ -1,5 +1,13 @@
 import { css } from "@emotion/react";
 
+export const root = css`
+
+  margin: auto;
+  max-width: max-content;
+  max-height: max-content;
+  overflow-x: hidden;
+`;
+
 export const container = css`
   display: flex;
   flex-direction: column;
@@ -10,8 +18,9 @@ export const container = css`
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 10rem;
 `;
+
+
 
 export const title = css`
   font-size: 3.5rem;
@@ -29,6 +38,7 @@ export const buttonGrid = css`
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  padding-bottom: 7rem;
 `;
 
 export const button = css`
@@ -62,6 +72,3 @@ export const button = css`
   }
 `;
 
-export const footer = css`
-  padding-top: 5rem;
-`;

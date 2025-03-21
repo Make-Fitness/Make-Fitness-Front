@@ -5,7 +5,7 @@ export const root = css`
   margin: auto;
   max-width: max-content;
   max-height: max-content;
-  overflow-x: auto;
+  overflow-x: hidden;
 `;
 
 export const container = css`
@@ -164,11 +164,3 @@ export const toptext7 = css`
   font-weight: 750;
 `;
 
-export const footer = css`
-  width: 100%;
-  text-align: center;
-  padding: 1rem;
-  background-color: #111;
-  font-size: 2.5rem;
-  color: #aaa;
-`;

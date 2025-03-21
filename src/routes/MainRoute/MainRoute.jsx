@@ -6,6 +6,7 @@ import MapPage from '../../pages/MapPage/MapPage';
 import MyPage from '../../pages/MyPage/MyPage';
 import TrainerPage from '../../pages/TrainerPage/TrainerPage';
 import Pilates from '../../pages/Anonymous/Membership/Pilates/Pilates';
+import ReviewPage from '../../pages/ReviewPage/ReviewPage';
 
 function MainRoute() {
     return (
@@ -16,6 +17,7 @@ function MainRoute() {
             <Route path="makefitness/mypage" element={<MyPage />} />
             <Route path="makefitness/trainerpage" element={<TrainerPage />} />
             <Route path="makefitness/pilates" element={<Pilates />} />
+            <Route path="makefitness/review" element={<ReviewPage />} />
         </Routes>
     );
 }

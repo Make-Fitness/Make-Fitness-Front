@@ -18,7 +18,7 @@ export const MENUS = {
     {
       id: "review_management",
       name: "리뷰관리",
-      path: "/리뷰관리 페이지 주소",
+      path: "/makefitness/review",
     },
     {
       id: "my_page",
@@ -45,7 +45,7 @@ export const MENUS = {
     {
       id: "review_management",
       name: "리뷰관리",
-      path: "/리뷰관리 페이지 주소",
+      path: "/makefitness/review",
     },
     {
       id: "my_page",
@@ -72,7 +72,7 @@ export const MENUS = {
     {
       id: "reviews",
       name: "리뷰",
-      path: "/리뷰 페이지 주소",
+      path: "/makefitness/review",
     },
     {
       id: "my_page",
@@ -104,7 +104,7 @@ export const MENUS = {
     {
       id: "reviews",
       name: "리뷰",
-      path: "/리뷰페이지 주소",
+      path: "/makefitness/review",
     },
   ],
 };
