@@ -1,42 +1,61 @@
 import { css } from "@emotion/react";
 
+export const root = css`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #000; 
+`;
+
+export const container = css`
+ 
+`;
+
 export const topcon = css`
   display: flex;
+  flex-direction: row; 
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  gap: 10rem; 
   width: 100%;
+  margin-top: 5rem;
 `;
 
 export const maincontainer = css`
-  width: 30rem;
-  margin-top: 5rem;
+  width: 50rem;
   padding: 2rem;
-  margin-bottom: 20rem;
-  background-color: #313030;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-
+  background-color: black;
+  border-radius: 1.75rem;
+  border: 0.125rem solid #444;
+  color: white;
+  box-shadow: 0rem 0.25rem 0.625rem rgba(255, 255, 255, 0.1);
+  
   h2 {
     display: flex;
     justify-content: center;
     font-size: 3rem;
     color: white;
     margin-bottom: 3rem;
-    }
+  }
 
   label {
     display: flex;
     justify-content: flex-start;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
+    color: #dbdbdb;
   }
+`;
 
+export const calendarWrapper = css`
+  
+  width: 450px; 
+  margin-top: 5rem; 
 `;
 
 export const numbercontainer = css`
   display: flex;
   align-items: center;
-  justify-content: row;
   width: 100%;
   margin-bottom: 1rem;
 `;
@@ -49,18 +68,8 @@ export const passwordcon = css`
   margin-bottom: 1rem;
 `;
 
-export const change = css`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 1rem;
-`;
-
 export const input = css`
-  display: flex;
-  justify-content: first baseline;
-  width: 15rem;
+  width: 20rem;
   padding: 10px;
   margin-bottom: 10px;
   border: none;
@@ -71,14 +80,12 @@ export const input = css`
 `;
 
 export const input2 = css`
-  display: flex;
-  justify-content: first baseline;
   width: 20rem;
   padding: 10px;
   margin-bottom: 10px;
   border: none;
   border-radius: 5px;
-  background-color:#d1d1d1;
+  background-color: #d1d1d1;
   font-size: 1rem;
 `;
 
