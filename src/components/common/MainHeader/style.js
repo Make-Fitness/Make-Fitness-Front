@@ -14,41 +14,33 @@ export const logout = css`
 
 
 export const header = css`
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin: 1rem; 
-  padding-top: 2rem; 
-  max-width:100%;
-  min-width:100%;
+  align-items: flex-end;
+  padding: 2rem 0 1rem; 
   background-color: rgb(10, 10, 10);
-  font-size: 2rem; 
 `;
 
 export const logo = css`
   display: flex;
   align-items: center;
-  padding-bottom: 1rem;
+  width: 16rem; 
+  cursor: pointer;
 
   & > img {
-    width: 20rem; 
-  }
-
-  &:hover {
-    cursor: pointer;
+    width: 100%;
   }
 `;
 
 export const signinbox = css`
   display:flex;
   justify-content: space-between;
-  margin-top: 4rem;
+  font-size: 1.5rem;
 `;
 
-export const signin = css`
-  padding-right: 1rem;
-  font-size: 2rem;
-
+export const sign = css`
+  margin-left: 1rem;
   &:hover {
     cursor: pointer;
   }
@@ -56,15 +48,6 @@ export const signin = css`
 
 export const welcome = css`
   color: white;
-`
-
-export const signup = css`
-  padding-right: 1rem;
-  font-size: 2rem;
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 export const auth = css`
@@ -78,29 +61,33 @@ export const auth = css`
 `;
 
 export const navigation = css`
+  box-sizing: border-box;
+  padding: 0.5rem 2rem;
   width: 100%;
   height: 6rem;
   background-color: red;
-  padding: 0.5rem 0;
 
   ul {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     list-style: none;
+    height: 100%;
     padding: 0;
     margin: 0;
   }
 
   li {
-    position: relative;
-    margin: 1rem 12rem;
-    font-size: 2.5rem; 
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15rem;
+    height: 100%;
+    font-size: 1.8rem; 
     font-weight: bold;
     white-space: nowrap;
     cursor: pointer;
     transition: ease-in-out;
-    
-    border-bottom: none !important;
   }
 
   li a {

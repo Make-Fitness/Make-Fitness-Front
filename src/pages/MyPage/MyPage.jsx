@@ -2,8 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as s from "./style";
-import HeaderPage from "../../common/HeaderPage/HeaderPage";
-import Calendar from "../../common/Calendar/Calendar";
+import Calendar from "../../components/common/Calendar/Calendar";
 
 function MyPage() {
   const navigate = useNavigate();
@@ -38,12 +37,7 @@ function MyPage() {
   };
 
   return (
-    <div css={s.root}>
-      <div css={s.container}>
-        <HeaderPage />
-      </div>
-
-     
+    <>
       <div css={s.topcon}>
         
         <div css={s.maincontainer}>
@@ -119,11 +113,7 @@ function MyPage() {
           <Calendar />
         </div>
       </div>
-
-      <div css={s.footer}>
-        <p>© MAKE FITNESS. All rights reserved.</p>
-      </div>
-    </div>
+    </>
   );
 }
 

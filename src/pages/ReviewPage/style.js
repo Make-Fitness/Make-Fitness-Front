@@ -36,13 +36,12 @@ export const mainImg = css`
   margin-bottom: 10px;
 
   & > img {
-    max-width:83%
-    
+    width: 100%;
   }
 `;
 
 export const reviewList = css`
-  width: 90%;
+  width: 100%;
   margin: auto;
   text-align: center;
   margin-bottom: 4rem;
@@ -98,13 +97,14 @@ export const reviewRating = css`
 `;
 
 export const reviewContainer = css`
+  box-sizing: border-box;
   background: #222;
-  padding: 3rem;
+  padding: 3rem 10rem;
   border-radius: 1rem;
   text-align: center;
   color: white;
   font-size: 1.5rem;
-  width: 80%;
+  width: 100%;
   margin: 5rem auto;
 `;
 
@@ -112,7 +112,7 @@ export const ratingContainer = css`
   display: flex;
   justify-content: center;
   font-size: 2rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 3rem;
 `;
 
 export const star = css`
@@ -125,10 +125,10 @@ export const star = css`
 `;
 
 export const reviewInput = css`
+  box-sizing: border-box;
   width: 100%;
-  height: 7rem;
-  margin-left: -1.3rem;
-  padding: 1.2rem;
+  height: 20rem;
+  padding: 2rem;
   border: none;
   border-radius: 0.7rem;
   background: #333;

@@ -1,10 +1,11 @@
 import { css } from "@emotion/react";
 
 export const footer = css`
+  box-sizing: border-box;
   width: 100%;
-  text-align: center;
-  padding: 1rem;
+  padding: 1rem 1rem 6rem;
   background-color: #111;
-  font-size: 2.5rem;
+  font-size: 1.5rem;
+  text-align: center;
   color: #aaa;
 `;
