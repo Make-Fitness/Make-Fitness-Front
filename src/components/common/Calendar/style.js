@@ -37,14 +37,17 @@ export const calendarGrid = css`
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 20px;
+  font-size: 1.5rem;
 `;
 
 export const button = css`
   background-color: #333;
   color: #fff;
-  border: none;
+  border: 2rem;
   font-size: 15px;
-  padding: 8px;
+  padding: 12px;
+  margin-right: 7px;
+  margin-bottom: 3px;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -101,16 +104,18 @@ export const modalOverlay = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  color: black;
 `;
 
 export const modalContent = css`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   background: #fff;
   padding: 20px;
   border-radius: 8px;
   font-size: 2rem;
-  width: 450px;
-  
+  width: 500px;  
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
   h3{
@@ -119,7 +124,7 @@ export const modalContent = css`
   }
 
   p {
-    color: #444;
+    color: black !important;
     margin-bottom: 50px;
   }
 `;
@@ -130,10 +135,37 @@ export const modalInput = css`
   font-size: 1.2rem;
   color: black;
   margin-bottom: 20px;
+  margin-left: 1.5rem;
+  margin-right: 3rem;
   box-sizing: border-box;
 `;
 
 export const modalButtonContainer = css`
   display: flex;
   justify-content: space-between;
+`;
+
+export const button2 = css`
+  background-color: #333;
+  color: #fff;
+  border: none;
+  font-size: 15px;
+  padding: 8px;
+  margin-right: 3px;
+  margin-bottom: 3px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #555;
+  }
+`;
+
+export const box = css`
+display: flex;
+justify-content: end;
+flex-direction: row;
+margin-bottom: 2rem;
+margin-top: 2rem;
 `;

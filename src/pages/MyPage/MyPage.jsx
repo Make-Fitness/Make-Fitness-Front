@@ -3,22 +3,32 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as s from "./style";
 import Calendar from "../../components/common/Calendar/Calendar";
+import { loginApi } from "../../apis/authApi";
 
 function MyPage() {
   const navigate = useNavigate();
+  
   const [form, setForm] = useState({
     name: "",
-    phone: "",
+    ph: "",
     password: "",
     confirmPassword: "",
     membership: "",
   });
 
   useEffect(() => {
-    const storedNickname = localStorage.getItem("nickname") || "";
-    if (storedNickname) {
-      setForm((prev) => ({ ...prev, name: storedNickname }));
-    }
+   
+    const nickname = localStorage.getItem("nickname") || "";
+    const ph = localStorage.getItem("ph") || "";
+    const membership = localStorage.getItem("membership") || "";
+
+   
+    setForm((prev) => ({
+      ...prev,
+      name: nickname,
+      ph: ph,
+      membership: membership,
+    }));
   }, []);
 
   const handleChange = (e) => {
@@ -36,10 +46,18 @@ function MyPage() {
     }
   };
 
+  
+  const membershipValue = form.membership.trim().toLowerCase();
+  const scheduleColor =
+    membershipValue === "pt"
+      ? "#87CEEB"
+      : membershipValue === "pilates"
+      ? "#FFC0CB"
+      : "#87CEEB";
+
   return (
     <>
       <div css={s.topcon}>
-        
         <div css={s.maincontainer}>
           <h2>내정보</h2>
 
@@ -57,8 +75,8 @@ function MyPage() {
             <input
               css={s.input}
               type="text"
-              name="phone"
-              value={form.phone}
+              name="ph"
+              value={form.ph}
               onChange={handleChange}
             />
             <button css={s.button2} onClick={() => handleUpdate("전화번호")}>
@@ -95,7 +113,7 @@ function MyPage() {
             type="text"
             name="membership"
             value={form.membership}
-            onChange={handleChange}
+            readOnly
           />
 
           <div css={s.buttonContainer}>
@@ -108,9 +126,8 @@ function MyPage() {
           </div>
         </div>
 
-        
         <div css={s.calendarWrapper}>
-          <Calendar />
+          <Calendar scheduleColor={scheduleColor} />
         </div>
       </div>
     </>

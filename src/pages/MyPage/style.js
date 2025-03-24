@@ -1,16 +1,5 @@
 import { css } from "@emotion/react";
 
-export const root = css`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #000; 
-`;
-
-export const container = css`
- 
-`;
-
 export const topcon = css`
   display: flex;
   flex-direction: row; 
@@ -24,6 +13,8 @@ export const topcon = css`
 export const maincontainer = css`
   width: 50rem;
   padding: 2rem;
+  margin-top: 5rem;
+  margin-bottom: 15rem;
   background-color: black;
   border-radius: 1.75rem;
   border: 0.125rem solid #444;
@@ -75,7 +66,7 @@ export const input = css`
   border: none;
   border-radius: 5px;
   background-color: #d1d1d1;
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: black;
 `;
 
@@ -83,10 +74,11 @@ export const input2 = css`
   width: 20rem;
   padding: 10px;
   margin-bottom: 10px;
-  border: none;
+  border: none; 
   border-radius: 5px;
   background-color: #d1d1d1;
-  font-size: 1rem;
+  font-size: 1.5rem;
+  color: black;
 `;
 
 export const button = css`
