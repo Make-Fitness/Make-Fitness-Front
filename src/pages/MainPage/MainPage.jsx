@@ -1,11 +1,8 @@
 /**@jsxImportSource @emotion/react */
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as s from './style';
-import React, { useState, useEffect } from 'react';
-import { MENUS } from '../../constants/menu';
+import React, { useState } from 'react';
 import axios from 'axios';
-import HeaderPage from '../../common/HeaderPage/HeaderPage';
-import FooterPage from '../../common/FooterPage/FooterPage';
 
 function MainPage() {
   const navigate = useNavigate();
@@ -37,20 +34,14 @@ function MainPage() {
   };
 
   return (
-      <div css={s.root}>
-        <div css={s.container}>
-              <HeaderPage />
-            <div css={s.mainImgs}> {/* 메인 이미지 영역 */}
-              <div css={s.mainImg}><img src="/main/Main.png" alt="메인 이미지" /></div>
-              <div css={s.mainImg}><img src="/main/PT_1.jpg" alt="메인2 이미지" /></div>
-              <div css={s.mainImg}><img src="/main/PT_2.jpg" alt="메인3 이미지" /></div>
-              <div css={s.mainImg}><img src="/main/PT_3.jpg" alt="메인4 이미지" /></div>        
-            </div>
-        </div>    
-        <div css={s.footer}> {/* 푸터 영역 */}
-              <FooterPage/>
+      <>
+        <div css={s.mainImgs}> {/* 메인 이미지 영역 */}
+          <div css={s.mainImg}><img src="/main/Main.png" alt="메인 이미지" /></div>
+          <div css={s.mainImg}><img src="/main/PT_1.jpg" alt="메인2 이미지" /></div>
+          <div css={s.mainImg}><img src="/main/PT_2.jpg" alt="메인3 이미지" /></div>
+          <div css={s.mainImg}><img src="/main/PT_3.jpg" alt="메인4 이미지" /></div>        
         </div>
-      </div>
+      </>
   );
 }
 

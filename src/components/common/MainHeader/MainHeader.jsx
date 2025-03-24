@@ -3,9 +3,9 @@ import * as s from './style';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { MENUS } from '../../constants/menu';
+import { MENUS } from '../../../constants/menu';
 
-function HeaderPage(props) {
+function MainHeader(props) {
   const roleMapping = {
     "ROLE_CUSTOMER": "customer",
     "ROLE_MANAGER": "manager",
@@ -73,8 +73,8 @@ function HeaderPage(props) {
               </span>
             ) : (
               <>
-                <span css={s.signin} onClick={() => navigate("/auth/signin")}>로그인</span>
-                <span css={s.signup} onClick={() => navigate("/auth/signup")}>회원가입</span>
+                <span css={s.sign} onClick={() => navigate("/auth/signin")}>로그인</span>
+                <span css={s.sign} onClick={() => navigate("/auth/signup")}>회원가입</span>
               </>
             )}
           </div>
@@ -92,4 +92,4 @@ function HeaderPage(props) {
   );
 }
 
-export default HeaderPage;
+export default MainHeader;

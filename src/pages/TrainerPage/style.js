@@ -1,26 +1,5 @@
 import { css } from "@emotion/react";
 
-export const root = css`
-
-  margin: auto;
-  max-width: max-content;
-  max-height: max-content;
-  overflow-x: hidden;
-`;
-
-export const container = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  background-color: rgb(10, 10, 10);
-  width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-`;
-
-
 export const topGroup = css`
   display: flex;
   flex-direction: column;
@@ -33,10 +12,9 @@ export const topimg = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 30rem;
 
   img {
-    height: 100%;
+    width: 100%;
   }
 `;
 

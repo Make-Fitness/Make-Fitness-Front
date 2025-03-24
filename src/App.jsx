@@ -12,12 +12,10 @@ function App() {
   return (
     <>
       <Global styles={global} />
-      <Router>
       <Routes>
-					<Route path="/auth/*" element={<AuthRoute />} />
-					<Route path="/*" element={<MainRoute />} />
-				</Routes>
-      </Router>
+        <Route path="/auth/*" element={<AuthRoute />} />
+        <Route path="/*" element={<MainRoute />} />
+      </Routes>
     </>
   )
 }

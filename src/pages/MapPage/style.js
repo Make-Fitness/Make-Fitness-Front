@@ -1,32 +1,13 @@
 import { css } from "@emotion/react";
 
-export const root = css`
-
-  margin: auto;
-  max-width: max-content;
-  max-height: max-content;
-  overflow-x: hidden;
-`;
-
-export const container = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  background-color: rgb(10, 10, 10);
-  width: 100%;
-  max-width: 100vw;  /* ✅ 추가 */
-  overflow-x: hidden; 
-  overflow-y: auto;
-`;
 export const mapContainer = css`
+    margin: 3rem auto 5rem;
     box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;  
-    height: 600px;
+    width: 80rem;  
+    height: 50rem;
     overflow: hidden;
 `;
 
@@ -39,8 +20,9 @@ export const box = css`
 export const title = css`
     display: flex;
     justify-content: center;
-    margin-top: 5rem;
+    margin: 5rem 0 0;
     font-size: 3.5rem;
+    cursor: default;
 `;
 
 export const button = css`
@@ -56,16 +38,14 @@ export const addressbox = css`
     flex-direction: column;
     justify-content: center;
     align-items: center; 
-    width: 50%;
+    margin-bottom: 5rem;
     font-size: 2rem;
-    padding-left:30rem;
 `;
 
 export const contentWrapper = css`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 90rem;
 `;
 
 export const address = css`
