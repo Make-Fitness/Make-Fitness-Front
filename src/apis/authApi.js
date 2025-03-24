@@ -8,7 +8,7 @@ export const joinApi = async (joinInfo) => {
 // ✅ 로그인 API
 export const loginApi = async (loginInfo) => {
     try {
-        const response = await api.post("/auth/signin", loginInfo);
+        const response = await api.post("/api/auth/signin", loginInfo);
 
         const { nickname, token, role_name, roleName } = response.data;
 
