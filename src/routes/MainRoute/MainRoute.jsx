@@ -10,7 +10,7 @@ import ReviewPage from '../../pages/ReviewPage/ReviewPage';
 import MainContainer from '../../components/common/MainContainer/MainContainer';
 import Pt from '../../pages/Anonymous/Membership/PT/Pt';
 import SalesPage from '../../pages/Master/SalesPage/SalesPage.jsx';
-import SalesPage from '../../pages/Master/MemberPage/MemberPage.jsx';
+import MemberPage from '../../pages/Master/MemberPage/MemberPage.jsx';
 
 function MainRoute() {
     return (

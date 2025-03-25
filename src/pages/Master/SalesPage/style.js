@@ -8,6 +8,9 @@ import { css } from "@emotion/react";
     `;
 
     export const filterArea = css`
+    display: flex;
+    width: 100%;
+    min-width: 104rem;
     margin-bottom: 2.375rem; /* 38px */
     font-size: 1.625rem;
 
