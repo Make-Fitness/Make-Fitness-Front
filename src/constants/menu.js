@@ -3,7 +3,7 @@ export const MENUS = {
     {
       id: "sales_management",
       name: "매출관리",
-      path: "/매출 페이지 주소",
+      path: "/makefitness/sales",
     },
     {
       id: "member_management",

@@ -30,7 +30,7 @@ function MapPage() {
         !isLoading &&
         <div css={s.mapContainer}>
           <Map // 지도를 표시할 Container
-            center={latAndLng}
+            center={latAndLng}  
             
             style={{
               display: "block", // margin: auto 적용 가능하도록 변경

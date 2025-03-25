@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 
 export const root = css`
- margin: auto;
+  margin: auto;
   max-width: max-content;
   max-height: max-content;
   overflow-x: hidden;

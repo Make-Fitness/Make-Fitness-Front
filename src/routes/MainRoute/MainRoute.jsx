@@ -9,6 +9,7 @@ import Pilates from '../../pages/Anonymous/Membership/Pilates/Pilates';
 import ReviewPage from '../../pages/ReviewPage/ReviewPage';
 import MainContainer from '../../components/common/MainContainer/MainContainer';
 import Pt from '../../pages/Anonymous/Membership/PT/Pt';
+import SalesPage from '../../pages/Master/SalesPage/SalesPage.jsx';
 
 function MainRoute() {
     return (
@@ -22,6 +23,7 @@ function MainRoute() {
                 <Route path="makefitness/pilates" element={<Pilates />} />
                 <Route path="makefitness/pt" element={<Pt />} />
                 <Route path="makefitness/review" element={<ReviewPage />} />
+                <Route path="makefitness/sales" element={<SalesPage />} />
             </Routes>
         </MainContainer>
     );
