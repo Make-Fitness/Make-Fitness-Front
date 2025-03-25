@@ -130,14 +130,12 @@ export const modalContent = css`
 `;
 
 export const modalInput = css`
+  flex-direction: column;
   width: 100%;
-  padding: 10px;
+  padding: 1.2rem;
   font-size: 1.2rem;
   color: black;
-  margin-bottom: 20px;
-  margin-left: 1.5rem;
-  margin-right: 3rem;
-  box-sizing: border-box;
+  box-sizing: 5rem;
 `;
 
 export const modalButtonContainer = css`
@@ -163,9 +161,23 @@ export const button2 = css`
 `;
 
 export const box = css`
-display: flex;
-justify-content: end;
-flex-direction: row;
-margin-bottom: 2rem;
-margin-top: 2rem;
+  display: flex;
+  justify-content: end;
+  flex-direction: row;
+  margin-bottom: 5rem;
+  
+`;
+
+export const box2 = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: black;
+
+  label{
+    color: black;
+
+  }
+
 `;

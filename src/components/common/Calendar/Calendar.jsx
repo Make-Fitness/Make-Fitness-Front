@@ -139,10 +139,12 @@ const Calendar = ({ scheduleColor }) => {
           <div css={s.modalContent}>
             <h3>{year}-{formattedMonth}-{formattedDay} 수업 선택</h3>
             <p>선택된 시간: {label}</p>
-            <label>최대 가능 인원:</label>
-            <input css={s.modalInput} type="number" min="1" value={maxCapacity} onChange={(e) => setMaxCapacity(e.target.value)} />
-            <label>남은 인원:</label>
-            <input css={s.modalInput} type="number" min="0" value={remainingCapacity} onChange={(e) => setRemainingCapacity(e.target.value)} />
+            <div css = {s.box2}>
+              <label>최대 가능 인원:</label>
+              <input css={s.modalInput} type="number" min="1" value={maxCapacity} onChange={(e) => setMaxCapacity(e.target.value)} />
+              <label>남은 인원:</label>
+              <input css={s.modalInput} type="number" min="0" value={remainingCapacity} onChange={(e) => setRemainingCapacity(e.target.value)} />
+            </div>
             <div css={s.modalButtonContainer}>
               <button css={s.button} onClick={() => onSave({ time: selectedTime, maxCapacity, remainingCapacity })}>저장</button>
               <button css={s.button} onClick={() => setSelectedTime(null)}>시간 다시 선택</button>
@@ -180,7 +182,9 @@ const Calendar = ({ scheduleColor }) => {
           <div css={s.modalContent}>
             <h3>{year}-{formattedMonth}-{formattedDay} 예약 선택</h3>
             <p>선택된 시간: {label}</p>
+          <div css = {s.box}>
             <input css={s.modalInput} type="text" value={requestText} onChange={(e) => setRequestText(e.target.value)} placeholder="요청사항을 입력하세요" />
+          </div>  
             <div css={s.modalButtonContainer}>
               <button css={s.button} onClick={() => onSave({ time: selectedTime, request: requestText })}>저장</button>
               <button css={s.button} onClick={() => setSelectedTime(null)}>시간 다시 선택</button>
