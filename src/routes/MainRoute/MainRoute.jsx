@@ -11,6 +11,7 @@ import MainContainer from '../../components/common/MainContainer/MainContainer';
 import Pt from '../../pages/Anonymous/Membership/PT/Pt';
 import SalesPage from '../../pages/Master/SalesPage/SalesPage.jsx';
 import MemberPage from '../../pages/Master/MemberPage/MemberPage.jsx';
+import WorkerPage from '../../pages/Master/WorkerPage/Workerpage.jsx';
 
 function MainRoute() {
     return (
@@ -26,6 +27,7 @@ function MainRoute() {
                 <Route path="makefitness/review" element={<ReviewPage />} />
                 <Route path="makefitness/sales" element={<SalesPage />} />
                 <Route path="makefitness/member" element={<MemberPage />} />
+                <Route path="makefitness/worker" element={<WorkerPage />} />
             </Routes>
         </MainContainer>
     );

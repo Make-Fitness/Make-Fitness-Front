@@ -13,7 +13,7 @@ export const MENUS = {
     {
       id: "worker_management",
       name: "근무자",
-      path: "/근무자 페이지 주소",
+      path: "/makefitness/worker",
     },
     {
       id: "review_management",
