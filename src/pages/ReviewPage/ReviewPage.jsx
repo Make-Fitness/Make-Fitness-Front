@@ -1,23 +1,64 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as s from "./style";
+import { fetchReviews, postReview } from "../../apis/reviewApi";
 
 const ReviewPage = () => {
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState("");
   const [rating, setRating] = useState(0);
 
-  const handleReviewSubmit = () => {
-    if (newReview.trim() === "") return;
-    const reviewData = { text: newReview, rating };
-    setReviews([...reviews, reviewData]);
-    setNewReview("");
-    setRating(0);
+  const roleName = localStorage.getItem("roleName");
+
+  // ✅ 리뷰 목록 불러오기
+  const loadReviews = async () => {
+    try {
+      const data = await fetchReviews();
+      setReviews(data);
+    } catch (error) {
+      console.error("리뷰 불러오기 실패:", error);
+    }
+  };
+
+  useEffect(() => {
+    loadReviews();
+  }, []);
+
+  // ✅ 리뷰 등록 핸들러
+  const handleReviewSubmit = async () => {
+    if (roleName !== "ROLE_CUSTOMER") {
+      alert("리뷰 작성은 고객만 가능합니다.");
+      return;
+    }
+
+    if (newReview.trim() === "" || rating === 0) {
+      alert("별점과 리뷰 내용을 모두 입력해주세요.");
+      return;
+    }
+
+    const reviewData = {
+      content: newReview,
+      likeStar: rating
+    };
+
+    try {
+      await postReview(reviewData);
+      setNewReview("");
+      setRating(0);
+      await loadReviews();
+    } catch (error) {
+      console.error("리뷰 등록 실패:", error);
+      alert("리뷰 등록 중 문제가 발생했습니다.");
+    }
   };
 
   return (
     <>
-      <div css={s.mainImg}><img src="/main/PT_3.jpg" alt="메인4 이미지" /></div>
+      <div css={s.mainImg}>
+        <img src="/main/PT_3.jpg" alt="메인 이미지" />
+      </div>
+
+      {/* ✅ 누구나 볼 수 있는 리뷰 목록 */}
       <div css={s.reviewList}>
         <h2>리뷰 목록</h2>
         {reviews.length === 0 ? (
@@ -26,31 +67,49 @@ const ReviewPage = () => {
           <div css={s.reviewGrid}>
             {reviews.map((review, index) => (
               <div key={index} css={s.reviewBox}>
-                <div css={s.reviewRating}>{"★".repeat(review.rating) + "☆".repeat(5 - review.rating)}</div>
-                <p>{review.text}</p>
+                <div css={s.reviewRating}>
+                  {"★".repeat(review.likeStar) + "☆".repeat(5 - review.likeStar)}
+                </div>
+                <p>{review.content}</p>
               </div>
             ))}
           </div>
         )}
       </div>
 
-      <div css={s.reviewContainer}>
-        <h2>리뷰 남기기</h2>
-        <div css={s.ratingContainer}>
-          {[1, 2, 3, 4, 5].map((star) => (
-            <span key={star} css={s.star} onClick={() => setRating(star)}>
-              {star <= rating ? "★" : "☆"}
-            </span>
-          ))}
+      {/* ✅ 고객만 리뷰 작성 UI 노출 */}
+      {roleName === "ROLE_CUSTOMER" && (
+        <div css={s.reviewContainer}>
+          <h2>리뷰 남기기</h2>
+          <div css={s.ratingContainer}>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                css={s.star}
+                onClick={() => setRating(star)}
+                style={{ cursor: "pointer" }}
+              >
+                {star <= rating ? "★" : "☆"}
+              </span>
+            ))}
+          </div>
+          <textarea
+            css={s.reviewInput}
+            value={newReview}
+            onChange={(e) => setNewReview(e.target.value)}
+            placeholder="리뷰를 작성하세요..."
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault(); // 줄바꿈 막고
+                handleReviewSubmit(); // 리뷰 등록
+              }
+            }}
+          />
+          <button css={s.submitButton} onClick={handleReviewSubmit}>
+            등록
+          </button>
         </div>
-        <textarea
-          css={s.reviewInput}
-          value={newReview}
-          onChange={(e) => setNewReview(e.target.value)}
-          placeholder="리뷰를 작성하세요..."
-        />
-        <button css={s.submitButton} onClick={handleReviewSubmit}>등록</button>
-      </div>
+      )}
     </>
   );
 };
