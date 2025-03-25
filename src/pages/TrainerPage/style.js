@@ -142,6 +142,11 @@ export const toptext7 = css`
   font-weight: 750;
 `;
 
+export const buttonbox = css`
+  box-sizing: border-box;
+  padding: 2rem 6rem;
+  font-size: 5rem;
+`;
 export const floatingButton = css`
   position: fixed;
   bottom: 3.5rem;
@@ -149,10 +154,10 @@ export const floatingButton = css`
   transform: translateX(-50%);
   background-color: red;
   color: white;
-  padding: 1.5rem 3rem;
+  
   border: none;
   border-radius: 2rem;
-  font-size: 1.5rem;
+  
   font-weight: bold;
   cursor: pointer;
   z-index: 1000;
