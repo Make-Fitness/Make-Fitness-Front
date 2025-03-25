@@ -8,6 +8,7 @@ import TrainerPage from '../../pages/TrainerPage/TrainerPage';
 import Pilates from '../../pages/Anonymous/Membership/Pilates/Pilates';
 import ReviewPage from '../../pages/ReviewPage/ReviewPage';
 import MainContainer from '../../components/common/MainContainer/MainContainer';
+import Pt from '../../pages/Anonymous/Membership/PT/Pt';
 
 function MainRoute() {
     return (
@@ -19,6 +20,7 @@ function MainRoute() {
                 <Route path="makefitness/mypage" element={<MyPage />} />
                 <Route path="makefitness/trainerpage" element={<TrainerPage />} />
                 <Route path="makefitness/pilates" element={<Pilates />} />
+                <Route path="makefitness/pt" element={<Pt />} />
                 <Route path="makefitness/review" element={<ReviewPage />} />
             </Routes>
         </MainContainer>

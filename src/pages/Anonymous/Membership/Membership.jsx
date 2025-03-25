@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import * as s from './style';
 
 function Membership() {
-   const navigate = useNavigate();
+    const navigate = useNavigate();
 
   return (
     <div css={s.main}>
@@ -20,9 +20,9 @@ function Membership() {
           <h3>그룹 필라테스</h3>
           <p>혼자보다 강하게! 그룹 필라테스로 최상의 시너지!</p>
         </button>
-        <button css={s.button} onClick={() => navigate("/makefitness/pilates")}>
+        <button css={s.button} onClick={() => navigate("/makefitness/pt")}>
           <h3>1:1 PT</h3>
-          <p>PT 홍보</p>
+          <p>조각같은 몸을 위한 첫걸음</p>
         </button>
       </div>
     </div>
