@@ -118,7 +118,7 @@ export const ratingContainer = css`
 export const star = css`
   cursor: pointer;
   margin: 0 0.3rem;
-  transition: color 0.2s;
+  color: red;
   &:hover {
     color: red;
   }
@@ -150,7 +150,6 @@ export const submitButton = css`
   border: none;
   border-radius: 0.7rem;
   cursor: pointer;
-  transition: background 0.3s;
   &:hover {
     background: darkred;
   }
