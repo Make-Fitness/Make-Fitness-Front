@@ -1,8 +1,11 @@
 /**@jsxImportSource @emotion/react */
+import { useNavigate } from "react-router-dom";
 import * as s from "./style";
 
 
 function TrainerPage() {
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -86,7 +89,12 @@ function TrainerPage() {
       <div css={s.mainImgs2}><img src="/Trainer/ppmain4.jpg" alt="메인 이미지3" /></div>
       <div css={s.mainImgs2}><img src="/Trainer/ppmain5.jpg" alt="메인 이미지3" /></div>
       <div css={s.mainImgs2}><img src="/Trainer/ppmain6.jpg" alt="메인 이미지3" /></div>
+
+      <button css={s.floatingButton} onClick={() => navigate("/makefitness/membership")}>
+        멤버십 가입하기
+      </button> 
     </>
+    
   );
 }
 

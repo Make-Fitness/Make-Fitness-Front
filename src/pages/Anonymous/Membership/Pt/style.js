@@ -106,6 +106,7 @@ export const main = css`
 `;
 
 export const title = css`
+  margin-top: 5rem;
   font-size: 3.5rem;
   font-weight: bold;
   text-align: center;

@@ -41,6 +41,10 @@ function MainPage() {
           <div css={s.mainImg}><img src="/main/PT_2.jpg" alt="메인3 이미지" /></div>
           <div css={s.mainImg}><img src="/main/PT_3.jpg" alt="메인4 이미지" /></div>        
         </div>
+
+        <button css={s.floatingButton} onClick={() => navigate("/makefitness/membership")}>
+          멤버십 가입하기
+        </button> 
       </>
   );
 }
