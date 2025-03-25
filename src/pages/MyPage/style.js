@@ -120,12 +120,3 @@ export const buttonContainer = css`
   margin-top: 22px;
 `;
 
-export const footer = css`
-  width: 100%;
-  text-align: center;
-  padding: 1rem;
-  background-color: #111;
-  font-size: 2rem;
-  color: #aaa;
-  margin-top: auto;
-`;
