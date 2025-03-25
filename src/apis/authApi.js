@@ -2,7 +2,7 @@ import { api } from "../configs/axiosConfig";
 
 // ✅ 회원가입 API
 export const joinApi = async (joinInfo) => {
-    return api.post("/auth/signup", joinInfo);
+    return api.post("api/auth/signup", joinInfo);
 };
 
 // ✅ 로그인 API
