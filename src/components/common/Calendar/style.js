@@ -131,7 +131,8 @@ export const modalContent = css`
 
 export const modalInput = css`
   flex-direction: column;
-  width: 100%;
+  width: 90%;
+  margin-bottom: 2rem;
   padding: 1.2rem;
   font-size: 1.2rem;
   color: black;
@@ -174,9 +175,11 @@ export const box2 = css`
   align-items: center;
   flex-direction: column;
   color: black;
-
+  
   label{
     color: black;
+    
+    
 
   }
 

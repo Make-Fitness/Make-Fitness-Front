@@ -1,4 +1,4 @@
-/** @jsxImportSource @emotion/react */
+/**@jsxImportSource @emotion/react */
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as s from "./style";
@@ -16,7 +16,6 @@ function MyPage() {
   });
 
   useEffect(() => {
-    // localStorage에서 로그인 시 저장된 사용자 정보 땡김김
     const nickname = localStorage.getItem("nickname") || "";
     const ph = localStorage.getItem("ph") || "";
     const classstatus = localStorage.getItem("classstatus") || "";
@@ -34,7 +33,6 @@ function MyPage() {
 
   const handleUpdate = (type) => {
     alert(`${type}이(가) 변경되었습니다.`);
-    // 실제 업데이트 API 연동 로직 추가 가능
   };
 
   const handleUpdate2 = (type) => {
@@ -44,14 +42,13 @@ function MyPage() {
     }
   };
 
-  
   const classstatusValue = form.classstatus.trim().toLowerCase();
   const scheduleColor =
     classstatusValue === "pt"
       ? "#87CEEB"
       : classstatusValue === "pilates"
       ? "#FFC0CB"
-      : "#87CEEB";
+      : "#87CEEB"; 
 
   return (
     <div css={s.topcon}>
@@ -103,28 +100,11 @@ function MyPage() {
             변경
           </button>
         </div>
-
-        <label>이용중인 회원권</label>
-        <input
-          css={s.input2}
-          type="text"
-          name="classstatus"
-          value={form.classstatus}
-          readOnly
-        />
-
-        <div css={s.buttonContainer}>
-          <button css={s.button} onClick={() => handleUpdate2("멤버십")}>
-            멤버십 변경
-          </button>
-          <button css={s.button} onClick={() => handleUpdate2("회원권")}>
-            회원권 변경
-          </button>
-        </div>
-      </div>
+      </div> 
 
       <div css={s.calendarWrapper}>
         <Calendar scheduleColor={scheduleColor} />
+        ReadOnly
       </div>
     </div>
   );
