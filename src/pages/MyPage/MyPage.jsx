@@ -16,7 +16,7 @@ function MyPage() {
   });
 
   useEffect(() => {
-    // localStorage에서 로그인 시 저장된 사용자 정보 땡김김
+    // localStorage에서 로그인 시 저장된 사용자 정보 땡김
     const nickname = localStorage.getItem("nickname") || "";
     const ph = localStorage.getItem("ph") || "";
     const classstatus = localStorage.getItem("classstatus") || "";
