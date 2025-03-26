@@ -8,12 +8,12 @@ export const MENUS = {
     {
       id: "member_management",
       name: "회원관리",
-      path: "/회원관리 페이지 주소",
+      path: "/makefitness/member",
     },
     {
       id: "worker_management",
       name: "근무자",
-      path: "/근무자 페이지 주소",
+      path: "/makefitness/worker",
     },
     {
       id: "review_management",
