@@ -34,8 +34,8 @@ export const MENUS = {
     },
     {
       id: "member_management",
-      name: "회원관리",
-      path: "/회원관리 페이지 주소",
+      name: "회원등록",
+      path: "/makefitness/classregistration",
     },
     {
       id: "worker_management",

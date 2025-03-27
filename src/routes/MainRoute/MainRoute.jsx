@@ -16,7 +16,7 @@ import Hmembership from '../../pages/Anonymous/Membership/Hmembership/Hmembershi
 import Pay from '../../Pay.jsx';
 import Pt from '../../pages/Anonymous/Membership/Pt/Pt.jsx';
 import SelectTrainer from '../../pages/Anonymous/Membership/SelectTrainer/SelectTrainer.jsx';
-
+import ClassRegistration from '../../pages/ClassRegistration/ClassRegistration.jsx';
 
 function MainRoute() {
     return (
@@ -37,6 +37,7 @@ function MainRoute() {
                 <Route path="makefitness/hmembership" element={<Hmembership />} />
                 <Route path="makefitness/pay" element={<Pay />} />
                 <Route path="makefitness/selecttrainer" element={<SelectTrainer />} />
+                <Route path="makefitness/classregistration" element={<ClassRegistration />} />
             </Routes>
         </MainContainer>
     );
