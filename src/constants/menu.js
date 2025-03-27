@@ -62,7 +62,7 @@ export const MENUS = {
     {
       id: "class_reservation",
       name: "수업예약",
-      path: "/수업예약 페이지 주소",
+      path: "/makefitness/reservation",
     },
     {
       id: "membership",

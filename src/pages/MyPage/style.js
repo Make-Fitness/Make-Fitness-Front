@@ -10,17 +10,16 @@ export const topcon = css`
   margin-top: 5rem;
 `;
 
-export const maincontainer = css`
+/* 사용자 정보(폼) 컨테이너 */
+export const formContainer = css`
   width: 50rem;
   padding: 2rem;
-  margin-top: 5rem;
-  margin-bottom: 15rem;
   background-color: black;
   border-radius: 1.75rem;
   border: 0.125rem solid #444;
   color: white;
   box-shadow: 0rem 0.25rem 0.625rem rgba(255, 255, 255, 0.1);
-  
+
   h2 {
     display: flex;
     justify-content: center;
@@ -38,10 +37,12 @@ export const maincontainer = css`
   }
 `;
 
+/* 캘린더 컨테이너: 가로 정렬을 위해 flex 사용 */
 export const calendarWrapper = css`
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 450px; 
-  margin-top: 5rem; 
 `;
 
 export const numbercontainer = css`
@@ -119,4 +120,3 @@ export const buttonContainer = css`
   justify-content: space-between;
   margin-top: 22px;
 `;
-

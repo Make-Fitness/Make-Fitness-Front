@@ -16,7 +16,7 @@ function MyPage() {
   });
 
   useEffect(() => {
-    // localStorage에서 로그인 시 저장된 사용자 정보 땡김
+    // localStorage에서 로그인 시 저장된 사용자 정보 땡겨옴
     const nickname = localStorage.getItem("nickname") || "";
     const ph = localStorage.getItem("ph") || "";
     const classstatus = localStorage.getItem("classstatus") || "";
@@ -44,7 +44,6 @@ function MyPage() {
     }
   };
 
-  
   const classstatusValue = form.classstatus.trim().toLowerCase();
   const scheduleColor =
     classstatusValue === "pt"
@@ -55,7 +54,7 @@ function MyPage() {
 
   return (
     <div css={s.topcon}>
-      <div css={s.maincontainer}>
+      <div css={s.formContainer}>
         <h2>내정보</h2>
 
         <label>이름</label>
@@ -112,19 +111,9 @@ function MyPage() {
           value={form.classstatus}
           readOnly
         />
-
-        <div css={s.buttonContainer}>
-          <button css={s.button} onClick={() => handleUpdate2("멤버십")}>
-            멤버십 변경
-          </button>
-          <button css={s.button} onClick={() => handleUpdate2("회원권")}>
-            회원권 변경
-          </button>
-        </div>
       </div>
-
       <div css={s.calendarWrapper}>
-        <Calendar scheduleColor={scheduleColor} />
+        <Calendar scheduleColor={scheduleColor} isEditable={false} />
       </div>
     </div>
   );
