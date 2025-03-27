@@ -13,14 +13,15 @@ function Membership() {
           <h3>1회 이용권</h3>
           <p>15,000원</p>
         </button>
-        <button css={s.button}>
+        <button css={s.button} onClick={() => navigate("/makefitness/hmembership")}>
           <h3>헬스 멤버십</h3>
+          <p>느리지만 단단하게</p>
         </button>
         <button css={s.button} onClick={() => navigate("/makefitness/pilates")}>
           <h3>그룹 필라테스</h3>
           <p>혼자보다 강하게! 그룹 필라테스로 최상의 시너지!</p>
         </button>
-        <button css={s.button} onClick={() => navigate("/makefitness/pt")}>
+        <button css={s.button} onClick={() => navigate("/makefitness/selecttrainer")}>
           <h3>1:1 PT</h3>
           <p>조각같은 몸을 위한 첫걸음</p>
         </button>
