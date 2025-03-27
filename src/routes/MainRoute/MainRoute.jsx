@@ -8,7 +8,7 @@ import TrainerPage from '../../pages/TrainerPage/TrainerPage';
 import Pilates from '../../pages/Anonymous/Membership/Pilates/Pilates';
 import ReviewPage from '../../pages/ReviewPage/ReviewPage';
 import MainContainer from '../../components/common/MainContainer/MainContainer';
-import Pt from '../../pages/Anonymous/Membership/PT/Pt';
+import Pt from '../../pages/Anonymous/Membership/Pt/Pt';
 import SalesPage from '../../pages/Master/SalesPage/SalesPage.jsx';
 import MemberPage from '../../pages/Master/MemberPage/MemberPage.jsx';
 import WorkerPage from '../../pages/Master/WorkerPage/Workerpage.jsx';
