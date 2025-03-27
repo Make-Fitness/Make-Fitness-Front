@@ -87,3 +87,26 @@ export const reservationItem = css`
   border-bottom: 1px solid #444;
   padding-bottom: 5px;
 `;
+
+const modalOverlay = css`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+const modalContent = css`
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  color: #000;
+`;
