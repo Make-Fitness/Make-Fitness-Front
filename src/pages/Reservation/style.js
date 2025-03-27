@@ -35,77 +35,99 @@ export const button = css`
   border-radius: 5px;
   color: #fff;
   cursor: pointer;
-  background-color: #444; 
+  background-color: #444;
   font-size: 1rem;
 `;
 
-
 export const contentWrapper = css`
+  
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; 
   gap: 2rem;
   margin-top: 2rem;
 `;
 
-
-export const reservationListWrapper = css`
-  width: 350px;
-  height: 470px;
+export const leftPane = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: #222;
   border-radius: 10px;
-  padding: 1rem;
-  border: 1px solid #666; 
-  font-size: 1.5rem;
-  
-
-  h2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-  }
+  padding: 2rem;
+  border: 1px solid #666;
 `;
 
-
-export const reservationList = css`
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 0 0;
-  
+export const subtitle = css`
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
 `;
 
-
-
-export const reservationItem = css`
+export const instructorPhotoContainer = css`
+  width: 250px;
+  height: 250px;
+  border: 1px solid #666;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+`;
 
-  span {
-    flex-grow: 1;
-  }
+export const instructorPhotoPlaceholder = css`
+  font-size: 1.2rem;
+  color: #999;
+`;
 
-  button {
-    background-color: #b71c1c;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
+export const instructorPhotoPreview = css`
+  max-width: 100%;
+  max-height: 100%;
+`;
 
-    &:hover {
-      background-color: #a61717;
-    }
-  }
+export const fileInput = css`
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #fff;
 `;
 
 export const box = css`
   display: flex;
-  justify-content: space-between;
-  margin-right: 15rem;
+  justify-content: center;
   width: 450px;
+`;
+
+export const reservationListWrapper = css`
+  background-color: #222;
+  border-radius: 10px;
+  padding: 1rem;
+  border: 1px solid #666;
+  color: white;
+  width: 250px;
+  height: 400px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.8rem;
+  }
+`;
+
+export const reservationList = css`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`;
+
+export const reservationItem = css`
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #444;
+  padding-bottom: 5px;
 `;

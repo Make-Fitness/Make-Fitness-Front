@@ -15,6 +15,9 @@ function MyPage() {
     classstatus: "",
   });
 
+  // 상위에서 예약 데이터를 중앙 관리 (Calendar와 공유)
+  const [scheduleData, setScheduleData] = useState({});
+
   useEffect(() => {
     // localStorage에서 로그인 시 저장된 사용자 정보 땡겨옴
     const nickname = localStorage.getItem("nickname") || "";
@@ -54,7 +57,7 @@ function MyPage() {
 
   return (
     <div css={s.topcon}>
-      <div css={s.formContainer}>
+      <div css={s.maincontainer}>
         <h2>내정보</h2>
 
         <label>이름</label>
@@ -113,7 +116,12 @@ function MyPage() {
         />
       </div>
       <div css={s.calendarWrapper}>
-        <Calendar scheduleColor={scheduleColor} isEditable={false} />
+        <Calendar
+          scheduleColor={scheduleColor}
+          isEditable={false}
+          scheduleData={scheduleData}
+          setScheduleData={setScheduleData}
+        />
       </div>
     </div>
   );

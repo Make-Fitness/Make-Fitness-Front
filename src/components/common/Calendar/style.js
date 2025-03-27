@@ -3,9 +3,8 @@ import { css } from "@emotion/react";
 export const calendarWrapper = css`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 500xp;
   max-width: 500px;
-  margin: 0 auto;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
@@ -41,13 +40,15 @@ export const calendarGrid = css`
 `;
 
 export const button = css`
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
   background-color: #333;
   color: #fff;
   border: 2rem;
   font-size: 15px;
-  padding: 12px;
-  margin-right: 7px;
-  margin-bottom: 3px;
+  width: 60px;
+  padding: 10px;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -69,6 +70,7 @@ export const calendarDayHeader = css`
 
 export const calendarDateCell = css`
   height: 50px;
+  width: 50px;
   text-align: center;
   line-height: 50px;
   border: 1px solid #ddd;
@@ -88,11 +90,11 @@ export const calendarDateCell = css`
 
 export const emptyCell = css`
   height: 50px;
+  width: 50px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 4px;
 `;
-
 
 export const modalOverlay = css`
   position: fixed;
@@ -109,13 +111,13 @@ export const modalOverlay = css`
 
 export const modalContent = css`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: column;
   background: #fff;
+  width: 450px;
   padding: 20px;
   border-radius: 8px;
   font-size: 2rem;
-  width: 500px;  
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
   h3{
@@ -130,9 +132,12 @@ export const modalContent = css`
 `;
 
 export const modalInput = css`
-  flex-direction: column;
-  width: 100%;
+  display: flex;
+  flex-direction: row;
+  width: 40rem;
   padding: 1.2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
   font-size: 1.2rem;
   color: black;
   box-sizing: 5rem;
@@ -144,13 +149,16 @@ export const modalButtonContainer = css`
 `;
 
 export const button2 = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #333;
   color: #fff;
   border: none;
   font-size: 15px;
   padding: 8px;
   margin-right: 3px;
-  margin-bottom: 3px;
+  margin-top: 35px;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -160,24 +168,78 @@ export const button2 = css`
   }
 `;
 
+
+
+export const reservationListWrapper = css`
+  
+  background-color: #222;
+  border-radius: 10px;
+  padding: 1rem;
+  border: 1px solid #666;
+  color: white;
+  margin-top: 20px;
+  width: 250px;
+  height: 350px;
+
+  h3 {
+    font-size: 2rem;
+  }
+
+  p {
+    font-size: 1.5rem;
+  }
+`;
+
+export const reservationList = css`
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+`;
+
+export const reservationItem = css`
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #444;
+  padding-bottom: 5px;
+`;
+
+export const calendarAndListWrapper = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: auto;
+  gap: 20px;
+`;
+
 export const box = css`
   display: flex;
-  justify-content: end;
-  flex-direction: row;
-  margin-bottom: 5rem;
-  
+  justify-content: center;
+  align-items: center;
+  width: 400px;
 `;
 
 export const box2 = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  color: black;
+  margin-bottom: 3rem;
+  width: 400;
+`;
 
-  label{
-    color: black;
+export const buttonbox = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+`;
 
-  }
-
+export const timeSlotContainer = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: baseline;
+  flex-wrap: wrap;      
+  gap: 0.5rem;          
+  justify-content: center;
+  margin-bottom: 1.5rem; 
 `;
