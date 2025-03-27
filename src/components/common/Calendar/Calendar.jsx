@@ -12,24 +12,21 @@ const Calendar = ({
 }) => {
   const navigate = useNavigate();
 
-  
+  // 사용자 역할 상태
   const [userRole, setUserRole] = useState("ROLE_CUSTOMER");
   useEffect(() => {
     const role = localStorage.getItem("roleName") || "ROLE_CUSTOMER";
     setUserRole(role);
   }, []);
 
-  
   const [currentDate, setCurrentDate] = useState(new Date());
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const formattedMonth = (month + 1).toString().padStart(2, "0");
 
- 
   const firstDay = new Date(year, month, 1).getDay();
   const lastDate = new Date(year, month + 1, 0).getDate();
 
-  
   const prevMonth = () => {
     const newDate = new Date(year, month - 1, 1);
     setCurrentDate(newDate);
