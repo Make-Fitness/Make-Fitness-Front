@@ -154,7 +154,9 @@ export const floatingButton = css`
   transform: translateX(-50%);
   background-color: red;
   color: white;
-  
+  width: 25rem;
+  height: 5rem;
+  font-size: 2rem;
   border: none;
   border-radius: 2rem;
   

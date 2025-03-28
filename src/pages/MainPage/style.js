@@ -39,10 +39,12 @@ export const floatingButton = css`
   transform: translateX(-50%);
   background-color: red;
   color: white;
-  padding: 2rem 6rem;
+  width: 25rem;
+  height: 5rem;
+  font-size: 2rem;
   border: none;
   border-radius: 2rem;
-  font-size: 3rem;
+  
   font-weight: bold;
   cursor: pointer;
   z-index: 1000;
