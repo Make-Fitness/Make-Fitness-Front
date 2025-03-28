@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useMemo } from "react";
 import * as s from "./style";
-
+import axios from "axios";
+import api from "../../configs/axiosConfig";
 
 const profileMapping = {
   "12034491200": "/profiles/park.jpeg",
@@ -12,20 +13,20 @@ const profileMapping = {
 };
 
 const getCellStyle = (record) => {
-  if (record?.checked) {
-    return { backgroundColor: "lightgreen", position: "relative" };
-  }
-  return { backgroundColor: "#fff", position: "relative" };
+  return {
+    backgroundColor: record?.checked ? "lightgreen" : "#fff",
+    position: "relative"
+  };
 };
 
 function CalendarManager() {
-  
   const [phoneNumber, setPhoneNumber] = useState("");
   const [scheduleData, setScheduleData] = useState({});
   const [currentDate, setCurrentDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [teacherList, setTeacherList] = useState([]);
+
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const formattedMonth = (month + 1).toString().padStart(2, "0");
@@ -37,12 +38,19 @@ function CalendarManager() {
   const fetchScheduleData = async () => {
     setLoading(true);
     setError(null);
+
     try {
-      const response = await fetch(`/api/ph?ph=${phoneNumber}`);
-      if (!response.ok) throw new Error("강사 정보를 불러올 수 없습니다.");
+      const response = await api.get(`/api/ph?ph=${phoneNumber}`);
+      const contentType = response.headers.get("content-type");
+
+      if (!contentType || !contentType.includes("application/json")) {
+        const html = await response.text(); 
+        console.error("⚠️ 서버에서 HTML이 반환되었습니다:\n", html.slice(0, 500));
+        throw new Error("서버에서 JSON이 아닌 HTML 응답이 반환되었습니다.");
+      }
+
       const data = await response.json();
 
-     
       if (data.ph && data.nickname) {
         setTeacherList([data]);
       } else if (data.teachers) {
@@ -50,6 +58,7 @@ function CalendarManager() {
       } else {
         setTeacherList([]);
       }
+
       setScheduleData(data.schedule || {});
     } catch (err) {
       setError(err.message || "데이터 로드 실패");
@@ -70,7 +79,6 @@ function CalendarManager() {
   const calendarDays = ["일", "월", "화", "수", "목", "금", "토"];
   const titleText = `${year}년 ${formattedMonth}월 출근 현황`;
 
- 
   const handleDateClick = (date) => {
     const dateString = `${year}-${formattedMonth}-${String(date).padStart(2, "0")}`;
     setScheduleData((prev) => ({
@@ -81,7 +89,7 @@ function CalendarManager() {
 
   return (
     <div css={s.calendarAndListWrapper}>
-       <div css={s.leftWrapper}>
+      <div css={s.leftWrapper}>
         <div css={s.box}>
           <input
             css={s.number}
@@ -103,13 +111,9 @@ function CalendarManager() {
 
         <div css={s.calendarWrapper}>
           <div css={s.calendarHeader}>
-            <button css={s.button} onClick={prevMonth}>
-              &lt;
-            </button>
+            <button css={s.button} onClick={prevMonth}>&lt;</button>
             <h2 css={{ fontSize: "2.5rem", fontWeight: "bold" }}>{titleText}</h2>
-            <button css={s.button} onClick={nextMonth}>
-              &gt;
-            </button>
+            <button css={s.button} onClick={nextMonth}>&gt;</button>
           </div>
 
           <div css={s.calendarGrid}>
@@ -166,16 +170,12 @@ function CalendarManager() {
         </div>
       </div>
 
-      
       <div css={s.rightWrapper}>
         <div css={s.teacherInfoWrapper}>
           <h3>강사 정보</h3>
           {teacherList && teacherList.length > 0 ? (
             teacherList.map((teacher) => {
-              
-              const profileUrl =
-                profileMapping[teacher.ph] ||
-                "";
+              const profileUrl = profileMapping[teacher.ph] || "";
               return (
                 <div key={teacher.ph} css={{ marginBottom: "1rem" }}>
                   <p>{teacher.nickname}</p>
