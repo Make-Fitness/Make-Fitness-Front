@@ -13,14 +13,20 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        setLoginUser(decoded);
+        console.log("🔥 디코딩된 JWT:", decoded);
+  
+        setLoginUser({
+          jti: decoded.jti,                     // ✅ 반드시 포함
+          nickname: decoded.nickname,          // 선택
+          role: decoded.role || decoded.roleName, // 이름 다르면 처리
+          ph: decoded.ph                       // 전화번호도 가능
+        });
       } catch (e) {
-        console.error("토큰 디코딩 실패", e);
+        console.error("❌ 토큰 디코딩 실패:", e);
       }
     }
     setLoading(false);
   }, []);
-
   return (
     <AuthContext.Provider value={{ loginUser, loading }}>
       {children}

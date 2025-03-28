@@ -1,9 +1,0 @@
-diff a/src/constants/menu.js b/src/constants/menu.js	(rejected hunks)
-@@ -35,6 +35,7 @@
-     {
-       id: "member_management",
-       name: "회원등록",
-+      path: "/makefitness/classregistration",
-     },
-     {
-       id: "worker_management",

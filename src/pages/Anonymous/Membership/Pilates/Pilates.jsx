@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import * as PortOne from "@portone/browser-sdk/v2";
 import { v4 as uuid } from "uuid";
 import * as s from "./style";
+import axios from "../../../../apis/axiosInstance";
+import { AuthContext } from "../../../../context/AuthContext";
 
 const plans = [
   { name: "BASIC", sessions: 12, bonus: "+ 헬스 1개월", price: "₩360,000", amount: 360000 },
@@ -11,27 +13,33 @@ const plans = [
   { name: "ELITE", sessions: 50, bonus: "+ 헬스 6개월", price: "₩990,000", amount: 990000 },
 ];
 
+const promotionMap = { 12: 5, 24: 6, 36: 7, 50: 8 };
+
 const Pilates = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const { loginUser } = useContext(AuthContext);
+  const user_id = loginUser?.jti;
 
   const handlePayment = async () => {
     const plan = plans.find(p => p.sessions === selectedPlan);
-    if (!plan) return;
+    if (!plan || !user_id) return alert("로그인이 필요합니다.");
+
+    const promotion_id = promotionMap[selectedPlan];
+    const paymentId = uuid();
+    const payMethodName = "KAKAOPAY";
 
     try {
       const paymentResponse = await PortOne.requestPayment({
         storeId: import.meta.env.VITE_PORTONE_STOREID,
-        paymentId: uuid(),
+        paymentId: paymentId,
         orderName: plan.name + " 필라테스 플랜",
         totalAmount: plan.amount,
         currency: "CURRENCY_KRW",
         payMethod: "EASY_PAY",
-        easyPay: {
-          provider: "KAKAOPAY"
-        },
+        easyPay: { provider: payMethodName },
         channelKey: "channel-key-2ddfd112-33ac-4c5d-8d4d-a98848300f31",
         customer: {
-          customerId: "pilates_user_01",
+          customerId: user_id,
           fullName: "홍길동",
         },
         products: [
@@ -39,15 +47,34 @@ const Pilates = () => {
             id: plan.sessions.toString(),
             name: plan.name + " 플랜",
             amount: plan.amount,
-            quantity: 1
-          }
+            quantity: 1,
+          },
         ],
       });
 
       console.log("결제 성공 응답:", paymentResponse);
 
+      const payload = {
+        reqMembershipDto: {
+          userId: user_id,
+          promotionId: promotion_id,
+        },
+        reqPayDto: {
+          uuid: paymentId,
+          userId: user_id,
+          managerId: 5, // 필라테스는 트레이너 없음
+          promotionId: promotion_id,
+          paymentMethod: payMethodName,
+        },
+      };
+
+      await axios.post("/api/makefitness/pay", payload);
+
+      alert("필라테스 결제가 완료되었습니다!");
+
     } catch (error) {
       console.error("결제 실패:", error);
+      alert("결제에 실패했습니다. 다시 시도해주세요.");
     }
   };
 

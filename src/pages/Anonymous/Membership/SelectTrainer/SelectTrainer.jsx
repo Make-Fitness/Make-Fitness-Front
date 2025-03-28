@@ -34,9 +34,11 @@ function SelectTrainer() {
   const navigate = useNavigate();
   const [selectedTrainer, setSelectedTrainer] = useState(null);
   const { loginUser, loading } = useContext(AuthContext);
+
   if (loading) return <div>로그인 확인 중...</div>;
 
   const userId = loginUser?.jti;
+  console.log("✅ 로그인된 유저 ID (jti):", userId);
 
   const handleComplete = () => {
     if (!selectedTrainer) return alert('강사를 선택해주세요!');

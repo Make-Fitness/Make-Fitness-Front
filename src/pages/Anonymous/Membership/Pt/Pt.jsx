@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import * as PortOne from "@portone/browser-sdk/v2";
 import { v4 as uuid } from "uuid";
 import * as s from "./style";
-import axios from "axios"; // axios 추가
+import axios from "../../../../apis/axiosInstance";
 
 const plans = [
   { name: "BASIC", sessions: 12, bonus: "+ 헬스 1개월", price: "₩840,000", amount: 840000 },
@@ -25,12 +25,15 @@ const Pt = () => {
   const handlePayment = async () => {
     const plan = plans.find(p => p.sessions === selectedPlan);
     if (!plan) return;
+
     const promotion_id = promotionMap[selectedPlan];
+    const paymentId = uuid();
+    const payMethodName = "KAKAOPAY";
 
     try {
       const paymentResponse = await PortOne.requestPayment({
         storeId: import.meta.env.VITE_PORTONE_STOREID,
-        paymentId: uuid(),
+        paymentId: paymentId,
         orderName: plan.name + " PT 플랜",
         totalAmount: plan.amount,
         currency: "CURRENCY_KRW",
@@ -45,7 +48,7 @@ const Pt = () => {
           user_id,
           manager_id,
           promotion_id,
-          pay_method: "KAKAOPAY",
+          pay_method: payMethodName,
         },
         products: [
           {
@@ -59,21 +62,24 @@ const Pt = () => {
 
       console.log("결제 성공 응답:", paymentResponse);
 
-      // ✅ 백엔드로 결제 정보 전송
+      // ✅ DTO 구조에 맞춰 최종 payload 생성
       const payload = {
-        user_id,
-        manager_id,
-        promotion_id,
-        pay_method: "KAKAOPAY",
-        plan_name: plan.name,
-        sessions: plan.sessions,
-        amount: plan.amount,
-        transaction_id: paymentResponse.transactionId,
-        status: paymentResponse.status,
-        paid_at: paymentResponse.paidAt,
+        reqMembershipDto: {
+          userId: user_id,
+          promotionId: promotion_id,
+        },
+        reqPayDto: {
+          uuid: paymentId,
+          userId: user_id,
+          managerId: manager_id,
+          promotionId: promotion_id,
+          paymentMethod: payMethodName,
+        },
       };
 
-      await axios.post("https://your-backend-api.com/api/payment/save", payload); // URL은 실제 백엔드 주소로 교체
+      await axios.post("/api/makefitness/pay", payload);
+
+      alert("결제가 완료되었습니다!");
 
     } catch (error) {
       console.error("결제 실패:", error);
