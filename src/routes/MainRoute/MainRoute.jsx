@@ -17,6 +17,8 @@ import Pay from '../../Pay.jsx';
 import Pt from '../../pages/Anonymous/Membership/Pt/Pt.jsx';
 import SelectTrainer from '../../pages/Anonymous/Membership/SelectTrainer/SelectTrainer.jsx';
 import ClassRegistration from '../../pages/ClassRegistration/ClassRegistration.jsx';
+import AttendanceCheck from '../../pages/AttendanceCheck/AttendanceCheck.jsx'
+
 
 function MainRoute() {
     return (
@@ -38,6 +40,7 @@ function MainRoute() {
                 <Route path="makefitness/pay" element={<Pay />} />
                 <Route path="makefitness/selecttrainer" element={<SelectTrainer />} />
                 <Route path="makefitness/classregistration" element={<ClassRegistration />} />
+                <Route path="makefitness/attendancecheck" element={<AttendanceCheck />} />
             </Routes>
         </MainContainer>
     );

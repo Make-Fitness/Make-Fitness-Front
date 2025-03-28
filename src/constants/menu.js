@@ -30,7 +30,7 @@ export const MENUS = {
     {
       id: "attendance_management",
       name: "출결관리",
-      path: "/출결 페이지 주소",
+      path: "/makefitness/attendancecheck",
     },
     {
       id: "member_management",
