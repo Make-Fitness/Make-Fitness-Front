@@ -6,11 +6,14 @@ import { css } from "@emotion/react";
 
 function Reservation() {
   const [selectedClass, setSelectedClass] = useState("pt");
+  // 캘린더 관련 데이터 (필요 시 유지)
   const [scheduleData, setScheduleData] = useState({});
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [instructorId, setInstructorId] = useState(null);
+  const [instructorId, setInstructorId] = useState();
+  // class_tb(또는 예약) 데이터 (백엔드에서 받아옴)
+  const [classData, setClassData] = useState([]);
 
-  // 오늘 날짜 정보
+  // 오늘 날짜 관련 변수
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
   const dayToday = currentDate.getDate();
@@ -31,12 +34,44 @@ function Reservation() {
     pilates: "#FFC0CB",
   };
 
-  // 강사 정보 가져오기
+  // 백엔드로 신규 예약 데이터를 전송하는 함수 (POST)
+  const sendReservationToBackend = (newReservation) => {
+    fetch("/api/reservation", {
+      method: "POST",
+      headers: { "Content-Type": "application/jwt" },
+      body: JWT.stringify(newReservation),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("예약 내역 전송 성공", data);
+      })
+      .catch((error) => console.error("예약 내역 전송 실패", error));
+  };
+
+  // 강사 정보 가져오기 (예시)
   useEffect(() => {
-    fetch("/api/class_subject_td")
+    fetch("/api/reservation")
       .then((res) => res.jwt())
-      .then((data) => setInstructorId(data.id))
+      .then((data) => {
+         setInstructorId(data.id);
+      })
       .catch((error) => console.error("강사 ID 불러오기 실패", error));
+  }, []);
+
+  // 예약(수업) 데이터(class_tb) 가져오기
+  useEffect(() => {
+    fetch("/api/reservation")
+      .then((res) => res.jwt())
+      .then((data) => {
+        
+        setClassData(data);
+      })
+      .catch((error) => console.error("class_tb 불러오기 실패", error));
   }, []);
 
   // 수업 타입 선택 핸들러
@@ -44,19 +79,15 @@ function Reservation() {
     setSelectedClass(type);
   };
 
-  // 예약 데이터 변경 시 서버로 전송 (예시)
-  useEffect(() => {
-    if (Object.keys(scheduleData).length > 0) {
-      fetch("/api/class_subject_td", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(scheduleData),
-      })
-        .then((response) => response.jwt())
-        .then((data) => console.log("예약 내역 전송 성공", data))
-        .catch((error) => console.error("예약 내역 전송 실패", error));
-    }
-  }, [scheduleData]);
+  // 오늘 날짜와 일치하는 예약만 필터링 (예약 추가 시 백엔드의 created_tb 필드 사용)
+  const todayReservations = classData.filter((item) => {
+    const createdDate = new Date(item.created_tb);
+    return (
+      createdDate.getFullYear() === currentDate.getFullYear() &&
+      createdDate.getMonth() === currentDate.getMonth() &&
+      createdDate.getDate() === currentDate.getDate()
+    );
+  });
 
   // 예약 취소 핸들러
   const handleCancel = (day, idx) => {
@@ -99,7 +130,7 @@ function Reservation() {
       </div>
 
       <div css={s.contentWrapper}>
-        {/* 강사 영역 */}
+      
         <div css={s.leftPane}>
           <h2 css={s.subtitle}>담당 강사</h2>
           <div css={s.instructorPhotoContainer}>
@@ -126,28 +157,41 @@ function Reservation() {
           />
         </div>
 
-       
+        
         <div css={s.reservationListWrapper}>
-          <h3>오늘 스케줄 (매니저 모드)</h3>
-          {Object.keys(scheduleData).filter(
-            (d) => parseInt(d, 10) === dayToday
-          ).length === 0 ? (
+          <h3>오늘 스케줄</h3>
+          {todayReservations.length === 0 ? (
             <p>오늘은 예약이 없습니다.</p>
           ) : (
-            Object.keys(scheduleData)
-              .filter((d) => parseInt(d, 10) === dayToday)
-              .map((day) =>
-                scheduleData[day].map((item, idx) => (
-                  <li key={`${day}-${idx}`} css={s.reservationItem}>
-                    {year}-{formattedMonth}-{day} - {item.time}:00 -{" "}
+            <ul css={s.reservationList}>
+              {todayReservations.map((item) => {
+                const createdDate = new Date(item.created_tb);
+                const reservationHour = createdDate.getHours();
+                const reservationDate = `${createdDate.getFullYear()}-${(createdDate.getMonth() + 1)
+                  .toString()
+                  .padStart(2, "0")}-${createdDate.getDate().toString().padStart(2, "0")}`;
+                return (
+                  <li key={item.id} css={s.reservationItem}>
+                    {reservationDate} - {reservationHour}:00 -{" "}
                     {item.nickName ?? "회원이름"}
-                    <button onClick={() => handleCancel(day, idx)}>
+                    <button
+                      css={css`
+                        background-color: black !important;
+                        color: white;
+                        border: none;
+                        padding: 0.5rem 1rem;
+                        cursor: pointer;
+                        margin-left: 1rem;
+                        border-radius: 4px;
+                      `}
+                      onClick={() => handleCancel(item.id)}
+                    >
                       취소
                     </button>
-                  
                   </li>
-                ))
-              )
+                );
+              })}
+            </ul>
           )}
         </div>
       </div>

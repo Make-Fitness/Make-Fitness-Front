@@ -83,12 +83,6 @@ export const instructorPhotoPreview = css`
   max-height: 100%;
 `;
 
-export const fileInput = css`
-  margin-top: 1rem;
-  font-size: 1rem;
-  color: #fff;
-`;
-
 export const box = css`
   display: flex;
   justify-content: center;

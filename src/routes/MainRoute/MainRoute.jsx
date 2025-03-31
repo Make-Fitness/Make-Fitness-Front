@@ -16,8 +16,8 @@ import Hmembership from '../../pages/Anonymous/Membership/Hmembership/Hmembershi
 import Pay from '../../Pay.jsx';
 import Pt from '../../pages/Anonymous/Membership/Pt/Pt.jsx';
 import SelectTrainer from '../../pages/Anonymous/Membership/SelectTrainer/SelectTrainer.jsx';
-import ClassRegistration from '../../pages/ClassRegistration/ClassRegistration.jsx';
-import MembershipM from '../../pages/MembershipM/MembershipM.jsx';
+import Reservations from '../../pages/Reservations/Reservations.jsx';
+import MemberManagement from '../../pages/MemberManagement/MemberManagement.jsx';
 
 
 function MainRoute() {
@@ -39,8 +39,8 @@ function MainRoute() {
                 <Route path="makefitness/hmembership" element={<Hmembership />} />
                 <Route path="makefitness/pay" element={<Pay />} />
                 <Route path="makefitness/selecttrainer" element={<SelectTrainer />} />
-                <Route path="makefitness/classregistration" element={<ClassRegistration />} />
-                <Route path="makefitness/MembershipM" element={<MembershipM />} />
+                <Route path="makefitness/Reservations" element={<Reservations />} />
+                <Route path="makefitness/MemberManagement" element={<MemberManagement />} />
             </Routes>
         </MainContainer>
     );

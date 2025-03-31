@@ -56,14 +56,13 @@ function MyPage() {
       ? "#FFC0CB"
       : "#87CEEB";
 
+  
+    const shouldDisplayMembership = () => {
+      const classstatus = form.classstatus.trim();
+      return classstatus !== "ROLE_MANAGER" && classstatus !== "ROLE_MASTER";
+    };
 
-  const shouldDisplayMembership = () => {
-    return (
-      form.classstatus !== "ROLE_MANAGER" &&
-      form.classstatus !== "ROLE_MASTER"
-    );
-  };
-
+ 
   return (
     <div css={s.topcon}>
       <div css={s.maincontainer}>
@@ -76,6 +75,7 @@ function MyPage() {
           name="name"
           value={form.name}
           onChange={handleChange}
+          readOnly
         />
 
         <label>전화번호</label>
