@@ -115,9 +115,9 @@ function MemberManagement() {
           <tr>
             <th>이름</th>
             <th>전화번호</th>
-            <th>프로그램종류</th>
-            <th>남은세션</th>
-            <th>회원권종료기간</th>
+            <th>프로모션</th>
+            <th>남은횟수</th>
+            <th>종료기간</th>
           </tr>
         </thead>
         <tbody>
