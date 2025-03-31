@@ -1,5 +1,6 @@
+/** SelectTrainer.jsx */
 /** @jsxImportSource @emotion/react */
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as s from './style';
 import { AuthContext } from '../../../../context/AuthContext';
@@ -33,15 +34,9 @@ function SelectTrainer() {
   const navigate = useNavigate();
   const [selectedTrainer, setSelectedTrainer] = useState(null);
   const { loginUser, loading } = useContext(AuthContext);
-
-  useEffect(() => {
-    console.log("로그인 유저 정보:", loginUser);
-  }, [loginUser]);
-
   if (loading) return <div>로그인 확인 중...</div>;
 
-  // ❗ userId 필드명 수정 (jti → user_id)
-  const userId = loginUser?.user_id;
+  const userId = loginUser?.jti;
 
   const handleComplete = () => {
     if (!selectedTrainer) return alert('강사를 선택해주세요!');

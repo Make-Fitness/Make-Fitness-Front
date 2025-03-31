@@ -43,7 +43,7 @@ const WorkerPage = () => {
             })}
           </select>
         </label>
-        <button onClick={handleSearch} css={s.button}>조회</button>
+        <button onClick={handleSearch}>조회</button>
       </div>
 
       <table css={s.staffTable}>
