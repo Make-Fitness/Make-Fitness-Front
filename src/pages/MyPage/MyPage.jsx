@@ -74,6 +74,7 @@ function MyPage() {
           name="name"
           value={form.name}
           onChange={handleChange}
+          readOnly
         />
 
         <label>전화번호</label>

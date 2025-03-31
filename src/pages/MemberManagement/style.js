@@ -9,7 +9,7 @@ export const containerStyle = css`
 `;
 
 export const titleStyle = css`
-  font-size: 2rem;
+  font-size: 3rem;
   text-align: center;
   margin-bottom: 1.5rem;
 `;
@@ -22,7 +22,7 @@ export const searchWrapperStyle = css`
 
   label {
     margin-right: 0.5rem;
-    font-size: 1rem;
+    font-size: 2rem;
   }
 `;
 
@@ -32,6 +32,7 @@ export const inputStyle = css`
   margin-right: 0.5rem;
   border-radius: 4px;
   border: 1px solid #ccc;
+  color: black;
 `;
 
 export const buttonStyle = css`
@@ -48,6 +49,7 @@ export const tableStyle = css`
   border-collapse: collapse;
   margin: 0 auto;
   max-width: 900px;
+  font-size: 1.5rem;
 
   th,
   td {
@@ -66,3 +68,14 @@ export const noDataStyle = css`
   padding: 1rem;
   color: #ccc;
 `;
+
+export const labelStyle = css`
+  font-size: 2.5rem;
+`;
+
+export const paginationWrapperStyle = css`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
