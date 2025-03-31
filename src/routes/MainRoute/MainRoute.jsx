@@ -40,7 +40,7 @@ function MainRoute() {
                 <Route path="makefitness/pay" element={<Pay />} />
                 <Route path="makefitness/selecttrainer" element={<SelectTrainer />} />
                 <Route path="makefitness/Reservations" element={<Reservations />} />
-                <Route path="makefitness/MemberManagement" element={<MemberManagement />} />
+                <Route path="makefitness/manager/membermanagement" element={<MemberManagement />} />
             </Routes>
         </MainContainer>
     );

@@ -30,7 +30,7 @@ export const MENUS = {
     {
       id: "Mmmber_management",
       name: "회원관리",
-      path: "/makefitness/MemberManagement",
+      path: "/makefitness/manager/membermanagement",
     },
     {
       id: "reservations",
