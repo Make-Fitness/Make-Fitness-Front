@@ -3,8 +3,8 @@ import { css } from "@emotion/react";
 export const container = css`
   width: 100%;
   min-height: 80vh;
-  background-color: black;
-  color: white;
+  background-color: #000;
+  color: #fff;
   padding: 2rem;
   box-sizing: border-box;
 `;
@@ -23,7 +23,6 @@ export const description = css`
 
 export const buttonWrapper = css`
   display: flex;
-  flex-direction: row;
   justify-content: center;
   gap: 1rem;
   margin-bottom: 2rem;
@@ -33,18 +32,17 @@ export const button = css`
   padding: 1rem 2rem;
   border: none;
   border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-  background-color: #444;
+  color: #fff !important;
+  background-color: black !important;
   font-size: 1rem;
+  cursor: pointer;
 `;
 
 export const contentWrapper = css`
-  
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: flex-start; 
+  align-items: flex-start;
   gap: 2rem;
   margin-top: 2rem;
 `;
@@ -98,25 +96,17 @@ export const box = css`
 `;
 
 export const reservationListWrapper = css`
-  background-color: #222;
+  background-color: #222 !important;
   border-radius: 10px;
   padding: 1rem;
   border: 1px solid #666;
-  color: white;
+  color: #fff in !important;
   width: 250px;
-  height: 400px; 
+  height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
-  h3 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-
-  p {
-    font-size: 1.8rem;
-  }
+  overflow-y: auto;
 `;
 
 export const reservationList = css`
@@ -130,4 +120,9 @@ export const reservationItem = css`
   font-size: 1.2rem;
   border-bottom: 1px solid #444;
   padding-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
+
+

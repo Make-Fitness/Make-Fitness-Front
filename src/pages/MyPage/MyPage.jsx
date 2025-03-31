@@ -12,22 +12,23 @@ function MyPage() {
     ph: "",
     password: "",
     confirmPassword: "",
-    classstatus: "",
+    classstatus: "", // 실제 권한 정보도 여기 넣어서 사용
   });
 
   // 상위에서 예약 데이터를 중앙 관리 (Calendar와 공유)
   const [scheduleData, setScheduleData] = useState({});
 
   useEffect(() => {
-    // localStorage에서 로그인 시 저장된 사용자 정보 땡겨옴
     const nickname = localStorage.getItem("nickname") || "";
     const ph = localStorage.getItem("ph") || "";
-    const classstatus = localStorage.getItem("classstatus") || "";
+    // roleName 키로 저장된 권한 값 가져오기
+    const roleName = localStorage.getItem("roleName") || "";
+
     setForm((prev) => ({
       ...prev,
       name: nickname,
       ph: ph,
-      classstatus: classstatus,
+      classstatus: roleName // 권한 정보를 classstatus에 저장
     }));
   }, []);
 
@@ -37,7 +38,6 @@ function MyPage() {
 
   const handleUpdate = (type) => {
     alert(`${type}이(가) 변경되었습니다.`);
-   
   };
 
   const handleUpdate2 = (type) => {
@@ -47,20 +47,23 @@ function MyPage() {
     }
   };
 
-  const classstatusValue = form.classstatus.trim().toLowerCase();
+  // 예: PT/Pilates의 경우 색상 지정
+  const classstatusValue = form.classstatus.trim();
   const scheduleColor =
-    classstatusValue === "pt"
+    classstatusValue === "PT"
       ? "#87CEEB"
-      : classstatusValue === "pilates"
+      : classstatusValue === "PILATES"
       ? "#FFC0CB"
       : "#87CEEB";
 
-  
+
   const shouldDisplayMembership = () => {
-    const classstatus = form.classstatus.trim().toLowerCase();
-    return classstatus !== "role_manager" && classstatus !== "role_master";
+    return (
+      form.classstatus !== "ROLE_MANAGER" &&
+      form.classstatus !== "ROLE_MASTER"
+    );
   };
-  
+
   return (
     <div css={s.topcon}>
       <div css={s.maincontainer}>

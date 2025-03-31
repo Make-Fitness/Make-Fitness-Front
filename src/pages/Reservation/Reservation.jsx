@@ -2,27 +2,21 @@
 import React, { useState, useEffect } from "react";
 import * as s from "./style";
 import Calendar from "../../components/common/Calendar/Calendar";
+import { css } from "@emotion/react";
 
 function Reservation() {
   const [selectedClass, setSelectedClass] = useState("pt");
   const [scheduleData, setScheduleData] = useState({});
   const [currentDate, setCurrentDate] = useState(new Date());
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const formattedMonth = (month + 1).toString().padStart(2, "0");
-
-  
   const [instructorId, setInstructorId] = useState(null);
 
-  
-  useEffect(() => {
-    fetch("/api/instructor")
-      .then((res) => res.json())
-      .then((data) => setInstructorId(data.id))
-      .catch((error) => console.error("강사 ID 불러오기 실패", error));
-  }, []);
+  // 오늘 날짜 정보
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;
+  const dayToday = currentDate.getDate();
+  const formattedMonth = month.toString().padStart(2, "0");
 
-  
+  // 강사 사진 매핑
   const instructorImageMap = {
     1: "../Trainer/park.jpeg",
     2: "../Trainer/jang.jpg",
@@ -31,30 +25,50 @@ function Reservation() {
     5: "../Trainer/kim.jpg",
   };
 
- 
+  // 수업 타입별 색상 매핑
   const colorMap = {
     pt: "#87CEEB",
     pilates: "#FFC0CB",
   };
 
-  
+  // 강사 정보 가져오기
+  useEffect(() => {
+    fetch("/api/class_subject_td")
+      .then((res) => res.jwt())
+      .then((data) => setInstructorId(data.id))
+      .catch((error) => console.error("강사 ID 불러오기 실패", error));
+  }, []);
+
+  // 수업 타입 선택 핸들러
   const handleSelectClass = (type) => {
     setSelectedClass(type);
   };
 
-
+  // 예약 데이터 변경 시 서버로 전송 (예시)
   useEffect(() => {
     if (Object.keys(scheduleData).length > 0) {
-      fetch("/api/reservations", {
+      fetch("/api/class_subject_td", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(scheduleData),
       })
-        .then((response) => response.json())
+        .then((response) => response.jwt())
         .then((data) => console.log("예약 내역 전송 성공", data))
         .catch((error) => console.error("예약 내역 전송 실패", error));
     }
   }, [scheduleData]);
+
+  // 예약 취소 핸들러
+  const handleCancel = (day, idx) => {
+    setScheduleData((prev) => {
+      const updated = { ...prev };
+      updated[day] = updated[day].filter((_, i) => i !== idx);
+      if (updated[day].length === 0) {
+        delete updated[day];
+      }
+      return updated;
+    });
+  };
 
   return (
     <div css={s.container}>
@@ -84,9 +98,9 @@ function Reservation() {
         </button>
       </div>
 
-      
       <div css={s.contentWrapper}>
-          <div css={s.leftPane}>
+        {/* 강사 영역 */}
+        <div css={s.leftPane}>
           <h2 css={s.subtitle}>담당 강사</h2>
           <div css={s.instructorPhotoContainer}>
             {instructorId && instructorImageMap[instructorId] ? (
@@ -101,7 +115,7 @@ function Reservation() {
           </div>
         </div>
 
-        
+        {/* 캘린더 영역 */}
         <div css={s.box}>
           <Calendar
             scheduleColor={colorMap[selectedClass]}
@@ -114,22 +128,26 @@ function Reservation() {
 
        
         <div css={s.reservationListWrapper}>
-          <h3>내 예약 목록</h3>
-          {Object.keys(scheduleData).length === 0 ? (
-            <p>예약이 없습니다.</p>
+          <h3>오늘 스케줄 (매니저 모드)</h3>
+          {Object.keys(scheduleData).filter(
+            (d) => parseInt(d, 10) === dayToday
+          ).length === 0 ? (
+            <p>오늘은 예약이 없습니다.</p>
           ) : (
-            <ul css={s.reservationList}>
-              {Object.keys(scheduleData)
-                .sort((a, b) => a - b)
-                .map((day) =>
-                  scheduleData[day].map((item, idx) => (
-                    <li key={`${day}-${idx}`} css={s.reservationItem}>
-                      {year}-{formattedMonth}-{day} : {item.time}:00
-                      {item.instructor ? `, 강사: ${item.instructor}` : ""}
-                    </li>
-                  ))
-                )}
-            </ul>
+            Object.keys(scheduleData)
+              .filter((d) => parseInt(d, 10) === dayToday)
+              .map((day) =>
+                scheduleData[day].map((item, idx) => (
+                  <li key={`${day}-${idx}`} css={s.reservationItem}>
+                    {year}-{formattedMonth}-{day} - {item.time}:00 -{" "}
+                    {item.nickName ?? "회원이름"}
+                    <button onClick={() => handleCancel(day, idx)}>
+                      취소
+                    </button>
+                  
+                  </li>
+                ))
+              )
           )}
         </div>
       </div>
