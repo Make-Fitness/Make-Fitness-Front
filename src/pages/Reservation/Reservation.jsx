@@ -126,7 +126,6 @@ function Reservation() {
                     <li key={`${day}-${idx}`} css={s.reservationItem}>
                       {year}-{formattedMonth}-{day} : {item.time}:00
                       {item.instructor ? `, 강사: ${item.instructor}` : ""}
-                      {item.request ? `, 요청사항: ${item.request}` : ""}
                     </li>
                   ))
                 )}

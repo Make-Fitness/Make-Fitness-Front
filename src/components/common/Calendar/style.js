@@ -1,245 +1,151 @@
-import { css } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 
-export const calendarWrapper = css`
+
+export const calendarAndListWrapper = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 2rem; 
+  width: 25rem;
+`;
+
+export const leftWrapper = css`
+  flex: 1;
+`;
+
+export const box = css`
   display: flex;
   flex-direction: column;
-  width: 500xp;
-  max-width: 500px;
+  align-items: center;
+  margin-top: 1.5rem;
+  
+`;
+
+export const button = css`
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #444;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  
+`;
+
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+export const spinnerStyle = css`
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #444;
+  border-radius: 50%;
+  width: 24pxx;
+  height: 24px;
+  animation: ${spin} 1s linear infinite;
+  margin: 1rem auto;
+`;
+
+export const calendarWrapper = css`
+  background-color: #fff;
+  padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #f9f9f9;
-  font-family: Arial, sans-serif;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  width: 40rem;
 `;
 
 export const calendarHeader = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  padding: 10px;
-  background-color: black;
-  border: 0.125rem solid #444;
-  color: white;
-  box-shadow: 0rem 0.25rem 0.625rem rgba(255, 255, 255, 0.1);
-  border-radius: 8px 8px 0 0;
-
-  h2 {
-    font-size: 2.5rem;
-  }
+  margin-bottom: 1rem;
+  
 `;
 
 export const calendarGrid = css`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  padding-top: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
-  font-size: 1.5rem;
-`;
-
-export const button = css`
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  background-color: #333;
-  color: #fff;
-  border: 2rem;
-  font-size: 15px;
-  width: 60px;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #555;
-  }
+  border: 1px solid #ccc;
 `;
 
 export const calendarDayHeader = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: #eee;
+  padding: 0.5rem;
+  text-align: center;
   font-weight: bold;
-  background-color: #e0e0e0;
-  padding: 8px;
-  border-radius: 4px;
 `;
 
 export const calendarDateCell = css`
-  height: 50px;
-  width: 50px;
-  text-align: center;
-  line-height: 50px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
   background-color: #fff;
-  transition: background-color 0.2s;
-  
-  &:hover {
-    background-color: #e0f7fa;
-  }
-  
-  &:active {
-    background-color: #b2ebf2;
-  }
+  min-height: 50px;
+  padding: 0.5rem;
+  text-align: right;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid #ccc;
 `;
 
 export const emptyCell = css`
-  height: 50px;
-  width: 50px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  background-color: #fff;
+  min-height: 50px;
+  border: 1px solid #ccc;
 `;
 
+// 모달 스타일
 export const modalOverlay = css`
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  color: black;
+  z-index: 1000;
 `;
 
 export const modalContent = css`
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
   background: #fff;
-  width: 450px;
-  padding: 20px;
+  padding: 2rem;
   border-radius: 8px;
-  font-size: 2rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-
-  h3{
-    color: black !important;
-    padding-bottom: 30px;
-  }
+  width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  color: black !important;
 
   p {
-    color: black !important;
-    margin-bottom: 50px;
+    font-size: 1.8rem;
+    color: black;
   }
-`;
-
-export const modalInput = css`
-  display: flex;
-  flex-direction: row;
-  width: 40rem;
-  padding: 1.2rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  font-size: 1.2rem;
-  color: black;
-  box-sizing: 5rem;
-`;
-
-export const modalButtonContainer = css`
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const button2 = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #333;
-  color: #fff;
-  border: none;
-  font-size: 15px;
-  padding: 8px;
-  margin-right: 3px;
-  margin-top: 35px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #555;
-  }
-`;
-
-
-
-export const reservationListWrapper = css`
-  
-  background-color: #222;
-  border-radius: 10px;
-  padding: 1rem;
-  border: 1px solid #666;
-  color: white;
-  margin-top: 20px;
-  width: 250px;
-  height: 350px;
 
   h3 {
     font-size: 2rem;
-  }
-
-  p {
-    font-size: 1.5rem;
+    color: black;
   }
 `;
 
-export const reservationList = css`
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 0 0;
-`;
-
-export const reservationItem = css`
-  margin-bottom: 0.5rem;
-  font-size: 1.2rem;
-  border-bottom: 1px solid #444;
-  padding-bottom: 5px;
-`;
-
-export const calendarAndListWrapper = css`
+// 예약 추가 시 시간 슬롯 컨테이너
+export const timeSlotContainer = css`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  width: auto;
-  gap: 20px;
-`;
-
-export const box = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 400px;
-`;
-
-export const box2 = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 3rem;
-  width: 400;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 `;
 
 export const buttonbox = css`
   display: flex;
+  gap: 1rem;
   justify-content: center;
-  align-items: center;
-  justify-content: space-between;
 `;
 
-export const timeSlotContainer = css`
-  display: flex;
-  flex-direction: row;
-  justify-content: baseline;
-  flex-wrap: wrap;      
-  gap: 0.5rem;          
-  justify-content: center;
-  margin-bottom: 1.5rem; 
+export const titleBlack = css`
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: black;
 `;

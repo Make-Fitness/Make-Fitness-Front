@@ -59,18 +59,27 @@ export const reservationListWrapper = css`
   border-radius: 10px;
   padding: 1rem;
   border: 1px solid #666;
-  color: white;
   width: 400px;
   min-height: 490px;
+  margin-top: 5px;
 
   h3 {
-    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    font-size: 2.5rem;
     margin-bottom: 1rem;
     margin-left: 1rem;
   }
 
   p {
-    font-size: 3rem;
+    display: flex;
+    justify-content: start;
+    font-size: 2rem;
+    margin-left: 1rem;
+  }
+
+  h5 {
+    font-size: 2.5rem;
     margin-left: 1rem;
   }
 `;
@@ -86,27 +95,33 @@ export const reservationItem = css`
   font-size: 1.2rem;
   border-bottom: 1px solid #444;
   padding-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  input[type="checkbox"] {
+    margin-right: 0.5rem;
+  }
 `;
 
-const modalOverlay = css`
+export const modalOverlay = css`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
 `;
 
-const modalContent = css`
+export const modalContent = css`
   background: #fff;
   padding: 2rem;
   border-radius: 8px;
   width: 500px;
   max-height: 80vh;
   overflow-y: auto;
-  color: #000;
-`;
+
+  `;

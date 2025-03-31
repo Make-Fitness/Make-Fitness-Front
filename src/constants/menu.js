@@ -8,7 +8,7 @@ export const MENUS = {
     {
       id: "member_management",
       name: "회원관리",
-      path: "/makefitness/member",
+      path: "/makefitness/members",
     },
     {
       id: "worker_management",
@@ -29,12 +29,12 @@ export const MENUS = {
   manager: [
     {
       id: "attendance_management",
-      name: "출결관리",
-      path: "/makefitness/attendancecheck",
+      name: "회원관리",
+      path: "/makefitness/membershpm",
     },
     {
       id: "member_management",
-      name: "회원관리",
+      name: "수업관리",
       path: "/makefitness/classregistration",
     },
     {

@@ -37,7 +37,7 @@ function MyPage() {
 
   const handleUpdate = (type) => {
     alert(`${type}이(가) 변경되었습니다.`);
-    // 실제 업데이트 API 연동 로직 추가 가능
+   
   };
 
   const handleUpdate2 = (type) => {
@@ -55,6 +55,12 @@ function MyPage() {
       ? "#FFC0CB"
       : "#87CEEB";
 
+  
+  const shouldDisplayMembership = () => {
+    const classstatus = form.classstatus.trim().toLowerCase();
+    return classstatus !== "role_manager" && classstatus !== "role_master";
+  };
+  
   return (
     <div css={s.topcon}>
       <div css={s.maincontainer}>
@@ -106,14 +112,18 @@ function MyPage() {
           </button>
         </div>
 
-        <label>이용중인 회원권</label>
-        <input
-          css={s.input2}
-          type="text"
-          name="classstatus"
-          value={form.classstatus}
-          readOnly
-        />
+        {shouldDisplayMembership() && (
+          <>
+            <label>이용중인 회원권</label>
+            <input
+              css={s.input2}
+              type="text"
+              name="classstatus"
+              value={form.classstatus}
+              readOnly
+            />
+          </>
+        )}
       </div>
       <div css={s.calendarWrapper}>
         <Calendar
