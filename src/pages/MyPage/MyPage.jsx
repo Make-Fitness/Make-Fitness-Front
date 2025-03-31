@@ -22,7 +22,7 @@ function MyPage() {
     // localStorage에서 로그인 시 저장된 사용자 정보 땡겨옴
     const nickname = localStorage.getItem("nickname") || "";
     const ph = localStorage.getItem("ph") || "";
-    const classstatus = localStorage.getItem("classstatus") || "";
+    const classstatus = localStorage.getItem("roleName") || "";
     setForm((prev) => ({
       ...prev,
       name: nickname,
@@ -56,11 +56,12 @@ function MyPage() {
       : "#87CEEB";
 
   
-  const shouldDisplayMembership = () => {
-    const classstatus = form.classstatus.trim().toLowerCase();
-    return classstatus !== "role_manager" && classstatus !== "role_master";
-  };
-  
+    const shouldDisplayMembership = () => {
+      const classstatus = form.classstatus.trim();
+      return classstatus !== "ROLE_MANAGER" && classstatus !== "ROLE_MASTER";
+    };
+
+ 
   return (
     <div css={s.topcon}>
       <div css={s.maincontainer}>

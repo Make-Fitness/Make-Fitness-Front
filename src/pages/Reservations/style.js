@@ -36,7 +36,7 @@ export const button = css`
   color: #fff;
   cursor: pointer;
   background-color: #444;
-  font-size: 1rem;
+  font-size: 1.8rem;
 `;
 
 export const contentWrapper = css`
@@ -120,8 +120,28 @@ export const modalContent = css`
   background: #fff;
   padding: 2rem;
   border-radius: 8px;
-  width: 500px;
+  width: 350px;
   max-height: 80vh;
   overflow-y: auto;
+  outline: black;
+  h2{
+    color: black;
+    font-size: 2rem;
+    margin-left: 4rem;
+  }
 
-  `;
+  p {
+    font-size: 1.5rem;
+    color: black;
+  
+  }
+  
+`;
+
+export const button2 = css`
+  font-size: 1.5rem;
+  background-color: #444;
+  border-radius: 5px;
+  margin-left: 5rem;
+  margin: 0.5rem;
+`;

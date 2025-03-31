@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import * as s from "./style";
 
-function MembershipM() {
+function MemberManagement() {
   
   const [members, setMembers] = useState([]);
  
@@ -94,4 +94,4 @@ function MembershipM() {
   );
 }
 
-export default MembershipM;
+export default MemberManagement;
