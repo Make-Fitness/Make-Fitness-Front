@@ -42,9 +42,8 @@ const MemberTable = () => {
             <th>이름</th>
             <th>휴대폰번호</th>
             <th>성별</th>
-            <th>구분</th>
-            <th>회원권 만료일</th>
-            <th>수정</th>
+            <th>프로모션</th>
+            <th>종료기간</th>
           </tr>
         </thead>
         <tbody>
