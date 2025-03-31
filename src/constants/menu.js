@@ -8,7 +8,7 @@ export const MENUS = {
     {
       id: "member_management",
       name: "회원관리",
-      path: "/makefitness/manager/membermanagement",
+      path: "/makefitness/member",
     },
     {
       id: "worker_management",

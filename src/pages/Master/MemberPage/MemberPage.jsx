@@ -1,94 +1,74 @@
-    /** @jsxImportSource @emotion/react */
-    import * as s from "./style";
-    import { useState } from "react";
+/** @jsxImportSource @emotion/react */
+import React, { useEffect, useState } from "react";
+import * as s from "./style"; // 스타일 정의
 
-    const MemberPage = () => {
-    const [searchKeyword, setSearchKeyword] = useState("");
+const MemberTable = () => {
+  const [members, setMembers] = useState([]);
 
-    const dummyMembers = [
-        {
-        id: 1503,
-        name: "이나연",
-        gender: "여",
-        phone: "010-8863",
-        status: "활성",
-        type: ["PT", "일반회원"],
-        expire: "2024-12-31",
-        payment: "PT 30회"
-        },
-        {
-        id: 1502,
-        name: "최형일",
-        gender: "남",
-        phone: "010-4578",
-        status: "휴회회",
-        type: ["필라테스"],
-        expire: "2024-11-30",
-        payment: "필라테스 30회"
-        },
-        {
-        id: 1501,
-        name: "박상군",
-        gender: "남",
-        phone: "010-2253",
-        status: "활성",
-        type: ["일반회원"],
-        expire: "2024-10-15",
-        payment: "일반회원 30일권"
-        }
-        // ... 생략 가능
-    ];
+  useEffect(() => {
+    fetch("/api/members") // 실제 API로 대체
+      .then((res) => res.json())
+      .then((data) => setMembers(data))
+      .catch((err) => console.error(err));
+  }, []);
 
-    const filteredMembers = dummyMembers.filter((member) =>
-        member.name.includes(searchKeyword)
-    );
+  const handleEditAll = () => {
+    console.log("상단 수정하기 버튼 클릭");
+    // 전체 수정 로직 or 모달 띄우기
+  };
 
-    return (
-        <div css={s.memberPage}>
-            <h2>회원 목록</h2>
+  const handleChangeRole = (userId) => {
+    console.log("회원구분 변경 클릭:", userId);
+  };
 
-            <div css={s.searchBar}>
-                <input
-                type="text"
-                placeholder="이름으로 검색"
-                value={searchKeyword}
-                onChange={(e) => setSearchKeyword(e.target.value)}
-                />
-                <button css={s.button}>검색</button>
-            </div>
+  const handleEdit = (userId) => {
+    console.log("회원 개별 수정 클릭:", userId);
+  };
 
-    
+  return (
+    <div css={s.memberPage}>
+      <div css={s.headerArea}>
+        <h2>회원 관리</h2>
+        <button css={s.editButton} onClick={handleEditAll}>
+          수정하기
+        </button>
+      </div>
 
-            <table css={s.memberTable}>
-                <thead>
-                <tr>
-                    <th>No</th>
-                    <th>이름</th>
-                    <th>회원권 상태</th>
-                    <th>멤버십 종류</th>
-                    <th>성별</th>
-                    <th>전화번호</th>
-                    <th>회원권 만료일</th>
-                    <th>결제내역</th>
-                </tr>
-                </thead>
-                <tbody>
-                {filteredMembers.map((member) => (
-                    <tr key={member.id}>
-                    <td>{member.id}</td>
-                    <td>{member.name}</td>
-                    <td>{member.status}</td>
-                    <td>{member.type.join(", ")}</td>
-                    <td>{member.gender}</td>
-                    <td>{member.phone}</td>
-                    <td>{member.expire}</td>
-                    <td>{member.payment}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-        </div>
-    );
-    };
+      <table css={s.memberTable}>
+        <thead>
+          <tr>
+            <th>가입날짜</th>
+            <th>회원구분</th>
+            <th>이름</th>
+            <th>휴대폰번호</th>
+            <th>성별</th>
+            <th>구분</th>
+            <th>회원권 만료일</th>
+            <th>수정</th>
+          </tr>
+        </thead>
+        <tbody>
+          {members.map((m) => (
+            <tr key={m.user_id}>
+              <td>{m.join_date}</td>
+              <td>
+                {m.role_name}{" "}
+                <button onClick={() => handleChangeRole(m.user_id)}>▼</button>
+              </td>
+              <td>{m.nickname}</td>
+              <td>{m.ph}</td>
+              <td>{m.gender}</td>
+              <td>{m.class_status}</td>
+              <td>{m.expire_date}</td>
+              <td>
+                <button onClick={() => handleEdit(m.user_id)} css={s.button}> 수정</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
-    export default MemberPage;
+export default MemberTable;
