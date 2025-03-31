@@ -1,6 +1,7 @@
-/** @jsxImportSource @emotion/react */
+/**@jsxImportSource @emotion/react */
+import api from '../../configs/axiosConfig';
+import * as s from './style';
 import React, { useState, useEffect } from "react";
-import * as s from "./style";
 
 function MemberManagement() {
   const [members, setMembers] = useState([]);
@@ -10,14 +11,13 @@ function MemberManagement() {
   const membersPerPage = 10;
 
   useEffect(() => {
-    fetch("/api/user_tb")
-      .then((response) => response.json())
-      .then((data) => {
-        setMembers(data);
+    api.get("/api/user_tb")
+      .then((response) => {
+        setMembers(response.data);
       })
-      .catch((error) =>
-        console.error("데이터를 가져오는 중 오류 발생:", error)
-      );
+      .catch((error) => {
+        console.error("데이터를 가져오는 중 오류 발생:", error);
+      });
   }, []);
 
   useEffect(() => {
@@ -51,7 +51,6 @@ function MemberManagement() {
   const renderPageNumbers = () => {
     const pages = [];
 
-    // 이전 버튼
     pages.push(
       <button
         key="prev"
@@ -63,7 +62,6 @@ function MemberManagement() {
       </button>
     );
 
-    // 숫자 버튼
     for (let i = 1; i <= totalPages; i++) {
       pages.push(
         <button
@@ -76,7 +74,6 @@ function MemberManagement() {
       );
     }
 
-    // 다음 버튼
     pages.push(
       <button
         key="next"
@@ -104,7 +101,7 @@ function MemberManagement() {
           type="text"
           placeholder="예) 고길동"
           value={searchNickname}
-          onChange={(e) => setSearchNickname(e.target.value)}
+          onChange={(e) => setSearchnickname(e.target.value)}
           onKeyDown={handleKeyPress}
           css={s.inputStyle}
         />
