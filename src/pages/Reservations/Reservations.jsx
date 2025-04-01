@@ -1,3 +1,4 @@
+// ✅ Reservations.jsx
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from "react";
 import * as s from "./style";
@@ -7,7 +8,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Reservation() {
-
   const navigate = useNavigate();
 
   const [view, setView] = useState("dashboard");
@@ -17,6 +17,7 @@ function Reservation() {
   const [instructorId, setInstructorId] = useState(null);
   const [classData, setClassData] = useState([]);
   const [promotionData, setPromotionData] = useState([]);
+  const [selectedMembershipId, setSelectedMembershipId] = useState(null); // ✅ 추가
 
   const colorMap = {
     pt: "#87CEEB",
@@ -55,15 +56,15 @@ function Reservation() {
       });
   }, []);
 
-  const handleReserveDashboard = () => {
-    setView("reservation");
-
-    navigate("/makefitness/manager/daymanagement")
+  const handleReserveDashboard = (membershipId) => {
+    setSelectedMembershipId(membershipId);
+    navigate("/makefitness/manager/daymanagement", {
+      state: { selectedMembershipId: membershipId },
+    });
   };
 
   const handleCancelDashboard = (id) => {
     console.log("대시보드 예약 취소, id =", id);
-    // 예약 취소 API 호출 로직 추가 가능
   };
 
   const handleSelectClass = (type) => {
@@ -72,7 +73,6 @@ function Reservation() {
 
   const handleCancelReservation = (id) => {
     console.log("예약 관리 페이지 예약 취소, id =", id);
-    // 예약 취소 API 호출 로직 추가 가능
   };
 
   if (view === "dashboard") {
@@ -108,13 +108,10 @@ function Reservation() {
                     : "없음"}
                 </td>
                 <td css={s.tableCell} style={{ textAlign: "right" }}>
-                  <button onClick={handleReserveDashboard} css={s.button}>
+                  <button onClick={() => handleReserveDashboard(item.membershipId)} css={s.button}>
                     예약하기
                   </button>
-                  <button
-                    onClick={() => handleCancelDashboard(item.membershipId)}
-                    css={s.button}
-                  >
+                  <button onClick={() => handleCancelDashboard(item.membershipId)} css={s.button}>
                     예약 취소
                   </button>
                 </td>
@@ -126,72 +123,7 @@ function Reservation() {
     );
   }
 
-  return (
-    <div css={s.container}>
-      <h1 css={s.title}>수업 관리 (예약 페이지)</h1>
-      <p css={s.description}>
-        회원 수업 등록 및 취소 관리, 예약 일정을 캘린더에 표시합니다.
-      </p>
-
-      <div css={s.buttonWrapper}>
-        <button
-          css={s.button}
-          style={{ backgroundColor: selectedClass === "pt" ? "#b71c1c" : "#444" }}
-          onClick={() => handleSelectClass("pt")}
-        >
-          PT
-        </button>
-        <button
-          css={s.button}
-          style={{ backgroundColor: selectedClass === "pilates" ? "#b71c1c" : "#444" }}
-          onClick={() => handleSelectClass("pilates")}
-        >
-          필라테스
-        </button>
-      </div>
-
-      <div css={s.contentWrapper}>
-        <div css={s.box}>
-          <Calendar
-            scheduleColor={colorMap[selectedClass]}
-            isEditable={true}
-            scheduleData={scheduleData}
-            setScheduleData={setScheduleData}
-            setCurrentDate={setCurrentDate}
-          />
-        </div>
-
-        <div css={s.reservationListWrapper}>
-          <h3>오늘 스케줄</h3>
-          {classData.length === 0 ? (
-            <p>오늘은 예약이 없습니다.</p>
-          ) : (
-            <ul css={s.reservationList}>
-              {classData.map((item) => (
-                <li key={item.id} css={s.reservationItem}>
-                  {item.created_tb} - {item.nickName ?? "회원이름"}
-                  <button
-                    css={css`
-                      background-color: black !important;
-                      color: white;
-                      border: none;
-                      padding: 0.5rem 1rem;
-                      cursor: pointer;
-                      margin-left: 1rem;
-                      border-radius: 4px;
-                    `}
-                    onClick={() => handleCancelReservation(item.id)}
-                  >
-                    취소
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+  return <div />; // 생략 가능: 예약 페이지는 daymanagement에서 처리
 }
 
 export default Reservation;

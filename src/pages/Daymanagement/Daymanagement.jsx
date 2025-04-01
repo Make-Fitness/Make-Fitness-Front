@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as s from "./style";
 import Calendar from "../../components/common/Calendar/Calendar";
+import { useLocation } from "react-router-dom";
 
 function Daymanagement() {
   const [selectedClass, setSelectedClass] = useState("pt");
@@ -11,6 +12,9 @@ function Daymanagement() {
   const [managerId, setManagerId] = useState(null);
   const [classData, setClassData] = useState([]);
   const [selectedReservations, setSelectedReservations] = useState([]);
+  const [selectedMembershipId, setSelectedMembershipId] = useState(null);
+
+  const location = useLocation();
 
   const colorMap = {
     pt: "#87CEEB",
@@ -18,17 +22,22 @@ function Daymanagement() {
   };
 
   useEffect(() => {
-    setManagerId(1);
-  }, []);
+    const state = location.state;
+    if (state && state.selectedMembershipId) {
+      setSelectedMembershipId(state.selectedMembershipId);
+    }
+  }, [location]);
 
   useEffect(() => {
-    console.log("🟡 Daymanagement useEffect 실행됨");
     const token = localStorage.getItem("accessToken");
-    if (!token) return;
-  
+    if (!token || !selectedMembershipId) return;
+
     axios.get("/api/makefitness/reservation/today", {
       headers: {
         Authorization: `Bearer ${token}`,
+      },
+      params: {
+        membershipId: selectedMembershipId,
       },
     })
       .then((res) => {
@@ -38,8 +47,7 @@ function Daymanagement() {
       .catch((err) => {
         console.error("🔴 수업 가져오기 실패", err);
       });
-  }, []);
-  
+  }, [selectedMembershipId]);
 
   const handleSelectClass = (type) => {
     setSelectedClass(type);
