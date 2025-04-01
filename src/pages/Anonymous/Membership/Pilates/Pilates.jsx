@@ -3,8 +3,8 @@ import React, { useState, useContext } from "react";
 import * as PortOne from "@portone/browser-sdk/v2";
 import { v4 as uuid } from "uuid";
 import * as s from "./style";
-import axios from "../../../../apis/axiosInstance";
 import { AuthContext } from "../../../../context/AuthContext";
+import { postHealthPayment } from "../../../../apis/payApi"; // ✅ API 분리된 부분
 
 const plans = [
   { name: "BASIC", sessions: 12, bonus: "+ 헬스 1개월", price: "₩360,000", amount: 360000 },
@@ -62,13 +62,13 @@ const Pilates = () => {
         reqPayDto: {
           uuid: paymentId,
           userId: user_id,
-          managerId: 5, // 필라테스는 트레이너 없음
+          managerId: 5, // 필라테스는 고정 트레이너 ID
           promotionId: promotion_id,
           paymentMethod: payMethodName,
         },
       };
 
-      await axios.post("/api/makefitness/pay", payload);
+      await postHealthPayment(payload); // ✅ API 분리 사용
 
       alert("필라테스 결제가 완료되었습니다!");
 
