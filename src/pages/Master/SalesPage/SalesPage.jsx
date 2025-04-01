@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from "react";
-import * as s from "./style";import { fetchSalesReport } from "../../../apis/salesApi";
- // ✅ API 분리 후 import
+import * as s from "./style";
+import { fetchSalesReport } from "../../../apis/salesApi";
 
 const SalesPage = () => {
     const [startDate, setStartDate] = useState("");
@@ -22,9 +22,6 @@ const SalesPage = () => {
                 const pt = row.ptTotalAmount ?? 0;
                 const pilates = row.pltTotalAmount ?? 0;
                 const fitness = row.htTotalAmount ?? 0;
-                const refund = 0;
-                const gear = 0;
-                const pass = total - pt - pilates - fitness - refund - gear;
 
                 return {
                     date: row.date.slice(0, 10),
@@ -32,10 +29,6 @@ const SalesPage = () => {
                     pt,
                     pilates,
                     fitness,
-                    refund,
-                    gear,
-                    pass,
-                    personal: 0,
                 };
             });
 
@@ -49,24 +42,16 @@ const SalesPage = () => {
     const total = filtered.reduce(
         (acc, row) => {
             acc.totalAmount += row.totalAmount;
-            acc.pass += row.pass;
             acc.pt += row.pt;
             acc.pilates += row.pilates;
-            acc.refund += row.refund;
             acc.fitness += row.fitness;
-            acc.personal += row.personal;
-            acc.gear += row.gear;
             return acc;
         },
         {
             totalAmount: 0,
-            pass: 0,
             pt: 0,
             pilates: 0,
-            refund: 0,
             fitness: 0,
-            personal: 0,
-            gear: 0,
         }
     );
 
@@ -93,8 +78,8 @@ const SalesPage = () => {
                 <thead>
                     <tr>
                         <th>날짜</th>
-                        <th>매출</th>
-                        <th>회원권</th>
+                        <th>총매출</th>
+                        <th>헬스</th>
                         <th>PT</th>
                         <th>필라테스</th>
                     </tr>
@@ -104,15 +89,15 @@ const SalesPage = () => {
                         <tr key={index}>
                             <td>{row.date}</td>
                             <td>{toComma(row.totalAmount)}</td>
-                            <td>{toComma(row.pass)}</td>
+                            <td>{toComma(row.fitness)}</td>
                             <td>{toComma(row.pt)}</td>
                             <td>{toComma(row.pilates)}</td>
                         </tr>
                     ))}
                     <tr>
-                        <td><strong>총합계</strong></td>
+                        <th>총합계</th>
                         <td>{toComma(total.totalAmount)}</td>
-                        <td>{toComma(total.pass)}</td>
+                        <td>{toComma(total.fitness)}</td>
                         <td>{toComma(total.pt)}</td>
                         <td>{toComma(total.pilates)}</td>
                     </tr>
