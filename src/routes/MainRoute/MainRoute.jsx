@@ -17,6 +17,7 @@ import Pt from '../../pages/Anonymous/Membership/Pt/Pt.jsx';
 import SelectTrainer from '../../pages/Anonymous/Membership/SelectTrainer/SelectTrainer.jsx';
 import Reservations from '../../pages/Reservations/Reservations.jsx';
 import MemberManagement from '../../pages/MemberManagement/MemberManagement.jsx'
+import Hmembership from '../../pages/Anonymous/Membership/Hmembership/Hmembership.jsx'
 
 function MainRoute() {
     return (
@@ -25,6 +26,7 @@ function MainRoute() {
                 <Route path="*" element={<MainPage />} />
                 <Route path="makefitness/membership" element={<Membership />} />
                 <Route path="makefitness/map" element={<MapPage />} />
+                <Route path="makefitness/hmembership" element={<Hmembership />} />
                 <Route path="makefitness/mypage" element={<MyPage />} />
                 <Route path="makefitness/trainerpage" element={<TrainerPage />} />
                 <Route path="makefitness/pilates" element={<Pilates />} />
