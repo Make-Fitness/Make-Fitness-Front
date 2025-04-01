@@ -28,11 +28,21 @@ function Reservation() {
   };
 
   useEffect(() => {
-    axios.get("/api/reservation")
+    const token = localStorage.getItem("accessToken"); 
+
+    if (!token || typeof token !== "string" || token.length < 20) {
+      console.error("유효하지 않은 토큰입니다. 다시 로그인하세요.");
+      return;
+    }
+
+    axios.get("/api/makefitness/reservations/available-promotions", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => {
-        setInstructorId(res.data.id);
-        setClassData(res.data.classList || []);
-        setPromotionData(res.data.promotionList || []);
+        console.log("프로모션 데이터:", res.data);
+        setPromotionData(res.data || []);
       })
       .catch((err) => {
         console.error("강사 및 예약 정보 불러오기 실패", err);
@@ -45,7 +55,6 @@ function Reservation() {
 
   const handleCancelDashboard = (id) => {
     console.log("대시보드 예약 취소, id =", id);
-    // axios.delete(`/api/reservation/${id}`) 등 실제 API 호출 가능
   };
 
   const handleSelectClass = (type) => {
@@ -54,7 +63,6 @@ function Reservation() {
 
   const handleCancelReservation = (id) => {
     console.log("예약 관리 페이지 예약 취소, id =", id);
-    // axios.delete(`/api/reservation/${id}`) 등 실제 API 호출 가능
   };
 
   if (view === "dashboard") {
@@ -74,20 +82,22 @@ function Reservation() {
               <th css={s.tableHeader}>내프로모션</th>
               <th css={s.tableHeader}>강사이름</th>
               <th css={s.tableHeader}>남은세션</th>
-              <th css={s.tableHeader}>남은세션타임</th>
+              <th css={s.tableHeader}>만료일</th>
               <th css={s.tableHeader} style={{ textAlign: "right" }}>확인</th>
             </tr>
           </thead>
           <tbody>
             {promotionData.map((item) => (
-              <tr key={item.id}>
-                <td css={s.tableCell}>{item.promotion}</td>
-                <td css={s.tableCell}>{item.instructor}</td>
-                <td css={s.tableCell}>{item.remainingSessions}</td>
-                <td css={s.tableCell}>{item.remainingSessionTime}</td>
+              <tr key={item.membershipId}>
+                <td css={s.tableCell}>{item.promotionName}</td>
+                <td css={s.tableCell}>{item.trainerName}</td>
+                <td css={s.tableCell}>{item.remainingSessionCount}</td>
+                <td css={s.tableCell}>
+                  {item.expiredDate ? new Date(item.expiredDate).toLocaleString("ko-KR") : "없음"}
+                </td>
                 <td css={s.tableCell} style={{ textAlign: "right" }}>
                   <button onClick={handleReserveDashboard} css={s.button}>예약하기</button>
-                  <button onClick={() => handleCancelDashboard(item.id)} css={s.button}>예약 취소</button>
+                  <button onClick={() => handleCancelDashboard(item.membershipId)} css={s.button}>예약 취소</button>
                 </td>
               </tr>
             ))}
