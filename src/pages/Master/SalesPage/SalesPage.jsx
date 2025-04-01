@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from "react";
-import axios from "axios";
-import * as s from "./style";
+import * as s from "./style";import { fetchSalesReport } from "../../../apis/salesApi";
+ // ✅ API 분리 후 import
 
 const SalesPage = () => {
     const [startDate, setStartDate] = useState("");
@@ -14,27 +14,35 @@ const SalesPage = () => {
         if (!startDate || !endDate) return;
 
         try {
-            const res = await axios.get("/api/makefitness/admin/sales/report", {
-                params: { startDate, endDate }
-              });
-              
-              console.log("📦 매출 응답:", res.data);
-              
-              const result = res.data.data.map((row) => ({
-                date: row.date.slice(0, 10),
-                totalAmount: row.totalSales,
-                pass: row.totalSales - row.ptSales - row.pilatesSales - row.healthSales - row.refundAmount - row.gearSales,
-                pt: row.ptSales,
-                pilates: row.pilatesSales,
-                refund: row.refundAmount,
-                fitness: row.healthSales,
-                personal: 0,
-                gear: row.gearSales,
-              }));
+            const rows = await fetchSalesReport(startDate, endDate);
+            console.log("📦 매출 응답:", rows);
+
+            const result = rows.map((row) => {
+                const total = row.totalAmount ?? 0;
+                const pt = row.ptTotalAmount ?? 0;
+                const pilates = row.pltTotalAmount ?? 0;
+                const fitness = row.htTotalAmount ?? 0;
+                const refund = 0;
+                const gear = 0;
+                const pass = total - pt - pilates - fitness - refund - gear;
+
+                return {
+                    date: row.date.slice(0, 10),
+                    totalAmount: total,
+                    pt,
+                    pilates,
+                    fitness,
+                    refund,
+                    gear,
+                    pass,
+                    personal: 0,
+                };
+            });
 
             setFiltered(result);
         } catch (err) {
             console.error("매출 데이터 조회 실패:", err);
+            setFiltered([]);
         }
     };
 
@@ -78,7 +86,7 @@ const SalesPage = () => {
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
                 />
-                <button onClick={handleFilter}>기간적용</button>
+                <button onClick={handleFilter} css={s.button}>기간적용</button>
             </div>
 
             <table css={s.salesTable}>
@@ -89,8 +97,6 @@ const SalesPage = () => {
                         <th>회원권</th>
                         <th>PT</th>
                         <th>필라테스</th>
-                        <th>환불</th>
-                        <th>기타</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -101,8 +107,6 @@ const SalesPage = () => {
                             <td>{toComma(row.pass)}</td>
                             <td>{toComma(row.pt)}</td>
                             <td>{toComma(row.pilates)}</td>
-                            <td>{toComma(row.refund)}</td>
-                            <td>{toComma(row.gear)}</td>
                         </tr>
                     ))}
                     <tr>
@@ -111,8 +115,6 @@ const SalesPage = () => {
                         <td>{toComma(total.pass)}</td>
                         <td>{toComma(total.pt)}</td>
                         <td>{toComma(total.pilates)}</td>
-                        <td>{toComma(total.refund)}</td>
-                        <td>{toComma(total.gear)}</td>
                     </tr>
                 </tbody>
             </table>
