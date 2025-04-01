@@ -3,11 +3,21 @@ import React, { useMemo, useState, useEffect } from "react";
 import axios from "axios";
 import * as s from "./style";
 
+<<<<<<< HEAD
 function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, setCurrentDate }) {
   const [currentDate, setCurrentDateState] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+=======
+function Daymanagement() {
+  const [selectedClass, setSelectedClass] = useState("pt");
+  const [scheduleData, setScheduleData] = useState({});
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [managerId, setManagerId] = useState(null);
+  const [classData, setClassData] = useState([]);
+  const [selectedReservations, setSelectedReservations] = useState([]);
+>>>>>>> 255edfb944657c8687200207b94f3e0a0418badd
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -17,6 +27,7 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, se
   const calendarDays = ["일", "월", "화", "수", "목", "금", "토"];
   const titleText = `${year}년 ${formattedMonth}월 스케줄`;
 
+<<<<<<< HEAD
   const calendarCells = useMemo(() => {
     const blanks = Array(firstDay).fill(null);
     const dates = Array.from({ length: lastDate }, (_, i) => i + 1);
@@ -76,6 +87,37 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, se
       return { ...prev, [day]: updatedDay };
     });
   };
+=======
+  useEffect(() => {
+    setManagerId(1);
+  }, []);
+
+  useEffect(() => {
+    console.log("🟡 Daymanagement useEffect 실행됨");
+    const token = localStorage.getItem("accessToken");
+    if (!token) return;
+  
+    axios.get("/api/makefitness/reservation/today", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        console.log("🟢 오늘 수업:", res.data);
+        setClassData(res.data || []);
+      })
+      .catch((err) => {
+        console.error("🔴 수업 가져오기 실패", err);
+      });
+  }, []);
+  
+
+  const handleSelectClass = (type) => {
+    setSelectedClass(type);
+  };
+
+  const todayString = new Date().toISOString().slice(0, 10);
+>>>>>>> 255edfb944657c8687200207b94f3e0a0418badd
 
   return (
     <div css={s.calendarWrapper}>
@@ -85,6 +127,7 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, se
         <button onClick={handleNextMonth} css={s.button}>▶</button>
       </div>
 
+<<<<<<< HEAD
       <div css={s.calendarGrid}>
         {calendarDays.map((day, idx) => {
           const dayColor = idx === 0 ? "red" : idx === 6 ? "blue" : "#333";
@@ -155,6 +198,37 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, se
           </div>
         </div>
       )}
+=======
+      <div css={s.contentWrapper}>
+        <div css={s.box}>
+          <Calendar
+            scheduleColor={colorMap[selectedClass]}
+            isEditable={true}
+            scheduleData={scheduleData}
+            setScheduleData={setScheduleData}
+            setCurrentDate={setCurrentDate}
+          />
+        </div>
+
+        <div css={s.reservationListWrapper}>
+          <h5>오늘 스케줄</h5>
+          {classData.length === 0 ? (
+            <p>오늘은 예약이 없습니다.</p>
+          ) : (
+            <ul css={s.reservationList}>
+              {classData.map((item, index) => (
+                <li key={index} css={s.reservationItem}>
+                  {new Date(item.classTime).toLocaleTimeString("ko-KR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+>>>>>>> 255edfb944657c8687200207b94f3e0a0418badd
     </div>
   );
 }
