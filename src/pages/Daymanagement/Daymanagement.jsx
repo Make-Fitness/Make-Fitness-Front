@@ -1,203 +1,157 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import axios from "axios";
 import * as s from "./style";
-import Calendar from "../../components/common/Calendar/Calendar";
 
-function Daymanagement() {
-  const [selectedClass, setSelectedClass] = useState("pt");
-  const [scheduleData, setScheduleData] = useState({});
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [isModalOpen, setIsModalOpen] = useState(false);
+function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, setCurrentDate }) {
+  const [currentDate, setCurrentDateState] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
-  const [managerId, setManagerId] = useState(null);
-  const [classData, setClassData] = useState([]);
-  const [selectedReservations, setSelectedReservations] = useState([]);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const colorMap = {
-    pt: "#87CEEB",
-    pilates: "#FFC0CB",
-  };
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const formattedMonth = (month + 1).toString().padStart(2, "0");
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
+  const calendarDays = ["일", "월", "화", "수", "목", "금", "토"];
+  const titleText = `${year}년 ${formattedMonth}월 스케줄`;
 
-  // ⭐ 매니저 ID 임시 설정 (로그인 연동 시 삭제 예정)
-  useEffect(() => {
-    setManagerId(1); // or 2
-  }, []);
+  const calendarCells = useMemo(() => {
+    const blanks = Array(firstDay).fill(null);
+    const dates = Array.from({ length: lastDate }, (_, i) => i + 1);
+    return [...blanks, ...dates];
+  }, [firstDay, lastDate]);
 
-  // 예약 데이터 POST
-  useEffect(() => {
-    if (Object.keys(scheduleData).length > 0) {
-      axios
-        .post("/api/makefitness/reservation", scheduleData)
-        .then((response) => console.log("예약 내역 전송 성공:", response.data))
-        .catch((error) => console.error("예약 내역 전송 실패:", error));
+  const getCellStyle = (dateNumber) => {
+    const dateStr = `${year}-${formattedMonth}-${String(dateNumber).padStart(2, "0")}`;
+    let style = { position: "relative" };
+    if (scheduleData[dateStr] && scheduleData[dateStr].length > 0) {
+      style.backgroundColor = scheduleColor;
+    } else {
+      style.backgroundColor = "#fff";
     }
-  }, [scheduleData]);
-
-  const handleSelectClass = (type) => {
-    setSelectedClass(type);
+    return style;
   };
 
-  const handleDateClick = (date) => {
-    setSelectedDate(date);
+  const handleCellClick = (dateNumber) => {
+    if (!dateNumber) return;
+    const dateStr = `${year}-${formattedMonth}-${String(dateNumber).padStart(2, "0")}`;
+    setSelectedDate(dateStr);
     setIsModalOpen(true);
   };
 
-  const handleCancel = (day, time) => {
-    setScheduleData((prev) => {
-      const daySchedules = prev[day];
-      if (!daySchedules || !Array.isArray(daySchedules)) return prev;
-      const updatedDaySchedules = daySchedules.filter((item) => item.time !== time);
-      return { ...prev, [day]: updatedDaySchedules };
-    });
-
-    const identifier = `${day}-${time}`;
-    setSelectedReservations((prev) => prev.filter((id) => id !== identifier));
-
-    axios
-      .delete(`/api/makefitness/reservation/${identifier}`)
-      .then((response) => console.log("예약 취소 성공:", response.data))
-      .catch((error) => console.error("예약 취소 실패:", error));
+  const handleTimeSelect = (hour) => {
+    setSelectedTime(hour);
   };
 
-  const handleCheckboxChange = (day, time) => {
-    const identifier = `${day}-${time}`;
-    setSelectedReservations((prevSelected) => {
-      if (prevSelected.includes(identifier)) {
-        return prevSelected.filter((item) => item !== identifier);
-      } else {
-        return [...prevSelected, identifier];
-      }
-    });
-  };
-
-  const handleSelectAll = () => {
-    const todayIdentifiers = todayReservations.map((reservation) => `${todayString}-${reservation.time}`);
-    const allSelected = todayIdentifiers.every((id) => selectedReservations.includes(id));
-    if (allSelected) {
-      setSelectedReservations((prev) => prev.filter((id) => !todayIdentifiers.includes(id)));
-    } else {
-      setSelectedReservations((prev) => Array.from(new Set([...prev, ...todayIdentifiers])));
+  const handleReserve = () => {
+    if (selectedDate && selectedTime != null) {
+      const updated = {
+        ...scheduleData,
+        [selectedDate]: [...(scheduleData[selectedDate] || []), { time: `${selectedTime}:00` }],
+      };
+      setScheduleData(updated);
+      setIsModalOpen(false);
+      setSelectedTime(null);
     }
   };
 
-  const todayString = new Date().toISOString().slice(0, 10);
-  const todayReservations = scheduleData[todayString] || [];
-  const selectedDaySchedule = selectedDate && scheduleData[selectedDate] ? scheduleData[selectedDate] : [];
+  const handlePrevMonth = () => {
+    const prevMonthDate = new Date(year, month - 1, 1);
+    setCurrentDateState(prevMonthDate);
+    setCurrentDate(prevMonthDate);
+  };
+
+  const handleNextMonth = () => {
+    const nextMonthDate = new Date(year, month + 1, 1);
+    setCurrentDateState(nextMonthDate);
+    setCurrentDate(nextMonthDate);
+    setScheduleData({});
+  };
+
+  const handleCancelFromCalendar = (day, time) => {
+    setScheduleData((prev) => {
+      const updatedDay = prev[day]?.filter((item) => item.time !== time) || [];
+      return { ...prev, [day]: updatedDay };
+    });
+  };
 
   return (
-    <div css={s.container}>
-      <h1 css={s.title}>수업 관리 (매니저 모드)</h1>
-      <p css={s.description}>회원 수업 등록 및 취소 관리, 예약 일정을 캘린더에 표시합니다.</p>
-
-      <div css={s.buttonWrapper}>
-        {managerId === 1 && (
-          <button
-            css={s.button}
-            style={{ backgroundColor: selectedClass === "pt" ? "#b71c1c" : "#444" }}
-            onClick={() => handleSelectClass("pt")}
-          >
-            PT
-          </button>
-        )}
-        {managerId === 2 && (
-          <button
-            css={s.button}
-            style={{ backgroundColor: selectedClass === "pilates" ? "#b71c1c" : "#444" }}
-            onClick={() => handleSelectClass("pilates")}
-          >
-            필라테스
-          </button>
-        )}
+    <div css={s.calendarWrapper}>
+      <div css={s.calendarHeader}>
+        <button onClick={handlePrevMonth} css={s.button}>◀</button>
+        <h2 css={s.titleBlack}>{titleText}</h2>
+        <button onClick={handleNextMonth} css={s.button}>▶</button>
       </div>
 
-      <div css={s.contentWrapper}>
-        <div css={s.box}>
-          <Calendar
-            scheduleColor={colorMap[selectedClass]}
-            isEditable={true}
-            scheduleData={scheduleData}
-            setScheduleData={setScheduleData}
-            setCurrentDate={setCurrentDate}
-            onDateClick={handleDateClick}
-          />
-        </div>
+      <div css={s.calendarGrid}>
+        {calendarDays.map((day, idx) => {
+          const dayColor = idx === 0 ? "red" : idx === 6 ? "blue" : "#333";
+          return (
+            <div key={idx} css={[s.calendarDayHeader, { color: dayColor }]}>{day}</div>
+          );
+        })}
 
-        <div css={s.reservationListWrapper}>
-          <h5>오늘 내 스케줄</h5>
-          {todayReservations.length === 0 ? (
-            <p>오늘 예약이 없습니다.</p>
-          ) : (
-            <>
-              <div css={s.checkboxContainer}>
-                <input
-                  type="checkbox"
-                  checked={
-                    todayReservations.length > 0 &&
-                    todayReservations.every((reservation) =>
-                      selectedReservations.includes(`${todayString}-${reservation.time}`)
-                    )
-                  }
-                  onChange={handleSelectAll}
-                />
-                <span style={{ marginLeft: "0.5rem" }}>전체선택</span>
-              </div>
-              <ul css={s.reservationList}>
-                {todayReservations.map((reservation, index) => {
-                  const identifier = `${todayString}-${reservation.time}`;
-                  return (
-                    <li key={index} css={s.reservationItem}>
-                      <input
-                        type="checkbox"
-                        checked={selectedReservations.includes(identifier)}
-                        onChange={() => handleCheckboxChange(todayString, reservation.time)}
-                      />
-                      <span css={s.reservationText}>
-                        {todayString} {reservation.time} - {reservation.name ?? ""}
-                      </span>
-                      <button css={s.cancelButton} onClick={() => handleCancel(todayString, reservation.time)}>
-                        취소
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            </>
-          )}
-        </div>
+        {calendarCells.map((dateNum, idx) => {
+          if (!dateNum) return <div key={idx} css={s.emptyCell}></div>;
+          const dayIndex = idx % 7;
+          const textColor = dayIndex === 0 ? "red" : dayIndex === 6 ? "blue" : "black";
+          const dateStr = `${year}-${formattedMonth}-${String(dateNum).padStart(2, "0")}`;
+
+          return (
+            <div
+              key={idx}
+              css={[s.calendarDateCell, getCellStyle(dateNum), { color: textColor }]}
+              onClick={() => handleCellClick(dateNum)}
+            >
+              {dateNum}
+              {scheduleData[dateStr]?.length > 0 && (
+                <>
+                  <span css={s.checkMark}>✔</span>
+                  <div>
+                    {scheduleData[dateStr].map((entry, idx2) => (
+                      <div key={idx2}>
+                        <span style={{ fontSize: '0.7rem' }}>{entry.time}</span>
+                        <button
+                          css={s.cancelButton}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCancelFromCalendar(dateStr, entry.time);
+                          }}
+                        >
+                          취소
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {isModalOpen && (
         <div css={s.modalOverlay} onClick={() => setIsModalOpen(false)}>
           <div css={s.modalContent} onClick={(e) => e.stopPropagation()}>
-            <h2>{selectedDate} 일정</h2>
-            {selectedDaySchedule.length > 0 ? (
-              <ul>
-                {selectedDaySchedule.map((reservation, index) => {
-                  const identifier = `${selectedDate}-${reservation.time}`;
-                  return (
-                    <li key={index}>
-                      <input
-                        type="checkbox"
-                        checked={selectedReservations.includes(identifier)}
-                        onChange={() => handleCheckboxChange(selectedDate, reservation.time)}
-                      />
-                      <span css={s.reservationText}>
-                        {reservation.time} - {reservation.name ?? ""}
-                      </span>
-                      <button css={s.button2} onClick={() => handleCancel(selectedDate, reservation.time)}>
-                        취소
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            ) : (
-              <p>예약된 일정이 없습니다.</p>
+            <h2>{selectedDate} 수업 시간 선택</h2>
+            <div css={s.timeSlotContainer}>
+              {Array.from({ length: 19 }, (_, i) => i + 6).map((hour) => (
+                <button
+                  key={hour}
+                  css={[s.button, selectedTime === hour && { backgroundColor: '#b71c1c' }]}
+                  onClick={() => handleTimeSelect(hour)}
+                >
+                  {hour.toString().padStart(2, "0")}:00
+                </button>
+              ))}
+            </div>
+            {selectedTime != null && (
+              <div css={s.buttonbox}>
+                <button css={s.button} onClick={handleReserve}>예약 선택</button>
+              </div>
             )}
-            <button css={s.button2} onClick={() => setIsModalOpen(false)}>
-              닫기
-            </button>
           </div>
         </div>
       )}
@@ -205,4 +159,4 @@ function Daymanagement() {
   );
 }
 
-export default Daymanagement;
+export default Calendar;

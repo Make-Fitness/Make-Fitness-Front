@@ -2,16 +2,12 @@
 import React, { useMemo, useState } from "react";
 import * as s from "./style";
 
-function Calendar({
-  scheduleColor,
-  isEditable,
-  scheduleData,
-  setScheduleData,
-  setCurrentDate,
-  onDateClick,
-}) {
-  // 현재 날짜를 상태로 관리하여 달 이동이 가능하도록 함
+function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, userRole }) {
   const [currentDate, setCurrentDateState] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const formattedMonth = (month + 1).toString().padStart(2, "0");
@@ -20,14 +16,12 @@ function Calendar({
   const calendarDays = ["일", "월", "화", "수", "목", "금", "토"];
   const titleText = `${year}년 ${formattedMonth}월 스케줄`;
 
-  // 달력에 표시할 셀(빈 칸 + 실제 날짜)
   const calendarCells = useMemo(() => {
     const blanks = Array(firstDay).fill(null);
     const dates = Array.from({ length: lastDate }, (_, i) => i + 1);
     return [...blanks, ...dates];
   }, [firstDay, lastDate]);
 
-  // 해당 날짜에 예약이 있으면 scheduleColor, 없으면 흰색
   const getCellStyle = (dateNumber) => {
     const dateStr = `${year}-${formattedMonth}-${String(dateNumber).padStart(2, "0")}`;
     let style = { position: "relative" };
@@ -42,73 +36,95 @@ function Calendar({
   const handleCellClick = (dateNumber) => {
     if (!dateNumber) return;
     const dateStr = `${year}-${formattedMonth}-${String(dateNumber).padStart(2, "0")}`;
-    onDateClick && onDateClick(dateStr);
+    setSelectedDate(dateStr);
+    setIsModalOpen(true);
   };
 
-  // 이전 달로 이동
+  const handleTimeSelect = (hour) => {
+    setSelectedTime(hour);
+  };
+
+  const handleReserve = () => {
+    if (selectedDate && selectedTime != null) {
+      const updated = {
+        ...scheduleData,
+        [selectedDate]: [...(scheduleData[selectedDate] || []), { time: `${selectedTime}:00` }],
+      };
+      setScheduleData(updated);
+      setIsModalOpen(false);
+      setSelectedTime(null);
+    }
+  };
+
   const handlePrevMonth = () => {
     const prevMonthDate = new Date(year, month - 1, 1);
     setCurrentDateState(prevMonthDate);
-    // 필요 시 이전 달 이동 시에도 스케줄 초기화 처리 가능
-    // setScheduleData({});
   };
 
-  // 다음 달로 이동: 달 이동 시 스케줄 데이터 초기화
   const handleNextMonth = () => {
     const nextMonthDate = new Date(year, month + 1, 1);
     setCurrentDateState(nextMonthDate);
-    // 달 이동 시 모든 스케줄 데이터 초기화
     setScheduleData({});
   };
 
   return (
     <div css={s.calendarWrapper}>
       <div css={s.calendarHeader}>
-        {/* 이전 달 이동 버튼 */}
-        <button onClick={handlePrevMonth} css={s.button}>
-          ◀
-        </button>
+        <button onClick={handlePrevMonth} css={s.button}>◀</button>
         <h2 css={s.titleBlack}>{titleText}</h2>
-        {/* 다음 달 이동 버튼 */}
-        <button onClick={handleNextMonth} css={s.button}>
-          ▶
-        </button>
+        <button onClick={handleNextMonth} css={s.button}>▶</button>
       </div>
 
       <div css={s.calendarGrid}>
         {calendarDays.map((day, idx) => {
           const dayColor = idx === 0 ? "red" : idx === 6 ? "blue" : "#333";
           return (
-            <div key={idx} css={[s.calendarDayHeader, { color: dayColor }]}>
-              {day}
-            </div>
+            <div key={idx} css={[s.calendarDayHeader, { color: dayColor }]}>{day}</div>
           );
         })}
 
-        {/* 날짜 셀 */}
         {calendarCells.map((dateNum, idx) => {
-          if (!dateNum) {
-            return <div key={idx} css={s.emptyCell}></div>;
-          }
+          if (!dateNum) return <div key={idx} css={s.emptyCell}></div>;
           const dayIndex = idx % 7;
           const textColor = dayIndex === 0 ? "red" : dayIndex === 6 ? "blue" : "black";
           return (
             <div
               key={idx}
-              css={[
-                s.calendarDateCell,
-                getCellStyle(dateNum),
-                { color: textColor },
-              ]}
+              css={[s.calendarDateCell, getCellStyle(dateNum), { color: textColor }]}
               onClick={() => handleCellClick(dateNum)}
             >
               {dateNum}
-              {scheduleData[`${year}-${formattedMonth}-${String(dateNum).padStart(2, "0")}`]
-                ?.length > 0 && <span css={s.checkMark}>✔</span>}
+              {scheduleData[`${year}-${formattedMonth}-${String(dateNum).padStart(2, "0")}`]?.length > 0 && (
+                <span css={s.checkMark}>✔</span>
+              )}
             </div>
           );
         })}
       </div>
+
+      {isModalOpen && (
+        <div css={s.modalOverlay} onClick={() => setIsModalOpen(false)}>
+          <div css={s.modalContent} onClick={(e) => e.stopPropagation()}>
+            <h2>{selectedDate} 수업 시간 선택</h2>
+            <div css={s.timeSlotContainer}>
+              {Array.from({ length: 19 }, (_, i) => i + 6).map((hour) => (
+                <button
+                  key={hour}
+                  css={[s.button, selectedTime === hour && { backgroundColor: '#b71c1c' }]}
+                  onClick={() => handleTimeSelect(hour)}
+                >
+                  {hour.toString().padStart(2, "0")}:00
+                </button>
+              ))}
+            </div>
+            {selectedTime != null && (
+              <div css={s.buttonbox}>
+                <button css={s.button} onClick={handleReserve}>예약 선택</button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

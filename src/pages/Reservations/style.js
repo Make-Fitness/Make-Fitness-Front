@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 
 export const container = css`
-  width: 100%;
+  width: 70%
   min-height: 80vh;
   background-color: #000;
   color: #fff;
@@ -36,6 +36,10 @@ export const button = css`
   background-color: black !important;
   font-size: 1rem;
   cursor: pointer;
+
+  &:hover {
+    background-color: #b71c1c !important;
+  }
 `;
 
 export const contentWrapper = css`
@@ -94,7 +98,7 @@ export const reservationListWrapper = css`
   border-radius: 10px;
   padding: 1rem;
   border: 1px solid #666;
-  color: #fff in !important;
+  color: #fff !important;
   width: 250px;
   height: 400px;
   display: flex;
@@ -119,4 +123,19 @@ export const reservationItem = css`
   justify-content: space-between;
 `;
 
+export const tableHeader = css`
+  border: 1px solid #999;
+  padding: 12px;
+  background-color: #222;
+  color: #fff;
+  text-align: center;
+  font-size: 1.3rem;
+`;
 
+export const tableCell = css`
+  border: 1px solid #444;
+  padding: 12px;
+  text-align: center;
+  color: #fff;
+  font-size: 1.3rem;
+`;
