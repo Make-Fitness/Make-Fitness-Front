@@ -4,7 +4,7 @@ import * as s from './style';
 import React, { useContext } from 'react';
 import * as PortOne from "@portone/browser-sdk/v2";
 import { v4 as uuid } from "uuid";
-import axios from '../../../../src/apis/axiosInstance';
+import { postHealthPayment } from '../../../../src/apis/payApi'; // ✅ axios 분리된 함수 import
 import { AuthContext } from '../../../../src/context/AuthContext'; // 상대경로로 수정
 
 function Membership() {
@@ -61,9 +61,9 @@ function Membership() {
         },
       };
 
-      await axios.post("/api/makefitness/pay", payload);
-      alert("1회 이용권 결제가 완료되었습니다!");
+      await postHealthPayment(payload); // ✅ axios 호출 분리
 
+      alert("1회 이용권 결제가 완료되었습니다!");
     } catch (error) {
       console.error("결제 실패:", error);
       alert("결제에 실패했습니다. 다시 시도해주세요.");

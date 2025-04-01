@@ -1,11 +1,10 @@
-/** Pt.jsx */
 /** @jsxImportSource @emotion/react */
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import * as PortOne from "@portone/browser-sdk/v2";
 import { v4 as uuid } from "uuid";
 import * as s from "./style";
-import axios from "../../../../apis/axiosInstance";
+import { postHealthPayment } from "../../../../apis/payApi"; // ✅ axios 분리된 API 호출
 
 const plans = [
   { name: "BASIC", sessions: 12, bonus: "+ 헬스 1개월", price: "₩840,000", amount: 840000 },
@@ -24,7 +23,11 @@ const Pt = () => {
 
   const handlePayment = async () => {
     const plan = plans.find(p => p.sessions === selectedPlan);
-    if (!plan) return;
+    if (!plan || !user_id || !manager_id) {
+      alert("로그인 또는 트레이너 정보가 필요합니다.");
+      console.log("❌ 유효하지 않은 정보:", plan, user_id, manager_id);
+      return;
+    }
 
     const promotion_id = promotionMap[selectedPlan];
     const paymentId = uuid();
@@ -38,7 +41,7 @@ const Pt = () => {
         totalAmount: plan.amount,
         currency: "CURRENCY_KRW",
         payMethod: "EASY_PAY",
-        easyPay: { provider: "KAKAOPAY" },
+        easyPay: { provider: payMethodName },
         channelKey: "channel-key-2ddfd112-33ac-4c5d-8d4d-a98848300f31",
         customer: {
           customerId: user_id,
@@ -62,7 +65,6 @@ const Pt = () => {
 
       console.log("결제 성공 응답:", paymentResponse);
 
-      // ✅ DTO 구조에 맞춰 최종 payload 생성
       const payload = {
         reqMembershipDto: {
           userId: user_id,
@@ -77,12 +79,11 @@ const Pt = () => {
         },
       };
 
-      await axios.post("/api/makefitness/pay", payload);
+      await postHealthPayment(payload); // ✅ API 호출 분리
 
       alert("결제가 완료되었습니다!");
-
     } catch (error) {
-      console.error("결제 실패:", error);
+      console.error("❌ 결제 실패:", error);
       alert("결제에 실패했습니다. 다시 시도해주세요.");
     }
   };
@@ -108,7 +109,9 @@ const Pt = () => {
           ))}
         </div>
         {selectedPlan && (
-          <button css={s.purchaseBtn} onClick={handlePayment}>구매하기</button>
+          <button css={s.purchaseBtn} onClick={handlePayment}>
+            구매하기
+          </button>
         )}
       </div>
     </div>

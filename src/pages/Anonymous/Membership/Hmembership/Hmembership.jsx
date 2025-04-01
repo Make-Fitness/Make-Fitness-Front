@@ -3,8 +3,8 @@ import React, { useState, useContext } from "react";
 import * as PortOne from "@portone/browser-sdk/v2";
 import { v4 as uuid } from "uuid";
 import * as s from "./style";
-import axios from "../../../../apis/axiosInstance";
 import { AuthContext } from "../../../../context/AuthContext";
+import { postHealthPayment } from "../../../../apis/payApi"; // ✅ API 분리된 부분
 
 const plans = [
   { name: "BASIC", month: 1, price: "₩120,000", amount: 120000 },
@@ -24,7 +24,7 @@ const HealthMembership = () => {
   const user_id = loginUser?.jti;
 
   const handlePayment = async () => {
-    const plan = plans.find(p => p.month === selectedPlan);
+    const plan = plans.find((p) => p.month === selectedPlan);
     if (!plan || !user_id) {
       alert("로그인이 필요합니다.");
       console.log("❌ 플랜 또는 유저 ID 없음:", plan, user_id);
@@ -37,6 +37,7 @@ const HealthMembership = () => {
 
     try {
       console.log("🟡 결제 시작");
+
       const paymentResponse = await PortOne.requestPayment({
         storeId: import.meta.env.VITE_PORTONE_STOREID,
         paymentId: paymentId,
@@ -76,11 +77,11 @@ const HealthMembership = () => {
         },
       };
 
-      await axios.post("/api/makefitness/pay", payload);
+      await postHealthPayment(payload); // ✅ API 호출 분리
 
       alert("헬스 멤버십 결제가 완료되었습니다!");
     } catch (error) {
-      console.error("결제 실패:", error);
+      console.error("❌ 결제 실패:", error);
       alert("결제에 실패했습니다. 다시 시도해주세요.");
     }
   };
