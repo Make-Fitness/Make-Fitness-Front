@@ -28,14 +28,14 @@ export const MENUS = {
   ],
   manager: [
     {
-      id: "Mmmber_management",
+      id: "member_management",
       name: "회원관리",
       path: "/makefitness/manager/membermanagement",
     },
     {
-      id: "reservations",
+      id: "daymanagement",
       name: "수업관리",
-      path: "/makefitness/reservations",
+      path: "/makefitness/manager/daymanagement",
     },
     {
       id: "review_management",
@@ -57,7 +57,7 @@ export const MENUS = {
     {
       id: "class_reservation",
       name: "수업예약",
-      path: "/makefitness/reservation",
+      path: "/makefitness/reservations",
     },
     {
       id: "membership",

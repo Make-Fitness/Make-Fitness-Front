@@ -11,14 +11,12 @@ import MainContainer from '../../components/common/MainContainer/MainContainer';
 import SalesPage from '../../pages/Master/SalesPage/SalesPage.jsx';
 import MemberPage from '../../pages/Master/MemberPage/MemberPage.jsx';
 import WorkerPage from '../../pages/Master/WorkerPage/Workerpage.jsx';
-import Reservation from '../../pages/Reservation/Reservation.jsx';
-import Hmembership from '../../pages/Anonymous/Membership/Hmembership/Hmembership.jsx';
+import Daymanagement from '../../pages/Daymanagement/Daymanagement.jsx';
 import Pay from '../../Pay.jsx';
 import Pt from '../../pages/Anonymous/Membership/Pt/Pt.jsx';
 import SelectTrainer from '../../pages/Anonymous/Membership/SelectTrainer/SelectTrainer.jsx';
 import Reservations from '../../pages/Reservations/Reservations.jsx';
-import MemberManagement from '../../pages/MemberManagement/MemberManagement.jsx';
-
+import MemberManagement from '../../pages/MemberManagement/MemberManagement.jsx'
 
 function MainRoute() {
     return (
@@ -35,12 +33,11 @@ function MainRoute() {
                 <Route path="makefitness/sales" element={<SalesPage />} />
                 <Route path="makefitness/member" element={<MemberPage />} />
                 <Route path="makefitness/worker" element={<WorkerPage />} />
-                <Route path="makefitness/reservation" element={<Reservation />} />
-                <Route path="makefitness/hmembership" element={<Hmembership />} />
+                <Route path="/makefitness/manager/daymanagement" element={<Daymanagement />} />
                 <Route path="makefitness/pay" element={<Pay />} />
                 <Route path="makefitness/selecttrainer" element={<SelectTrainer />} />
-                <Route path="makefitness/Reservations" element={<Reservations />} />
                 <Route path="makefitness/manager/membermanagement" element={<MemberManagement />} />
+                <Route path="makefitness/reservations" element={<Reservations />} />
             </Routes>
         </MainContainer>
     );

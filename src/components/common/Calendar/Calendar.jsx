@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import * as s from "./style";
 
 function Calendar({
@@ -10,7 +10,8 @@ function Calendar({
   setCurrentDate,
   onDateClick,
 }) {
-  const currentDate = new Date();
+  // 현재 날짜를 상태로 관리하여 달 이동이 가능하도록 함
+  const [currentDate, setCurrentDateState] = useState(new Date());
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const formattedMonth = (month + 1).toString().padStart(2, "0");
@@ -38,20 +39,42 @@ function Calendar({
     return style;
   };
 
-
   const handleCellClick = (dateNumber) => {
     if (!dateNumber) return;
     const dateStr = `${year}-${formattedMonth}-${String(dateNumber).padStart(2, "0")}`;
     onDateClick && onDateClick(dateStr);
   };
 
+  // 이전 달로 이동
+  const handlePrevMonth = () => {
+    const prevMonthDate = new Date(year, month - 1, 1);
+    setCurrentDateState(prevMonthDate);
+    // 필요 시 이전 달 이동 시에도 스케줄 초기화 처리 가능
+    // setScheduleData({});
+  };
+
+  // 다음 달로 이동: 달 이동 시 스케줄 데이터 초기화
+  const handleNextMonth = () => {
+    const nextMonthDate = new Date(year, month + 1, 1);
+    setCurrentDateState(nextMonthDate);
+    // 달 이동 시 모든 스케줄 데이터 초기화
+    setScheduleData({});
+  };
+
   return (
     <div css={s.calendarWrapper}>
       <div css={s.calendarHeader}>
+        {/* 이전 달 이동 버튼 */}
+        <button onClick={handlePrevMonth} css={s.button}>
+          ◀
+        </button>
         <h2 css={s.titleBlack}>{titleText}</h2>
+        {/* 다음 달 이동 버튼 */}
+        <button onClick={handleNextMonth} css={s.button}>
+          ▶
+        </button>
       </div>
 
-     
       <div css={s.calendarGrid}>
         {calendarDays.map((day, idx) => {
           const dayColor = idx === 0 ? "red" : idx === 6 ? "blue" : "#333";
@@ -65,14 +88,10 @@ function Calendar({
         {/* 날짜 셀 */}
         {calendarCells.map((dateNum, idx) => {
           if (!dateNum) {
-        
             return <div key={idx} css={s.emptyCell}></div>;
           }
-
-         
           const dayIndex = idx % 7;
           const textColor = dayIndex === 0 ? "red" : dayIndex === 6 ? "blue" : "black";
-
           return (
             <div
               key={idx}
@@ -84,7 +103,6 @@ function Calendar({
               onClick={() => handleCellClick(dateNum)}
             >
               {dateNum}
-             
               {scheduleData[`${year}-${formattedMonth}-${String(dateNum).padStart(2, "0")}`]
                 ?.length > 0 && <span css={s.checkMark}>✔</span>}
             </div>

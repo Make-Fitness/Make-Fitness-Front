@@ -132,7 +132,8 @@ export const calendarWrapper = css`
 
 export const calendarHeader = css`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1rem;
 `;
 

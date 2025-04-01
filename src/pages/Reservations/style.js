@@ -3,8 +3,8 @@ import { css } from "@emotion/react";
 export const container = css`
   width: 100%;
   min-height: 80vh;
-  background-color: black;
-  color: white;
+  background-color: #000;
+  color: #fff;
   padding: 2rem;
   box-sizing: border-box;
 `;
@@ -23,7 +23,6 @@ export const description = css`
 
 export const buttonWrapper = css`
   display: flex;
-  flex-direction: row;
   justify-content: center;
   gap: 1rem;
   margin-bottom: 2rem;
@@ -33,10 +32,10 @@ export const button = css`
   padding: 1rem 2rem;
   border: none;
   border-radius: 5px;
-  color: #fff;
+  color: #fff !important;
+  background-color: black !important;
+  font-size: 1rem;
   cursor: pointer;
-  background-color: #444;
-  font-size: 1.8rem;
 `;
 
 export const contentWrapper = css`
@@ -48,6 +47,42 @@ export const contentWrapper = css`
   margin-top: 2rem;
 `;
 
+export const leftPane = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #222;
+  border-radius: 10px;
+  padding: 2rem;
+  border: 1px solid #666;
+`;
+
+export const subtitle = css`
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+`;
+
+export const instructorPhotoContainer = css`
+  width: 250px;
+  height: 250px;
+  border: 1px solid #666;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
+
+export const instructorPhotoPlaceholder = css`
+  font-size: 1.2rem;
+  color: #999;
+`;
+
+export const instructorPhotoPreview = css`
+  max-width: 100%;
+  max-height: 100%;
+`;
+
 export const box = css`
   display: flex;
   justify-content: center;
@@ -55,33 +90,17 @@ export const box = css`
 `;
 
 export const reservationListWrapper = css`
-  background-color: #222;
+  background-color: #222 !important;
   border-radius: 10px;
   padding: 1rem;
   border: 1px solid #666;
-  width: 400px;
-  min-height: 490px;
-  margin-top: 5px;
-
-  h3 {
-    display: flex;
-    justify-content: center;
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    margin-left: 1rem;
-  }
-
-  p {
-    display: flex;
-    justify-content: start;
-    font-size: 2rem;
-    margin-left: 1rem;
-  }
-
-  h5 {
-    font-size: 2.5rem;
-    margin-left: 1rem;
-  }
+  color: #fff in !important;
+  width: 250px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
 `;
 
 export const reservationList = css`
@@ -96,52 +115,8 @@ export const reservationItem = css`
   border-bottom: 1px solid #444;
   padding-bottom: 5px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-
-  input[type="checkbox"] {
-    margin-right: 0.5rem;
-  }
 `;
 
-export const modalOverlay = css`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-`;
 
-export const modalContent = css`
-  background: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  width: 350px;
-  max-height: 80vh;
-  overflow-y: auto;
-  outline: black;
-  h2{
-    color: black;
-    font-size: 2rem;
-    margin-left: 4rem;
-  }
-
-  p {
-    font-size: 1.5rem;
-    color: black;
-  
-  }
-  
-`;
-
-export const button2 = css`
-  font-size: 1.5rem;
-  background-color: #444;
-  border-radius: 5px;
-  margin-left: 5rem;
-  margin: 0.5rem;
-`;

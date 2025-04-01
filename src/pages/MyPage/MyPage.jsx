@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import * as s from "./style";
 import Calendar from "../../components/common/Calendar/Calendar";
 
@@ -12,24 +13,33 @@ function MyPage() {
     ph: "",
     password: "",
     confirmPassword: "",
-    classstatus: "", // 실제 권한 정보도 여기 넣어서 사용
+    classstatus: "",
   });
 
-  // 상위에서 예약 데이터를 중앙 관리 (Calendar와 공유)
+  const [membershipInfo, setMembershipInfo] = useState(null);
   const [scheduleData, setScheduleData] = useState({});
 
   useEffect(() => {
     const nickname = localStorage.getItem("nickname") || "";
     const ph = localStorage.getItem("ph") || "";
-    // roleName 키로 저장된 권한 값 가져오기
     const roleName = localStorage.getItem("roleName") || "";
 
     setForm((prev) => ({
       ...prev,
       name: nickname,
       ph: ph,
-      classstatus: roleName // 권한 정보를 classstatus에 저장
+      classstatus: roleName,
     }));
+
+    // 회원권 정보 불러오기
+    axios
+      .get(`/api/makefitness/membership?ph=${ph}`)
+      .then((res) => {
+        setMembershipInfo(res.data); // 예: { promotionName: "30회 PT" }
+      })
+      .catch((err) => {
+        console.error("회원권 정보 불러오기 실패", err);
+      });
   }, []);
 
   const handleChange = (e) => {
@@ -47,7 +57,6 @@ function MyPage() {
     }
   };
 
-  // 예: PT/Pilates의 경우 색상 지정
   const classstatusValue = form.classstatus.trim();
   const scheduleColor =
     classstatusValue === "PT"
@@ -56,13 +65,11 @@ function MyPage() {
       ? "#FFC0CB"
       : "#87CEEB";
 
-  
-    const shouldDisplayMembership = () => {
-      const classstatus = form.classstatus.trim();
-      return classstatus !== "ROLE_MANAGER" && classstatus !== "ROLE_MASTER";
-    };
+  const shouldDisplayMembership = () => {
+    const classstatus = form.classstatus.trim();
+    return classstatus !== "ROLE_MANAGER" && classstatus !== "ROLE_MASTER";
+  };
 
- 
   return (
     <div css={s.topcon}>
       <div css={s.maincontainer}>
@@ -118,16 +125,21 @@ function MyPage() {
         {shouldDisplayMembership() && (
           <>
             <label>이용중인 회원권</label>
-            <input
-              css={s.input2}
-              type="text"
-              name="classstatus"
-              value={form.classstatus}
-              readOnly
-            />
+            {membershipInfo === null ? (
+              <p>회원권 정보를 불러오는 중...</p>
+            ) : (
+              <input
+                css={s.input2}
+                type="text"
+                name="promotionName"
+                value={membershipInfo.promotionName}
+                readOnly
+              />
+            )}
           </>
         )}
       </div>
+
       <div css={s.calendarWrapper}>
         <Calendar
           scheduleColor={scheduleColor}

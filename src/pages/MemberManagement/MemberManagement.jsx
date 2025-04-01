@@ -5,36 +5,34 @@ import React, { useState, useEffect } from "react";
 
 function MemberManagement() {
   const [members, setMembers] = useState([]);
-  const [searchNickname, setSearchNickname] = useState("");
-  const [filteredMembers, setFilteredMembers] = useState([]);
+  const [searchnickname, setSearchnickname] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const membersPerPage = 10;
 
-  useEffect(() => {
-    api.get("/api/user_tb")
+  // 백엔드 API 호출: 검색어가 있을 경우에만 파라미터로 전달합니다.
+  const fetchMembers = (nickname = "") => {
+    const config = {};
+    if (nickname !== "") {
+      config.params = { nickname };
+    }
+    api.get("api/makefitness/manager/membermanagement", config)
       .then((response) => {
         setMembers(response.data);
+        setCurrentPage(1);
       })
       .catch((error) => {
         console.error("데이터를 가져오는 중 오류 발생:", error);
       });
+  };
+
+  // 컴포넌트 마운트 시 전체 회원 데이터를 가져옵니다.
+  useEffect(() => {
+    fetchMembers();
   }, []);
 
-  useEffect(() => {
-    setFilteredMembers(members);
-    setCurrentPage(1);
-  }, [members]);
-
+  // 검색 시 API 호출
   const handleSearch = () => {
-    if (!searchnickname) {
-      setFilteredMembers(members);
-    } else {
-      const result = members.filter((member) =>
-        member.nickname.includes(searchnickname)
-      );
-      setFilteredMembers(result);
-    }
-    setCurrentPage(1);
+    fetchMembers(searchnickname);
   };
 
   const handleKeyPress = (e) => {
@@ -43,10 +41,11 @@ function MemberManagement() {
     }
   };
 
+  // 페이징 처리 (클라이언트 측 페이징 예시)
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
-  const currentMembers = filteredMembers.slice(indexOfFirstMember, indexOfLastMember);
-  const totalPages = Math.ceil(filteredMembers.length / membersPerPage);
+  const currentMembers = members.slice(indexOfFirstMember, indexOfLastMember);
+  const totalPages = Math.ceil(members.length / membersPerPage);
 
   const renderPageNumbers = () => {
     const pages = [];
@@ -100,7 +99,7 @@ function MemberManagement() {
           id="nicknameInput"
           type="text"
           placeholder="예) 고길동"
-          value={searchNickname}
+          value={searchnickname}
           onChange={(e) => setSearchnickname(e.target.value)}
           onKeyDown={handleKeyPress}
           css={s.inputStyle}

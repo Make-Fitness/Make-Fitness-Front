@@ -5,14 +5,14 @@ export const containerStyle = css`
   color: #fff;
   min-height: 100vh;
   padding: 2rem;
-  box-sizing: border-box;
+  width: 100%;
 `;
 
 export const titleStyle = css`
   font-size: 3rem;
   text-align: center;
   margin-bottom: 1.5rem;
-`;
+  `;
 
 export const searchWrapperStyle = css`
   display: flex;
@@ -48,8 +48,8 @@ export const tableStyle = css`
   width: 100%;
   border-collapse: collapse;
   margin: 0 auto;
-  max-width: 900px;
   font-size: 1.5rem;
+  
 
   th,
   td {
