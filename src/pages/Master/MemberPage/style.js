@@ -27,6 +27,7 @@ export const editButton = css`
   border-radius: 0.5rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  margin-bottom: -6rem;
 
   &:hover {
     background-color: #dd2222;
