@@ -4,8 +4,12 @@ import * as s from "./style";
 import Calendar from "../../components/common/Calendar/Calendar";
 import { css } from "@emotion/react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Reservation() {
+
+  const navigate = useNavigate();
+
   const [view, setView] = useState("dashboard");
   const [selectedClass, setSelectedClass] = useState("pt");
   const [scheduleData, setScheduleData] = useState({});
@@ -51,6 +55,8 @@ function Reservation() {
 
   const handleReserveDashboard = () => {
     setView("reservation");
+
+    navigate("/makefitness/manager/daymanagement")
   };
 
   const handleCancelDashboard = (id) => {
