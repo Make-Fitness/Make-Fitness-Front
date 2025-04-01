@@ -31,6 +31,22 @@ import { css } from "@emotion/react";
     }
     `;
 
+    export const button = css`
+        padding: 0.75rem 1.5rem;
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #fff;
+        background-color: #ff4444 !important;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #dd2222;
+    }
+    `;
+
     export const salesTable = css`
     width: 100%;
     border-collapse: collapse;
@@ -60,3 +76,4 @@ import { css } from "@emotion/react";
         font-size: 1.625rem;
     }
 `;
+
