@@ -1,102 +1,92 @@
 import { css } from "@emotion/react";
 
-// 회원관리 페이지 전체
 export const memberPage = css`
-  padding: 3rem;
+  padding: 40px;
   background-color: #111;
   color: #fff;
-  font-size: 1.625rem;
 `;
 
-// 상단 제목과 버튼이 같이 있는 헤더 영역
 export const headerArea = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 20px;
 `;
 
-// 상단 우측 수정하기 버튼
 export const editButton = css`
-  padding: 0.75rem 1.5rem;
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #fff;
-  background-color: #ff4444;
+  background-color: #e74c3c;
+  color: white;
   border: none;
-  border-radius: 0.5rem;
+  padding: 8px 16px;
+  font-weight: bold;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin-bottom: -6rem;
+`;
+
+export const searchBox = css`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+export const searchInput = css`
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #000;
+  font-size: 14px;
+  width: 200px;
+`;
+
+export const searchButton = css`
+  background-color: #666;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
 
   &:hover {
-    background-color: #dd2222;
+    background-color: #888;
   }
-`;
-
-export const description = css`
-  margin-bottom: 2rem;
-  font-size: 1.375rem;
-  font-weight: bold;
-`;
-
-export const memberTableWrapper = css`
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: auto;
-  max-height: 70vh;
-  margin-top: 2rem;
 `;
 
 export const memberTable = css`
   width: 100%;
-  min-width: 104rem;
   border-collapse: collapse;
-  background-color: #2c2c2c;
-  color: #fff;
-  font-size: 1.5625rem;
+  background-color: #1e1e1e;
 
   th,
   td {
-    border: 1px solid #444;
-    padding: 1.375rem;
+    border: 1px solid #333;
+    padding: 12px;
     text-align: center;
   }
 
-  thead th {
-    background-color: #3a3a3a;
-    font-size: 1.625rem;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
-
-  tbody tr:nth-of-type(even) {
-    background-color: #2a2a2a;
-  }
-`;
-
-export const searchBar = css`
-  display: flex;
-  padding-right: 0.5rem;
-  gap: 1rem;
-  margin-bottom: 1rem;
-
-  input {
-    padding: 0.5rem;
-    background-color: rgb(96, 96, 96);
-    border: none;
-    color: #fff;
+  th {
+    background-color: #2c2c2c;
+    font-weight: bold;
   }
 `;
 
 export const button = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 1rem;
-  color: black;
-  background-color: rgb(96, 96, 96);
+  background-color: #555;
+  color: white;
   border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
   cursor: pointer;
+
+  &:hover {
+    background-color: #777;
+  }
+`;
+
+export const footer = css`
+  margin-top: 40px;
+  text-align: center;
+  color: #aaa;
+  font-size: 0.9rem;
 `;
