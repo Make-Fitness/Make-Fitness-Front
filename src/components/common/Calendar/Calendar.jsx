@@ -2,11 +2,8 @@
 import React, { useMemo, useState } from "react";
 import * as s from "./style";
 
-function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, userRole, disablePastDates = false }) {
+function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, userRole, disablePastDates = false, onDateClick }) {
   const [currentDate, setCurrentDateState] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -49,24 +46,7 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
     const dateStr = `${year}-${formattedMonth}-${String(dateNumber).padStart(2, "0")}`;
     const fullDate = new Date(`${dateStr}T00:00:00`);
     if (disablePastDates && fullDate < today) return;
-    setSelectedDate(dateStr);
-    setIsModalOpen(true);
-  };
-
-  const handleTimeSelect = (hour) => {
-    setSelectedTime(hour);
-  };
-
-  const handleReserve = () => {
-    if (selectedDate && selectedTime != null) {
-      const updated = {
-        ...scheduleData,
-        [selectedDate]: [...(scheduleData[selectedDate] || []), { time: `${selectedTime}:00` }],
-      };
-      setScheduleData(updated);
-      setIsModalOpen(false);
-      setSelectedTime(null);
-    }
+    onDateClick?.(fullDate); // 👈 전달된 콜백으로 부모에서 처리하도록 변경
   };
 
   const handlePrevMonth = () => {
@@ -114,30 +94,6 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
           );
         })}
       </div>
-
-      {isModalOpen && (
-        <div css={s.modalOverlay} onClick={() => setIsModalOpen(false)}>
-          <div css={s.modalContent} onClick={(e) => e.stopPropagation()}>
-            <h2>{selectedDate} 수업 시간 선택</h2>
-            <div css={s.timeSlotContainer}>
-              {Array.from({ length: 19 }, (_, i) => i + 6).map((hour) => (
-                <button
-                  key={hour}
-                  css={[s.button, selectedTime === hour && { backgroundColor: '#b71c1c' }]}
-                  onClick={() => handleTimeSelect(hour)}
-                >
-                  {hour.toString().padStart(2, "0")}:00
-                </button>
-              ))}
-            </div>
-            {selectedTime != null && (
-              <div css={s.buttonbox}>
-                <button css={s.button} onClick={handleReserve}>예약 선택</button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

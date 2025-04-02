@@ -97,27 +97,24 @@ function Reservation() {
             </tr>
           </thead>
           <tbody>
-            {promotionData.map((item) => (
-              <tr key={item.membershipId}>
-                <td css={s.tableCell}>{item.promotionName}</td>
-                <td css={s.tableCell}>{item.trainerName}</td>
-                <td css={s.tableCell}>{item.remainingSessionCount}회</td>
-                <td css={s.tableCell}>
-                  {item.expiredDate
-                    ? new Date(item.expiredDate).toLocaleDateString("ko-KR")
-                    : "없음"}
-                </td>
-                <td css={s.tableCell} style={{ textAlign: "right" }}>
-                  <button onClick={() => handleReserveDashboard(item.membershipId)} css={s.button}>
-                    예약하기
-                  </button>
-                  <button onClick={() => handleCancelDashboard(item.membershipId)} css={s.button}>
-                    예약 취소
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+              {promotionData.map((item) => (
+                <tr key={item.membershipId}>
+                  <td css={s.tableCell}>{item.promotionName}</td>
+                  <td css={s.tableCell}>{item.trainerName}</td>
+                  <td css={s.tableCell}>{item.remainingSessionCount}회</td>
+                  <td css={s.tableCell}>
+                    {item.expiredDate
+                      ? new Date(item.expiredDate).toLocaleDateString("ko-KR")
+                      : "없음"}
+                  </td>
+                  <td css={s.tableCell} style={{ textAlign: "center" }}>
+                    <button onClick={() => handleReserveDashboard(item.membershipId)} css={s.reserveButton}>
+                      예약하기
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
         </table>
       </div>
     );
