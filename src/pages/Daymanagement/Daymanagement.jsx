@@ -98,10 +98,29 @@ function Daymanagement() {
     }
   };
 
+  const handleCancelReservation = async (reservationId) => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) return;
+
+    const confirmed = window.confirm("정말 이 예약을 취소하시겠습니까?");
+    if (!confirmed) return;
+
+    try {
+      await axios.delete(`/api/makefitness/reservations/${reservationId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert("✅ 예약이 취소되었습니다.");
+      window.location.reload();
+    } catch (err) {
+      console.error("❌ 예약 취소 실패", err);
+      alert("예약 취소 실패: " + (err.response?.data?.message || err.message));
+    }
+  };
+
   return (
     <div css={s.container}>
-      <h1 css={s.title}>수업 관리 (매니저 모드)</h1>
-      <p css={s.description}>수업 등록 및 캘린더 기반 예약 관리</p>
+      <h1 css={s.title}>수업 예약</h1>
+      <p css={s.description}>수업 예약 및 캘린더 기반 예약 등록</p>
 
       <div css={s.contentWrapper}>
         <div css={s.box}>
@@ -111,6 +130,7 @@ function Daymanagement() {
             scheduleData={scheduleData}
             setScheduleData={setScheduleData}
             setCurrentDate={setCurrentDate}
+            disablePastDates={true} // ✅ 오늘 이전 날짜 비활성화
           />
         </div>
 
@@ -148,6 +168,12 @@ function Daymanagement() {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
+                  <button
+                    onClick={() => handleCancelReservation(item.reservationId)}
+                    css={s.cancelButton}
+                  >
+                    취소
+                  </button>
                 </li>
               ))}
             </ul>

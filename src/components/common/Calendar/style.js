@@ -227,3 +227,9 @@ export const titleBlack = css`
   font-weight: bold;
   color: black;
 `;
+
+export const pastDateCell = css`
+  background-color: #ffdddd;
+  color: #999;
+  pointer-events: none;
+`;

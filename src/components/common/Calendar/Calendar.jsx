@@ -2,7 +2,7 @@
 import React, { useMemo, useState } from "react";
 import * as s from "./style";
 
-function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, userRole }) {
+function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, userRole, disablePastDates = false }) {
   const [currentDate, setCurrentDateState] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -16,19 +16,30 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
   const calendarDays = ["일", "월", "화", "수", "목", "금", "토"];
   const titleText = `${year}년 ${formattedMonth}월 스케줄`;
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const calendarCells = useMemo(() => {
     const blanks = Array(firstDay).fill(null);
     const dates = Array.from({ length: lastDate }, (_, i) => i + 1);
     return [...blanks, ...dates];
   }, [firstDay, lastDate]);
 
+  const getCellClass = (dateNumber) => {
+    const dateStr = `${year}-${formattedMonth}-${String(dateNumber).padStart(2, "0")}`;
+    const fullDate = new Date(`${dateStr}T00:00:00`);
+
+    if (disablePastDates && fullDate < today) {
+      return s.pastDateCell;
+    }
+    return null;
+  };
+
   const getCellStyle = (dateNumber) => {
     const dateStr = `${year}-${formattedMonth}-${String(dateNumber).padStart(2, "0")}`;
     let style = { position: "relative" };
     if (scheduleData[dateStr] && scheduleData[dateStr].length > 0) {
       style.backgroundColor = scheduleColor;
-    } else {
-      style.backgroundColor = "#fff";
     }
     return style;
   };
@@ -36,6 +47,8 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
   const handleCellClick = (dateNumber) => {
     if (!dateNumber) return;
     const dateStr = `${year}-${formattedMonth}-${String(dateNumber).padStart(2, "0")}`;
+    const fullDate = new Date(`${dateStr}T00:00:00`);
+    if (disablePastDates && fullDate < today) return;
     setSelectedDate(dateStr);
     setIsModalOpen(true);
   };
@@ -90,7 +103,7 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
           return (
             <div
               key={idx}
-              css={[s.calendarDateCell, getCellStyle(dateNum), { color: textColor }]}
+              css={[s.calendarDateCell, getCellClass(dateNum), getCellStyle(dateNum), { color: textColor }]}
               onClick={() => handleCellClick(dateNum)}
             >
               {dateNum}

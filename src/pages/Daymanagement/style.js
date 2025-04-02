@@ -46,22 +46,23 @@ export const contentWrapper = css`
   align-items: flex-start;
   gap: 2rem;
   margin-top: 2rem;
+  padding-top: 5rem;
 `;
 
 export const box = css`
   display: flex;
   justify-content: center;
   width: 450px;
+  height: 470px;
 `;
 
 export const reservationListWrapper = css`
   background-color: #222;
   border-radius: 10px;
   padding: 1rem;
-  border: 1px solid #666;
   width: 400px;
-  min-height: 490px;
-  margin-top: 5px;
+  min-height: 450px;
+  margin-top: 0;
 
   h3 {
     display: flex;
@@ -98,9 +99,20 @@ export const reservationItem = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
 
-  input[type="checkbox"] {
-    margin-right: 0.5rem;
+export const cancelButton = css`
+  margin-left: 1rem;
+  background-color: #880000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.3rem 0.7rem;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #aa2222;
   }
 `;
 
@@ -124,7 +136,8 @@ export const modalContent = css`
   max-height: 80vh;
   overflow-y: auto;
   outline: black;
-  h2{
+
+  h2 {
     color: black;
     font-size: 2rem;
     margin-left: 4rem;
@@ -133,9 +146,7 @@ export const modalContent = css`
   p {
     font-size: 1.5rem;
     color: black;
-  
   }
-  
 `;
 
 export const button2 = css`
