@@ -10,13 +10,13 @@ export const container = css`
 `;
 
 export const title = css`
-  font-size: 2.5rem;
+  font-size: 3rem;
   text-align: center;
   margin-bottom: 2rem;
 `;
 
 export const description = css`
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   text-align: center;
   margin-bottom: 1.5rem;
 `;
@@ -46,14 +46,14 @@ export const contentWrapper = css`
   align-items: flex-start;
   gap: 2rem;
   margin-top: 2rem;
-  padding-top: 5rem;
+  padding-top: 2rem;
 `;
 
 export const box = css`
   display: flex;
   justify-content: center;
   width: 450px;
-  height: 470px;
+  height: 510px;
 `;
 
 export const reservationListWrapper = css`
@@ -62,7 +62,7 @@ export const reservationListWrapper = css`
   padding: 1rem;
   width: 400px;
   min-height: 450px;
-  margin-top: 0;
+  height: 49rem;
 
   h3 {
     display: flex;
@@ -75,12 +75,12 @@ export const reservationListWrapper = css`
   p {
     display: flex;
     justify-content: start;
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin-left: 1rem;
   }
 
   h5 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-left: 1rem;
   }
 `;
@@ -93,7 +93,7 @@ export const reservationList = css`
 
 export const reservationItem = css`
   margin-bottom: 0.5rem;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   border-bottom: 1px solid #444;
   padding-bottom: 5px;
   display: flex;
@@ -107,7 +107,7 @@ export const cancelButton = css`
   color: #fff;
   border: none;
   border-radius: 5px;
-  padding: 0.3rem 0.7rem;
+  padding: 0.4rem 1rem;
   font-size: 1rem;
   cursor: pointer;
 

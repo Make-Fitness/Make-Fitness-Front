@@ -1,4 +1,3 @@
-// ✅ Reservations.jsx
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from "react";
 import * as s from "./style";
@@ -9,33 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 function Reservation() {
   const navigate = useNavigate();
-
   const [view, setView] = useState("dashboard");
-  const [selectedClass, setSelectedClass] = useState("pt");
-  const [scheduleData, setScheduleData] = useState({});
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [instructorId, setInstructorId] = useState(null);
-  const [classData, setClassData] = useState([]);
   const [promotionData, setPromotionData] = useState([]);
-  const [selectedMembershipId, setSelectedMembershipId] = useState(null); // ✅ 추가
+  const [selectedMembershipId, setSelectedMembershipId] = useState(null);
 
-  const colorMap = {
-    pt: "#87CEEB",
-    pilates: "#FFC0CB",
-  };
-
-  const instructorImageMap = {
-    1: "../Trainer/park.jpeg",
-    2: "../Trainer/jang.jpg",
-    3: "../Trainer/kang.jpg",
-    4: "../Trainer/shin.jpg",
-    5: "../Trainer/kim.jpg",
-  };
-
-  // 프로모션 데이터 API 호출
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-
     if (!token || typeof token !== "string" || token.length < 20) {
       console.error("유효하지 않은 토큰입니다. 다시 로그인하세요.");
       return;
@@ -43,9 +21,7 @@ function Reservation() {
 
     axios
       .get("/api/makefitness/reservations/available-promotions", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         console.log("프로모션 데이터:", res.data);
@@ -58,21 +34,9 @@ function Reservation() {
 
   const handleReserveDashboard = (membershipId) => {
     setSelectedMembershipId(membershipId);
-    navigate("/makefitness/manager/daymanagement", {
+    navigate("/makefitness/reservations/daymanagement", {
       state: { selectedMembershipId: membershipId },
     });
-  };
-
-  const handleCancelDashboard = (id) => {
-    console.log("대시보드 예약 취소, id =", id);
-  };
-
-  const handleSelectClass = (type) => {
-    setSelectedClass(type);
-  };
-
-  const handleCancelReservation = (id) => {
-    console.log("예약 관리 페이지 예약 취소, id =", id);
   };
 
   if (view === "dashboard") {
@@ -97,30 +61,35 @@ function Reservation() {
             </tr>
           </thead>
           <tbody>
-              {promotionData.map((item) => (
-                <tr key={item.membershipId}>
-                  <td css={s.tableCell}>{item.promotionName}</td>
-                  <td css={s.tableCell}>{item.trainerName}</td>
-                  <td css={s.tableCell}>{item.remainingSessionCount}회</td>
-                  <td css={s.tableCell}>
-                    {item.expiredDate
-                      ? new Date(item.expiredDate).toLocaleDateString("ko-KR")
-                      : "없음"}
-                  </td>
-                  <td css={s.tableCell} style={{ textAlign: "center" }}>
-                    <button onClick={() => handleReserveDashboard(item.membershipId)} css={s.reserveButton}>
-                      예약하기
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+            {promotionData.map((item) => (
+              <tr key={item.membershipId}>
+                <td css={s.tableCell}>{item.promotionName}</td>
+                <td css={s.tableCell}>{item.trainerName}</td>
+                <td css={s.tableCell}>{item.remainingSessionCount}회</td>
+                <td css={s.tableCell}>
+                  {item.expiredDate
+                    ? new Date(item.expiredDate).toLocaleDateString("ko-KR")
+                    : "없음"}
+                </td>
+                <td css={s.tableCell}>
+                  <button
+                    onClick={() =>
+                      handleReserveDashboard(item.membershipId)
+                    }
+                    css={s.reserveButton}
+                  >
+                    예약하기
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     );
   }
 
-  return <div />; // 생략 가능: 예약 페이지는 daymanagement에서 처리
+  return <div />;
 }
 
 export default Reservation;
