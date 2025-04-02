@@ -4,6 +4,7 @@ import axios from "axios";
 import * as s from "./style";
 import Calendar from "../../components/common/Calendar/Calendar";
 import { useLocation } from "react-router-dom";
+import TimeModal from "../../components/common/Modal/TimeModal";
 
 function Daymanagement() {
   const [selectedClass, setSelectedClass] = useState("pt");
@@ -13,6 +14,8 @@ function Daymanagement() {
   const [reservableClasses, setReservableClasses] = useState([]);
   const [todayReservations, setTodayReservations] = useState([]);
   const [selectedDateReservations, setSelectedDateReservations] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTime, setSelectedTime] = useState(null);
 
   const location = useLocation();
 
@@ -28,7 +31,6 @@ function Daymanagement() {
     }
   }, [location]);
 
-  // 예약 가능한 수업 조회
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (!token || !selectedMembershipId) return;
@@ -39,10 +41,7 @@ function Daymanagement() {
         params: { membershipId: selectedMembershipId },
       })
       .then((res) => {
-        console.log("📆 캘린더 예약 가능 수업:", res.data);
         setReservableClasses(res.data || []);
-
-        // 캘린더 표시용 데이터 구성
         const grouped = {};
         (res.data || []).forEach((item) => {
           const date = item.classTime.split("T")[0];
@@ -50,6 +49,7 @@ function Daymanagement() {
             time: item.classTime,
             trainer: item.trainerName,
             subject: item.classSubject,
+            classId: item.classId,
           });
         });
         setScheduleData(grouped);
@@ -57,7 +57,6 @@ function Daymanagement() {
       .catch((err) => console.error("❌ 예약 가능 수업 로드 실패", err));
   }, [selectedMembershipId]);
 
-  // 오늘 예약 내역 불러오기
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (!token || !selectedMembershipId) return;
@@ -71,7 +70,6 @@ function Daymanagement() {
       .catch((err) => console.error("❌ 오늘 예약 로딩 실패", err));
   }, [selectedMembershipId]);
 
-  // 날짜 클릭 시 해당 날짜의 수업 필터링
   useEffect(() => {
     const selectedDateStr = currentDate.toISOString().split("T")[0];
     const filtered = reservableClasses.filter((cls) =>
@@ -117,6 +115,13 @@ function Daymanagement() {
     }
   };
 
+  const selectedDateStr = currentDate.toISOString().split("T")[0];
+  const availableClassMap = {};
+  selectedDateReservations.forEach((cls) => {
+    const hour = new Date(cls.classTime).getHours();
+    availableClassMap[hour] = cls.classId;
+  });
+
   return (
     <div css={s.container}>
       <h1 css={s.title}>수업 예약</h1>
@@ -130,12 +135,16 @@ function Daymanagement() {
             scheduleData={scheduleData}
             setScheduleData={setScheduleData}
             setCurrentDate={setCurrentDate}
-            disablePastDates={true} // ✅ 오늘 이전 날짜 비활성화
+            disablePastDates={true}
+            onDateClick={(date) => {
+              setCurrentDate(date);
+              setIsModalOpen(true);
+            }}
           />
         </div>
 
         <div css={s.reservationListWrapper}>
-          <h5>{currentDate.toISOString().split("T")[0]} 예약 가능한 수업</h5>
+          <h5>{selectedDateStr} 예약 가능한 수업</h5>
           {selectedDateReservations.length === 0 ? (
             <p>예약 가능한 수업이 없습니다.</p>
           ) : (
@@ -180,6 +189,24 @@ function Daymanagement() {
           )}
         </div>
       </div>
+
+      {isModalOpen && (
+        <TimeModal
+          selectedDateStr={selectedDateStr}
+          availableClassMap={availableClassMap}
+          onSelectTime={(hour) => setSelectedTime(hour)}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
+
+      {selectedTime !== null && (
+        <button
+          css={modal.confirmButton}
+          onClick={() => handleReserveClass(availableClassMap[selectedTime])}
+        >
+          예약 선택
+        </button>
+      )}
     </div>
   );
 }

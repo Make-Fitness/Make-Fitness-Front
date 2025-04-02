@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 
 export const container = css`
-  width: 70%
+  width: 100%;
   min-height: 80vh;
   background-color: #000;
   color: #fff;
