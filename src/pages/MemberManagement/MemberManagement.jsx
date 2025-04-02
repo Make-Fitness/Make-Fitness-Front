@@ -1,4 +1,4 @@
-/**@jsxImportSource @emotion/react */
+/** @jsxImportSource @emotion/react */
 import api from '../../configs/axiosConfig';
 import * as s from './style';
 import React, { useState, useEffect } from "react";
@@ -9,29 +9,44 @@ function MemberManagement() {
   const [currentPage, setCurrentPage] = useState(1);
   const membersPerPage = 10;
 
-  // 백엔드 API 호출: 검색어가 있을 경우에만 파라미터로 전달합니다.
   const fetchMembers = (nickname = "") => {
-    const config = {};
-    if (nickname !== "") {
-      config.params = { nickname };
+    console.log("🔁 [fetchMembers] 호출됨, nickname:", nickname);
+
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      console.warn("⛔ accessToken 없음, 요청 중단");
+      return;
     }
-    api.get("api/makefitness/manager/membermanagement", config)
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {},
+    };
+
+    if (nickname !== "") {
+      config.params.nickName = nickname;
+    }
+
+    api.get("/api/makefitness/manager/membermanagement", config)
       .then((response) => {
+        console.log("✅ [fetchMembers] 응답 성공:", response.data);
         setMembers(response.data);
         setCurrentPage(1);
       })
       .catch((error) => {
-        console.error("데이터를 가져오는 중 오류 발생:", error);
+        console.error("❌ [fetchMembers] 요청 실패:", error);
       });
   };
 
-  // 컴포넌트 마운트 시 전체 회원 데이터를 가져옵니다.
   useEffect(() => {
+    console.log("🧠 [useEffect] 컴포넌트 마운트됨, fetchMembers 실행");
     fetchMembers();
   }, []);
 
-  // 검색 시 API 호출
   const handleSearch = () => {
+    console.log("🔍 [handleSearch] 검색 실행:", searchnickname);
     fetchMembers(searchnickname);
   };
 
@@ -41,7 +56,6 @@ function MemberManagement() {
     }
   };
 
-  // 페이징 처리 (클라이언트 측 페이징 예시)
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
   const currentMembers = members.slice(indexOfFirstMember, indexOfLastMember);
@@ -64,7 +78,7 @@ function MemberManagement() {
     for (let i = 1; i <= totalPages; i++) {
       pages.push(
         <button
-          key={i}
+          key={`page-${i}`}
           onClick={() => setCurrentPage(i)}
           css={s.pageButtonStyle(i === currentPage)}
         >
@@ -127,13 +141,17 @@ function MemberManagement() {
               </td>
             </tr>
           ) : (
-            currentMembers.map((member) => (
-              <tr key={member.id}>
-                <td>{member.nickname}</td>
+            currentMembers.map((member, index) => (
+              <tr key={index}>
+                <td>{member.nickName}</td>
                 <td>{member.ph}</td>
-                <td>{member.membership}</td>
-                <td>{member.promotion_session_count}</td>
-                <td>{member.promotion_session_time}</td>
+                <td>{member.promotionName}</td>
+                <td>{member.promotionSessionCount}회</td>
+                <td>
+                  {member.expiredDate
+                    ? new Date(member.expiredDate).toLocaleDateString("ko-KR")
+                    : "없음"}
+                </td>
               </tr>
             ))
           )}

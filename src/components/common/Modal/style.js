@@ -47,9 +47,9 @@ export const disabledButton = css`
   cursor: not-allowed;
 `;
 
-export const closeButton = css`
-  margin-top: 1rem;
-  background-color: #777;
+export const confirmButton = css`
+  margin-right: 1rem;
+  background-color: #e74c3c;
   color: white;
   border: none;
   padding: 0.6rem 1.5rem;
@@ -58,6 +58,13 @@ export const closeButton = css`
   cursor: pointer;
   transition: background 0.3s;
   &:hover {
-    background-color: #555;
+    background-color: #c0392b;
   }
+`;
+
+export const buttonWrapper = css`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
 `;

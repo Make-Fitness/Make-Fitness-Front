@@ -5,6 +5,7 @@ import * as s from "./style";
 import Calendar from "../../components/common/Calendar/Calendar";
 import { useLocation } from "react-router-dom";
 import TimeModal from "../../components/common/Modal/TimeModal";
+import * as modal from "../../components/common/Modal/style";
 
 function Daymanagement() {
   const [selectedClass, setSelectedClass] = useState("pt");
@@ -245,7 +246,7 @@ function Daymanagement() {
                   })}
                   <button
                     onClick={() => handleReserveClass(item.classId)}
-                    style={{ marginLeft: "1rem" }}
+                    css={modal.confirmButton}
                   >
                     예약하기
                   </button>
@@ -282,18 +283,11 @@ function Daymanagement() {
         <TimeModal
           selectedDateStr={selectedDateStr}
           availableClassMap={availableClassMap}
+          selectedTime={selectedTime}
           onSelectTime={(hour) => setSelectedTime(hour)}
+          onConfirmReserve={() => handleReserveClass(availableClassMap[selectedTime])}
           onClose={() => setIsModalOpen(false)}
         />
-      )}
-
-      {selectedTime !== null && (
-        <button
-          css={modal.confirmButton}
-          onClick={() => handleReserveClass(availableClassMap[selectedTime])}
-        >
-          예약 선택
-        </button>
       )}
     </div>
   );

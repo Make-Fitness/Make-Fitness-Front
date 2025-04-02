@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 
 export const containerStyle = css`
+  box-sizing: border-box;
   background-color: #000;
   color: #fff;
   min-height: 100vh;
@@ -12,7 +13,7 @@ export const titleStyle = css`
   font-size: 3rem;
   text-align: center;
   margin-bottom: 1.5rem;
-  `;
+`;
 
 export const searchWrapperStyle = css`
   display: flex;
@@ -42,6 +43,10 @@ export const buttonStyle = css`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+
+  &:hover {
+    background-color: #555;
+  }
 `;
 
 export const tableStyle = css`
@@ -49,7 +54,6 @@ export const tableStyle = css`
   border-collapse: collapse;
   margin: 0 auto;
   font-size: 1.5rem;
-  
 
   th,
   td {
@@ -79,3 +83,18 @@ export const paginationWrapperStyle = css`
   margin-top: 20px;
 `;
 
+export const pageButtonStyle = (isActive) => css`
+  background-color: ${isActive ? "#2196f3" : "#444"};
+  color: ${isActive ? "#fff" : "#ccc"};
+  font-weight: ${isActive ? "bold" : "normal"};
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin: 0 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: ${isActive ? "#1976d2" : "#555"};
+  }
+`;
