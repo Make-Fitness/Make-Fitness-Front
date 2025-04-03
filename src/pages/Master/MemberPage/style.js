@@ -100,3 +100,62 @@ export const button = css`
   border: none;
   cursor: pointer;
 `;
+
+// ✅ 드롭다운 영역
+export const roleDropdown = css`
+  position: relative;
+  display: inline-block;
+  font-size: 1.4rem;
+
+  button {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding-left: 0.5rem;
+  }
+`;
+
+export const dropdownMenu = css`
+  position: absolute;
+  top: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #222;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  z-index: 10;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 10rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+`;
+
+export const dropdownItem = css`
+  padding: 0.75rem;
+  color: #fff;
+  cursor: pointer;
+  text-align: center;
+
+  &:hover {
+    background-color: #555;
+  }
+`;
+
+export const selectBox = css`
+  padding: 0.5rem 1rem;
+  background-color: #444;
+  color: #fff; /* 진하게 설정 */
+  font-weight: 600;
+  border: 1px solid #666;
+  border-radius: 0.4rem;
+  font-size: 1.4rem;
+`;
+
+export const footer = css`
+  margin-top: 3rem;
+  font-size: 1.25rem;
+  text-align: center;
+  color: #888;
+`;
