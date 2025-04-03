@@ -13,8 +13,11 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
   const calendarDays = ["일", "월", "화", "수", "목", "금", "토"];
   const titleText = `${year}년 ${formattedMonth}월 스케줄`;
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  // 오늘 날짜 (시간 제거된 로컬 Date)
+  const today = useMemo(() => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+  }, []);
 
   const calendarCells = useMemo(() => {
     const blanks = Array(firstDay).fill(null);
@@ -23,9 +26,7 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
   }, [firstDay, lastDate]);
 
   const getCellClass = (dateNumber) => {
-    const dateStr = `${year}-${formattedMonth}-${String(dateNumber).padStart(2, "0")}`;
-    const fullDate = new Date(`${dateStr}T00:00:00`);
-
+    const fullDate = new Date(year, month, dateNumber, 0, 0, 0, 0);
     if (disablePastDates && fullDate < today) {
       return s.pastDateCell;
     }
@@ -43,10 +44,9 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
 
   const handleCellClick = (dateNumber) => {
     if (!dateNumber) return;
-    const dateStr = `${year}-${formattedMonth}-${String(dateNumber).padStart(2, "0")}`;
-    const fullDate = new Date(`${dateStr}T00:00:00`);
+    const fullDate = new Date(year, month, dateNumber, 0, 0, 0, 0); // ← 타임존 안전 방식
     if (disablePastDates && fullDate < today) return;
-    onDateClick?.(fullDate); // 👈 전달된 콜백으로 부모에서 처리하도록 변경
+    onDateClick?.(fullDate);
   };
 
   const handlePrevMonth = () => {
@@ -80,6 +80,8 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
           if (!dateNum) return <div key={idx} css={s.emptyCell}></div>;
           const dayIndex = idx % 7;
           const textColor = dayIndex === 0 ? "red" : dayIndex === 6 ? "blue" : "black";
+          const dateKey = `${year}-${formattedMonth}-${String(dateNum).padStart(2, "0")}`;
+
           return (
             <div
               key={idx}
@@ -87,7 +89,7 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
               onClick={() => handleCellClick(dateNum)}
             >
               {dateNum}
-              {scheduleData[`${year}-${formattedMonth}-${String(dateNum).padStart(2, "0")}`]?.length > 0 && (
+              {scheduleData[dateKey]?.length > 0 && (
                 <span css={s.checkMark}>✔</span>
               )}
             </div>
