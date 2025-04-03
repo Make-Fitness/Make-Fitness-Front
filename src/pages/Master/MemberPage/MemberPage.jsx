@@ -7,6 +7,9 @@ const MemberTable = () => {
   const [members, setMembers] = useState([]);
   const [editedRoles, setEditedRoles] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const membersPerPage = 10;
 
   useEffect(() => {
     fetch("/api/makefitness/admin/users")
@@ -15,6 +18,7 @@ const MemberTable = () => {
         setRawMembers(data);
         const grouped = groupMembersByUserId(data);
         setMembers(grouped);
+        setCurrentPage(1);
       })
       .catch((err) => console.error("회원 목록 조회 실패:", err));
   }, []);
@@ -41,11 +45,11 @@ const MemberTable = () => {
   };
 
   const handleRoleSelect = (userId, newRole) => {
-    setEditedRoles((prev) => ({ ...prev, [String(userId)]: newRole }));
+    setEditedRoles((prev) => ({ ...prev, [userId]: newRole }));
   };
 
   const handleSave = (userId) => {
-    const newRole = editedRoles[String(userId)];
+    const newRole = editedRoles[userId];
     if (!newRole) return;
 
     fetch(`/api/makefitness/admin/users/${userId}/role`, {
@@ -67,13 +71,12 @@ const MemberTable = () => {
 
         setEditedRoles((prev) => {
           const updated = { ...prev };
-          delete updated[String(userId)];
+          delete updated[userId];
           return updated;
         });
 
         setSuccessMessage(`회원번호 ${userId} 저장되었습니다.`);
         setTimeout(() => setSuccessMessage(""), 3000);
-        console.log(`${userId} 저장 완료`);
       })
       .catch((err) => console.error(`${userId} 저장 실패:`, err));
   };
@@ -92,6 +95,51 @@ const MemberTable = () => {
     { value: "ROLE_CUSTOMER", label: "회원" },
     { value: "ROLE_ANONYMOUS", label: "익명" },
   ];
+
+  const indexOfLastMember = currentPage * membersPerPage;
+  const indexOfFirstMember = indexOfLastMember - membersPerPage;
+  const currentMembers = members.slice(indexOfFirstMember, indexOfLastMember);
+  const totalPages = Math.ceil(members.length / membersPerPage);
+
+  const renderPageNumbers = () => {
+    const pages = [];
+
+    pages.push(
+      <button
+        key="prev"
+        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+        disabled={currentPage === 1}
+        css={s.pageButtonStyle(false)}
+      >
+        ◀
+      </button>
+    );
+
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(
+        <button
+          key={`page-${i}`}
+          onClick={() => setCurrentPage(i)}
+          css={s.pageButtonStyle(i === currentPage)}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    pages.push(
+      <button
+        key="next"
+        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+        disabled={currentPage === totalPages}
+        css={s.pageButtonStyle(false)}
+      >
+        ▶
+      </button>
+    );
+
+    return pages;
+  };
 
   return (
     <div css={s.memberPage}>
@@ -117,19 +165,14 @@ const MemberTable = () => {
             </tr>
           </thead>
           <tbody>
-            {members.length > 0 ? (
-              members.map((m, index) => (
+            {currentMembers.length > 0 ? (
+              currentMembers.map((m, index) => (
                 <tr key={`${m.userId || "no-id"}-${index}`}>
                   <td>{m.userId}</td>
                   <td>{formatDate(m.createdAt)}</td>
                   <td>
                     <select
-                      key={`role-${m.userId}-${editedRoles[m.userId] ?? m.roleName}`}
-                      value={
-                        typeof editedRoles[m.userId] !== "undefined"
-                          ? editedRoles[m.userId]
-                          : m.roleName
-                      }
+                      value={editedRoles[m.userId] ?? m.roleName}
                       onChange={(e) => handleRoleSelect(m.userId, e.target.value)}
                       css={s.selectBox}
                     >
@@ -145,11 +188,7 @@ const MemberTable = () => {
                   <td>{m.gender || "-"}</td>
                   <td>
                     {m.promotionList && m.promotionList.length > 0 ? (
-                      <select
-                        css={s.selectBox}
-                        value={m.promotionList[0]?.promotionName}
-                        onChange={() => {}}
-                      >
+                      <select css={s.selectBox} disabled value={m.promotionList[0]?.promotionName}>
                         {m.promotionList.map((p, idx) => (
                           <option key={idx}>{p.promotionName}</option>
                         ))}
@@ -160,9 +199,7 @@ const MemberTable = () => {
                   </td>
                   <td>
                     {m.promotionList && m.promotionList.length > 0
-                      ? formatDate(
-                          m.promotionList[m.promotionList.length - 1].expiredDate
-                        )
+                      ? formatDate(m.promotionList[m.promotionList.length - 1].expiredDate)
                       : "-"}
                   </td>
                   <td>
@@ -181,9 +218,10 @@ const MemberTable = () => {
             )}
           </tbody>
         </table>
+        {totalPages > 1 && (
+          <div css={s.paginationWrapperStyle}>{renderPageNumbers()}</div>
+        )}
       </div>
-
-      <footer css={s.footer}>© MAKE FITNESS. All rights reserved.</footer>
     </div>
   );
 };
