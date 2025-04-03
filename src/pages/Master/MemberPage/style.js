@@ -1,6 +1,5 @@
 import { css } from "@emotion/react";
 
-// 회원관리 페이지 전체
 export const memberPage = css`
   padding: 3rem;
   background-color: #111;
@@ -8,7 +7,6 @@ export const memberPage = css`
   font-size: 1.625rem;
 `;
 
-// 상단 제목과 버튼이 같이 있는 헤더 영역
 export const headerArea = css`
   display: flex;
   justify-content: space-between;
@@ -16,7 +14,6 @@ export const headerArea = css`
   margin-bottom: 2rem;
 `;
 
-// 상단 우측 수정하기 버튼
 export const editButton = css`
   padding: 0.75rem 1.5rem;
   font-size: 1.25rem;
@@ -101,7 +98,6 @@ export const button = css`
   cursor: pointer;
 `;
 
-// ✅ 드롭다운 영역
 export const roleDropdown = css`
   position: relative;
   display: inline-block;
@@ -114,6 +110,14 @@ export const roleDropdown = css`
     cursor: pointer;
     padding-left: 0.5rem;
   }
+`;
+
+export const successMessage = css`
+  color: #00e676;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  text-align: left;
 `;
 
 export const dropdownMenu = css`
@@ -146,7 +150,7 @@ export const dropdownItem = css`
 export const selectBox = css`
   padding: 0.5rem 1rem;
   background-color: #444;
-  color: #fff; /* 진하게 설정 */
+  color: #fff;
   font-weight: 600;
   border: 1px solid #666;
   border-radius: 0.4rem;
