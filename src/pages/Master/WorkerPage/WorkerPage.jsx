@@ -1,7 +1,6 @@
 /**@jsxImportSource @emotion/react */
-import { useState } from "react";
-import { useEffect } from "react";
-import * as s from './style';
+import { useState, useEffect } from "react";
+import * as s from "./style";
 import axios from "axios";
 
 const WorkerPage = () => {
@@ -12,8 +11,6 @@ const WorkerPage = () => {
   const fetchWorkers = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-
-      // YYYY-MM-01 형식으로 classTime 구성
       const classTime = `${selectedYear}-${selectedMonth}-01`;
 
       const response = await axios.get("/api/makefitness/admin/manager", {
@@ -31,15 +28,15 @@ const WorkerPage = () => {
 
   useEffect(() => {
     fetchWorkers();
-  }, []);
+  }, [selectedYear, selectedMonth]);
 
   const handleSearch = () => {
     fetchWorkers();
   };
 
   return (
-    <div css={s.pageContainer}>
-      <h2 css={s.title}>근무자 목록</h2>
+    <div css={s.staffPage}>
+      <h2 css={s.description}>근무자 목록</h2>
 
       <div css={s.filterBox}>
         <label>
@@ -63,10 +60,10 @@ const WorkerPage = () => {
             })}
           </select>
         </label>
-        <button onClick={handleSearch} css={s.searchButton}>조회</button>
+        <button onClick={handleSearch} css={s.button}>조회</button>
       </div>
 
-      <table css={s.workerTable}>
+      <table css={s.staffTable}>
         <thead>
           <tr>
             <th>No</th>
@@ -80,7 +77,7 @@ const WorkerPage = () => {
         <tbody>
           {workers.length > 0 ? (
             workers.map((worker, index) => (
-              <tr key={worker.managerId}>
+              <tr key={`${worker.managerId}-${index}`}>
                 <td>{index + 1}</td>
                 <td>{worker.nickname}</td>
                 <td>{worker.gender}</td>
@@ -91,7 +88,9 @@ const WorkerPage = () => {
             ))
           ) : (
             <tr>
-              <td colSpan={6} style={{ textAlign: "center", color: "#aaa" }}>조회된 데이터가 없습니다.</td>
+              <td colSpan={6} style={{ textAlign: "center", color: "#aaa" }}>
+                조회된 데이터가 없습니다.
+              </td>
             </tr>
           )}
         </tbody>
@@ -99,4 +98,5 @@ const WorkerPage = () => {
     </div>
   );
 };
+
 export default WorkerPage;

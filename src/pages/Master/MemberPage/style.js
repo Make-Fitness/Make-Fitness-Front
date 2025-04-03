@@ -1,63 +1,49 @@
 import { css } from "@emotion/react";
 
 export const memberPage = css`
-  padding: 3rem;
   background-color: #111;
   color: #fff;
   font-size: 1.625rem;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 `;
 
 export const headerArea = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-`;
-
-export const editButton = css`
-  padding: 0.75rem 1.5rem;
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #fff;
-  background-color: #ff4444;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin-bottom: -6rem;
-
-  &:hover {
-    background-color: #dd2222;
-  }
-`;
-
-export const description = css`
-  margin-bottom: 2rem;
-  font-size: 1.375rem;
-  font-weight: bold;
 `;
 
 export const memberTableWrapper = css`
   width: 100%;
-  overflow-x: auto;
-  overflow-y: auto;
   max-height: 70vh;
-  margin-top: 2rem;
+  overflow: auto;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const memberTable = css`
   width: 100%;
-  min-width: 104rem;
+  table-layout: fixed;
   border-collapse: collapse;
   background-color: #2c2c2c;
   color: #fff;
   font-size: 1.5625rem;
 
-  th,
-  td {
+  th, td {
     border: 1px solid #444;
-    padding: 1.375rem;
+    padding: 1rem 0.5rem;
     text-align: center;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
   }
 
   thead th {
@@ -65,7 +51,9 @@ export const memberTable = css`
     font-size: 1.625rem;
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 10;
+    height: 5.2rem;
+    line-height: 1.4;
   }
 
   tbody tr:nth-of-type(even) {
@@ -73,18 +61,28 @@ export const memberTable = css`
   }
 `;
 
-export const searchBar = css`
-  display: flex;
-  padding-right: 0.5rem;
-  gap: 1rem;
-  margin-bottom: 1rem;
+export const selectBox = css`
+  width: 100%;
+  max-width: 100%;
+  padding: 0.5rem;
+  background-color: #444;
+  color: #fff;
+  font-weight: 600;
+  border: 1px solid #666;
+  border-radius: 0.4rem;
+  font-size: 1.4rem;
 
-  input {
-    padding: 0.5rem;
-    background-color: rgb(96, 96, 96);
-    border: none;
-    color: #fff;
-  }
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+export const successMessage = css`
+  color: #00e676;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  text-align: left;
 `;
 
 export const button = css`
@@ -98,68 +96,69 @@ export const button = css`
   cursor: pointer;
 `;
 
-export const roleDropdown = css`
-  position: relative;
-  display: inline-block;
-  font-size: 1.4rem;
+export const footer = css`
+  margin-top: 3rem;
+  font-size: 1.25rem;
+  text-align: center;
+  color: #888;
+`;
+
+export const searchBar = css`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  input {
+    padding: 0.5rem 1rem;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #666;
+    border-radius: 0.4rem;
+    font-size: 1.4rem;
+  }
 
   button {
-    background: none;
-    border: none;
+    background-color: #666;
     color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.4rem;
+    padding: 0.5rem 1rem;
     cursor: pointer;
-    padding-left: 0.5rem;
   }
 `;
 
-export const successMessage = css`
-  color: #00e676;
-  font-size: 1.4rem;
-  font-weight: bold;
-  margin-top: 1rem;
-  text-align: left;
-`;
-
-export const dropdownMenu = css`
-  position: absolute;
-  top: 3rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #222;
-  border: 1px solid #444;
-  border-radius: 0.5rem;
-  z-index: 10;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 10rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-`;
-
-export const dropdownItem = css`
-  padding: 0.75rem;
+export const buttonStyle = css`
+  padding: 0.6rem 1rem;
+  background-color: #333;
   color: #fff;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
-  text-align: center;
 
   &:hover {
     background-color: #555;
   }
 `;
 
-export const selectBox = css`
-  padding: 0.5rem 1rem;
-  background-color: #444;
-  color: #fff;
-  font-weight: 600;
-  border: 1px solid #666;
-  border-radius: 0.4rem;
-  font-size: 1.4rem;
+export const paginationWrapperStyle = css`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 `;
 
-export const footer = css`
-  margin-top: 3rem;
-  font-size: 1.25rem;
-  text-align: center;
-  color: #888;
+export const pageButtonStyle = (isActive) => css`
+  background-color: ${isActive ? "#2196f3" : "#444"};
+  color: ${isActive ? "#fff" : "#ccc"};
+  font-weight: ${isActive ? "bold" : "normal"};
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin: 0 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: ${isActive ? "#1976d2" : "#555"};
+  }
 `;

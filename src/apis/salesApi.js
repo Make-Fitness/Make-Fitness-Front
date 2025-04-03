@@ -8,7 +8,7 @@ import axios from "./axiosInstance";
  * @returns {Promise<Array>} 매출 데이터 배열
  */
 export const fetchSalesReport = async (startDate, endDate) => {
-  const response = await axios.get("/api/makefitness/admin/sales/report", {
+  const response = await axios.get("/api/makefitness/admin/sales/reports", {
     params: { startDate, endDate },
   });
 
