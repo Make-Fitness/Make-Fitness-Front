@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useState } from "react";
-import * as s from "./style"; // 스타일 정의
+import * as s from "./style";
 
 const MemberTable = () => {
   const [members, setMembers] = useState([]);
+  const [editedRoles, setEditedRoles] = useState({});
 
-  // ✅ 회원 데이터 호출
   useEffect(() => {
     fetch("/api/makefitness/admin/users")
       .then((res) => res.json())
@@ -13,22 +13,39 @@ const MemberTable = () => {
       .catch((err) => console.error("회원 목록 조회 실패:", err));
   }, []);
 
-  // ✅ 전체 수정 버튼 클릭
-  const handleEditAll = () => {
-    console.log("상단 수정하기 버튼 클릭");
+  const handleRoleSelect = (userId, newRole) => {
+    setEditedRoles((prev) => ({ ...prev, [String(userId)]: newRole }));
   };
 
-  // ✅ 회원 구분 변경 버튼 클릭
-  const handleChangeRole = (userId) => {
-    console.log("회원구분 변경 클릭:", userId);
+  const handleSave = (userId) => {
+    const newRole = editedRoles[String(userId)];
+    if (!newRole) return;
+
+    fetch(`/api/makefitness/admin/users/${userId}/role`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify({ userId, roleName: newRole }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("권한 변경 실패");
+        setMembers((prev) =>
+          prev.map((m) =>
+            m.userId === userId ? { ...m, roleName: newRole } : m
+          )
+        );
+        setEditedRoles((prev) => {
+          const updated = { ...prev };
+          delete updated[String(userId)];
+          return updated;
+        });
+        console.log(`${userId} 저장 완료`);
+      })
+      .catch((err) => console.error(`${userId} 저장 실패:`, err));
   };
 
-  // ✅ 개별 수정 버튼 클릭
-  const handleEdit = (userId) => {
-    console.log("회원 개별 수정 클릭:", userId);
-  };
-
-  // ✅ 날짜 포맷 함수
   const formatDate = (date) => {
     if (!date) return "-";
     return new Date(date).toLocaleDateString("ko-KR", {
@@ -38,63 +55,77 @@ const MemberTable = () => {
     });
   };
 
-  // ✅ 회원구분 포맷
-  const formatRole = (roleName) => {
-    return roleName === "manager" ? "강사" : "회원";
-  };
+  const roleOptions = [
+    { value: "ROLE_MANAGER", label: "강사" },
+    { value: "ROLE_CUSTOMER", label: "회원" },
+    { value: "ROLE_ANONYMOUS", label: "익명" },
+  ];
 
   return (
     <div css={s.memberPage}>
       <div css={s.headerArea}>
         <h2>회원 관리</h2>
-        <button css={s.editButton} onClick={handleEditAll}>
-          수정하기
-        </button>
       </div>
 
-      <table css={s.memberTable}>
-        <thead>
-          <tr>
-            <th>가입날짜</th>
-            <th>회원구분</th>
-            <th>이름</th>
-            <th>휴대폰번호</th>
-            <th>성별</th>
-            <th>프로모션</th>
-            <th>종료기간</th>
-            <th>수정</th>
-          </tr>
-        </thead>
-        <tbody>
-          {members.length > 0 ? (
-            members.map((m) => (
-              <tr key={m.userId}>
-                <td>{formatDate(m.createdAt)}</td>
-                <td>
-                  {formatRole(m.roleName)}{" "}
-                  <button onClick={() => handleChangeRole(m.userId)}>▼</button>
-                </td>
-                <td>{m.nickName}</td>
-                <td>{m.ph}</td>
-                <td>{m.gender || "-"}</td>
-                <td>{m.promotionName || "없음"}</td>
-                <td>{formatDate(m.expiredDate)}</td>
-                <td>
-                  <button onClick={() => handleEdit(m.userId)} css={s.button}>
-                    수정
-                  </button>
+      <div css={s.memberTableWrapper}>
+        <table css={s.memberTable}>
+          <thead>
+            <tr>
+              <th>가입날짜</th>
+              <th>회원구분</th>
+              <th>이름</th>
+              <th>휴대폰번호</th>
+              <th>성별</th>
+              <th>프로모션</th>
+              <th>종료기간</th>
+              <th>수정</th>
+            </tr>
+          </thead>
+          <tbody>
+            {members.length > 0 ? (
+              members.map((m, index) => (
+                <tr key={`${m.userId || "no-id"}-${index}`}>
+                  <td>{formatDate(m.createdAt)}</td>
+                  <td>
+                    <select
+                      key={`role-${m.userId}-${editedRoles[m.userId] ?? m.roleName}`}
+                      value={
+                        typeof editedRoles[m.userId] !== 'undefined'
+                          ? editedRoles[m.userId]
+                          : m.roleName
+                      }
+                      onChange={(e) => handleRoleSelect(m.userId, e.target.value)}
+                      css={s.selectBox}
+                    >
+                      {roleOptions.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                  <td>{m.nickName}</td>
+                  <td>{m.ph}</td>
+                  <td>{m.gender || "-"}</td>
+                  <td>{m.promotionName || "없음"}</td>
+                  <td>{formatDate(m.expiredDate)}</td>
+                  <td>
+                    <button onClick={() => handleSave(m.userId)} css={s.button}>
+                      저장
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" style={{ textAlign: "center", color: "#aaa" }}>
+                  조회된 데이터가 없습니다.
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="8" style={{ textAlign: "center", color: "#aaa" }}>
-                조회된 데이터가 없습니다.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       <footer css={s.footer}>© MAKE FITNESS. All rights reserved.</footer>
     </div>
