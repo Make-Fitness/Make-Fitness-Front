@@ -4,7 +4,8 @@ import * as PortOne from "@portone/browser-sdk/v2";
 import { v4 as uuid } from "uuid";
 import * as s from "./style";
 import { AuthContext } from "../../../../context/AuthContext";
-import { postHealthPayment } from "../../../../apis/payApi"; // ✅ API 분리된 부분
+import { postHealthPayment } from "../../../../apis/payApi";
+import { jwtDecode } from "jwt-decode";
 
 const plans = [
   { name: "BASIC", month: 1, price: "₩120,000", amount: 120000 },
@@ -21,7 +22,23 @@ const HealthMembership = () => {
 
   if (loading) return <div>로그인 확인 중...</div>;
 
-  const user_id = loginUser?.jti;
+  // ✅ user_id 확보: loginUser에서 or 토큰 디코딩
+  let user_id = loginUser?.jti || null;
+
+  if (!user_id) {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        console.log("✅ accessToken 디코딩 결과:", decoded);
+        user_id = decoded.jti || decoded.sub || decoded.id || decoded.nickname || null;
+      } catch (err) {
+        console.error("❌ 토큰 디코딩 실패:", err);
+      }
+    }
+  }
+
+  console.log("🟢 로그인된 유저 ID:", user_id);
 
   const handlePayment = async () => {
     const plan = plans.find((p) => p.month === selectedPlan);
