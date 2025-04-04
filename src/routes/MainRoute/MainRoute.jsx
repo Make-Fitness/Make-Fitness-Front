@@ -19,6 +19,7 @@ import Reservations from '../../pages/Reservations/Reservations.jsx';
 import MemberManagement from '../../pages/MemberManagement/MemberManagement.jsx'
 import Hmembership from '../../pages/Anonymous/Membership/Hmembership/Hmembership.jsx'
 import ClassesPage from '../../pages/ClassesPage/ClassesPage.jsx';
+import MasterMyPage from '../../pages/Master/MasterMyPage/MasterMyPage.jsx';
 
 function MainRoute() {
     return (
@@ -42,6 +43,7 @@ function MainRoute() {
                 <Route path="makefitness/selecttrainer" element={<SelectTrainer />} />
                 <Route path="makefitness/manager/membermanagement" element={<MemberManagement />} />
                 <Route path="makefitness/reservations" element={<Reservations />} />
+                <Route path="makefitness/mastermypage" element={<MasterMyPage />} />
             </Routes>
         </MainContainer>
     );

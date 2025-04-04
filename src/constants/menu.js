@@ -23,7 +23,7 @@ export const MENUS = {
     {
       id: "my_page",
       name: "마이페이지",
-      path: "/makefitness/mypage",
+      path: "/makefitness/mastermypage",
     },
   ],
   manager: [

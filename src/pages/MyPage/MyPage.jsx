@@ -6,8 +6,6 @@ import * as s from "./style";
 import Calendar from "../../components/common/Calendar/Calendar";
 
 function MyPage() {
-  const [isAttendanceExpanded, setIsAttendanceExpanded] = useState(false);
-
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -32,14 +30,6 @@ function MyPage() {
       ph: ph,
       classstatus: roleName,
     }));
-
-    useEffect(() => {
-      if (isAttendanceExpanded) {
-        document.body.style.overflow = "hidden"; // 스크롤 방지
-      } else {
-        document.body.style.overflow = "auto"; // 원래대로 복구
-      }
-    }, [isAttendanceExpanded]);
 
     // 회원권 정보 불러오기
     axios
@@ -82,57 +72,55 @@ function MyPage() {
 
   return (
     <div css={s.topcon}>
-      {
-        isAttendanceExpanded &&
-        <div css={s.expandedContainer}>
-          <h2>내정보</h2>
+      <div css={s.maincontainer}>
+        <h2>내정보</h2>
 
-          <label>이름</label>
+        <label>이름</label>
+        <input
+          css={s.input}
+          type="text"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          readOnly
+        />
+
+        <label>전화번호</label>
+        <div css={s.numbercontainer}>
           <input
             css={s.input}
             type="text"
-            name="name"
-            value={form.name}
+            name="ph"
+            value={form.ph}
             onChange={handleChange}
-            readOnly
           />
+          <button css={s.button2} onClick={() => handleUpdate("전화번호")}>
+            변경
+          </button>
+        </div>
 
-          <label>전화번호</label>
-          <div css={s.numbercontainer}>
-            <input
-              css={s.input}
-              type="text"
-              name="ph"
-              value={form.ph}
-              onChange={handleChange}
-            />
-            <button css={s.button2} onClick={() => setIsAttendanceExpanded(false)}>
-              변경
-            </button>
-          </div>
+        <label>비밀번호</label>
+        <input
+          css={s.input}
+          type="password"
+          name="password"
+          value={form.password}
+          onChange={handleChange}
+        />
 
-          <label>비밀번호</label>
+        <label>비밀번호 확인</label>
+        <div css={s.passwordcon}>
           <input
             css={s.input}
             type="password"
-            name="password"
-            value={form.password}
+            name="confirmPassword"
+            value={form.confirmPassword}
             onChange={handleChange}
           />
-
-          <label>비밀번호 확인</label>
-          <div css={s.passwordcon}>
-            <input
-              css={s.input}
-              type="password"
-              name="confirmPassword"
-              value={form.confirmPassword}
-              onChange={handleChange}
-            />
-            <button css={s.button2} onClick={() => handleUpdate("비밀번호")}>
-              변경
-            </button>
-          </div>
+          <button css={s.button2} onClick={() => handleUpdate("비밀번호")}>
+            변경
+          </button>
+        </div>
 
         {shouldDisplayMembership() && (
           <>
@@ -151,35 +139,15 @@ function MyPage() {
           </>
         )}
       </div>
-      }
-      {!isAttendanceExpanded &&
-      <div css={s.maincontainer}>
-        <h2>출석체크</h2>
 
-        <label>아이디</label>
-        <input
-          css={s.input}
-          type="text"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
+      <div css={s.calendarWrapper}>
+        <Calendar
+          scheduleColor={scheduleColor}
+          isEditable={false}
+          scheduleData={scheduleData}
+          setScheduleData={setScheduleData}
         />
-
-        <label>전화번호</label>
-        <div css={s.numbercontainer}>
-          <input
-            css={s.input}
-            type="text"
-            name="ph"
-            value={form.ph}
-            onChange={handleChange}
-          />
-          <button css={s.togglebtn} onClick={() => setIsAttendanceExpanded(true)}>
-            변경
-          </button>
-        </div>
       </div>
-      }
     </div>
   );
 }
