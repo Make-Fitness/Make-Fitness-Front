@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 
 export const logout = css`
  color: white;
- background-color: black;
+ background-color: rgb(10, 10, 10);
  box-shadow: none;
  border: none;
 
