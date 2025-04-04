@@ -37,8 +37,8 @@ function MainRoute() {
                 <Route path="makefitness/sales" element={<SalesPage />} />
                 <Route path="makefitness/member" element={<MemberPage />} />
                 <Route path="makefitness/worker" element={<WorkerPage />} />
-                <Route path="/makefitness/reservations/daymanagement" element={<Daymanagement />} />
-                <Route path="/makefitness/manager/classes" element={<ClassesPage />} />
+                <Route path="makefitness/reservations/daymanagement" element={<Daymanagement />} />
+                <Route path="makefitness/manager/classes" element={<ClassesPage />} />
                 <Route path="makefitness/pay" element={<Pay />} />
                 <Route path="makefitness/selecttrainer" element={<SelectTrainer />} />
                 <Route path="makefitness/manager/membermanagement" element={<MemberManagement />} />
