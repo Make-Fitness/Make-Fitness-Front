@@ -147,7 +147,9 @@ const MemberTable = () => {
         <h2>회원 관리</h2>
       </div>
 
-      {successMessage && <div css={s.successMessage}>{successMessage}</div>}
+      {successMessage && (
+        <div css={s.alertBox}>{successMessage}</div>
+      )}
 
       <div css={s.memberTableWrapper}>
         <table css={s.memberTable}>
@@ -173,7 +175,9 @@ const MemberTable = () => {
                   <td>
                     <select
                       value={editedRoles[m.userId] ?? m.roleName}
-                      onChange={(e) => handleRoleSelect(m.userId, e.target.value)}
+                      onChange={(e) =>
+                        handleRoleSelect(m.userId, e.target.value)
+                      }
                       css={s.selectBox}
                     >
                       {roleOptions.map((opt) => (
@@ -188,7 +192,11 @@ const MemberTable = () => {
                   <td>{m.gender || "-"}</td>
                   <td>
                     {m.promotionList && m.promotionList.length > 0 ? (
-                      <select css={s.selectBox} disabled value={m.promotionList[0]?.promotionName}>
+                      <select
+                        css={s.selectBox}
+                        value={m.promotionList[0]?.promotionName}
+                        onChange={(e) => e.preventDefault()} // 선택 방지
+                      >
                         {m.promotionList.map((p, idx) => (
                           <option key={idx}>{p.promotionName}</option>
                         ))}
@@ -199,11 +207,17 @@ const MemberTable = () => {
                   </td>
                   <td>
                     {m.promotionList && m.promotionList.length > 0
-                      ? formatDate(m.promotionList[m.promotionList.length - 1].expiredDate)
+                      ? formatDate(
+                          m.promotionList[m.promotionList.length - 1]
+                            .expiredDate
+                        )
                       : "-"}
                   </td>
                   <td>
-                    <button onClick={() => handleSave(m.userId)} css={s.button}>
+                    <button
+                      onClick={() => handleSave(m.userId)}
+                      css={s.button}
+                    >
                       저장
                     </button>
                   </td>

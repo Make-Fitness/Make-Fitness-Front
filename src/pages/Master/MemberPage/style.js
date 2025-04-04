@@ -162,3 +162,24 @@ export const pageButtonStyle = (isActive) => css`
     background-color: ${isActive ? "#1976d2" : "#555"};
   }
 `;
+
+export const alertBox = css`
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4caf50;
+  color: white;
+  padding: 16px 32px;
+  border-radius: 10px;
+  font-weight: bold;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: fadeInOut 3s ease-in-out;
+
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -60%); }
+    10% { opacity: 1; transform: translate(-50%, -50%); }
+    90% { opacity: 1; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -60%); }
+  }
+`;
