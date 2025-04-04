@@ -62,6 +62,20 @@ export const confirmButton = css`
   }
 `;
 
+export const closeButton = css`
+  background-color: #666;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  &:hover {
+    background-color: #444;
+  }
+`;
+
 export const buttonWrapper = css`
   display: flex;
   justify-content: center;

@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useState } from "react";
 import * as s from "./style";
+import axios from "axios";
 
 function TimeModalForRegistration({
   selectedDateStr,
@@ -25,6 +26,42 @@ function TimeModalForRegistration({
   }, [isDeleteMode]);
 
   const allHours = Array.from({ length: 18 }, (_, i) => i + 6); // 6 ~ 23시
+
+  const handleDeleteClass = async (times) => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) return;
+
+    const yyyy = selectedDateStr.split("-")[0];
+    const MM = selectedDateStr.split("-")[1];
+    const dd = selectedDateStr.split("-")[2];
+
+    try {
+      const res = await axios.get("/api/makefitness/classes/with-reservations", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // 수업 삭제 요청만 수행 (세션 복원은 백엔드에서 처리됨)
+      for (const hour of times) {
+        const HH = String(hour).padStart(2, "0");
+        const matched = res.data.find(
+          (c) =>
+            c.classTime.startsWith(`${yyyy}-${MM}-${dd}`) &&
+            c.classTime.includes(`${HH}:00:00`)
+        );
+        if (matched) {
+          await axios.delete(`/api/makefitness/classes/${matched.classId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+        }
+      }
+
+      alert("선택한 수업이 삭제되었습니다.");
+      window.location.reload();
+    } catch (err) {
+      console.error("수업 삭제 실패", err);
+      alert("수업 삭제 실패: " + (err.response?.data?.message || err.message));
+    }
+  };
 
   return (
     <div css={s.modalWrapper}>
@@ -61,8 +98,7 @@ function TimeModalForRegistration({
                     : s.disabledButton
                 }
                 onClick={() => {
-                  if (!isAlreadyRegistered && isForRegistration)
-                    toggleTime(hour);
+                  if (!isAlreadyRegistered && isForRegistration) toggleTime(hour);
                 }}
                 disabled={isAlreadyRegistered}
               >
@@ -126,7 +162,7 @@ function TimeModalForRegistration({
             <button
               css={s.confirmButton}
               disabled={selectedTimes.length === 0}
-              onClick={() => onDeleteClasses(selectedTimes)}
+              onClick={() => handleDeleteClass(selectedTimes)}
             >
               삭제하기
             </button>

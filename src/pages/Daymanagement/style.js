@@ -21,24 +21,6 @@ export const description = css`
   margin-bottom: 1.5rem;
 `;
 
-export const buttonWrapper = css`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-`;
-
-export const button = css`
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-  background-color: #444;
-  font-size: 1.8rem;
-`;
-
 export const contentWrapper = css`
   display: flex;
   flex-direction: row;
@@ -53,7 +35,7 @@ export const box = css`
   display: flex;
   justify-content: center;
   width: 450px;
-  height: 510px;
+  height: 530px;
 `;
 
 export const reservationListWrapper = css`
@@ -61,98 +43,94 @@ export const reservationListWrapper = css`
   border-radius: 10px;
   padding: 1rem;
   width: 400px;
-  min-height: 450px;
-  height: 49rem;
-
-  h3 {
-    display: flex;
-    justify-content: center;
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    margin-left: 1rem;
-  }
-
-  p {
-    display: flex;
-    justify-content: start;
-    font-size: 1.5rem;
-    margin-left: 1rem;
+  height: 510px;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 
   h5 {
     font-size: 2rem;
     margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.4rem;
+    margin-left: 1rem;
+    color: #aaa;
   }
 `;
 
 export const reservationList = css`
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 1rem 0;
 `;
 
 export const reservationItem = css`
-  margin-bottom: 0.5rem;
-  font-size: 1.3rem;
-  border-bottom: 1px solid #444;
-  padding-bottom: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #2c2c2c;
+  border-left: 5px solid #e74c3c;
+  border-radius: 8px;
+  padding: 0.8rem 1.2rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: white;
 `;
 
-export const cancelButton = css`
-  margin-left: 1rem;
-  background-color: #880000;
-  color: #fff;
+export const buttonWrapper = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+`;
+
+// 공통 버튼 스타일 (예약하기 버튼과 취소 버튼 통일)
+export const buttonCommon = css`
+  background-color: #e74c3c;
+  color: white;
   border: none;
   border-radius: 5px;
-  padding: 0.4rem 1rem;
+  padding: 0.8rem 2rem;
   font-size: 1rem;
+  font-weight: bold;
+  height: 3rem;
+  width: 9rem;  // 너비를 동일하게 설정
   cursor: pointer;
-
-  &:hover {
-    background-color: #aa2222;
-  }
-`;
-
-export const modalOverlay = css`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-`;
+  transition: background-color 0.3s ease;
 
-export const modalContent = css`
-  background: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  width: 350px;
-  max-height: 80vh;
-  overflow-y: auto;
-  outline: black;
-
-  h2 {
-    color: black;
-    font-size: 2rem;
-    margin-left: 4rem;
-  }
-
-  p {
-    font-size: 1.5rem;
-    color: black;
+  &:hover {
+    background-color: #c0392b;
   }
 `;
 
-export const button2 = css`
-  font-size: 1.5rem;
-  background-color: #444;
-  border-radius: 5px;
-  margin-left: 5rem;
-  margin: 0.5rem;
+// 비활성화된 버튼 스타일 (정원 마감)
+export const disabledButton = css`
+  ${buttonCommon}
+  background-color: transparent;
+  color: #aaa;
+  border: 2px solid #aaa;
+  cursor: not-allowed;
+`;
+
+// 활성화된 예약 버튼 스타일
+export const confirmButton = css`
+  ${buttonCommon}
+  background-color: #e74c3c;
+`;
+
+// 취소 버튼 스타일 (예약하기 버튼과 동일)
+export const cancelButton = css`
+  ${buttonCommon}
+  background-color: #880000;  // 기존의 취소 색상
+  width: 9rem;                // 예약하기 버튼과 동일한 너비로 수정
 `;

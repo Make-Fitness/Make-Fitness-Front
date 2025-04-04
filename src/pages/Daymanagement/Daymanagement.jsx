@@ -5,7 +5,6 @@ import * as s from "./style";
 import Calendar from "../../components/common/Calendar/Calendar";
 import { useLocation } from "react-router-dom";
 import TimeModal from "../../components/common/Modal/TimeModal";
-import * as modal from "../../components/common/Modal/style";
 
 function Daymanagement() {
   const [selectedClass, setSelectedClass] = useState("pt");
@@ -25,6 +24,9 @@ function Daymanagement() {
     pilates: "#FFC0CB",
   };
 
+  const formatDate = (date) =>
+    `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+
   useEffect(() => {
     const state = location.state;
     if (state?.selectedMembershipId) {
@@ -32,47 +34,58 @@ function Daymanagement() {
     }
   }, [location]);
 
-  useEffect(() => {
+  const fetchReservableClasses = async () => {
     const token = localStorage.getItem("accessToken");
     if (!token || !selectedMembershipId) return;
 
-    axios
-      .get("/api/makefitness/classes/reservable", {
+    try {
+      const res = await axios.get("/api/makefitness/classes/reservable", {
         headers: { Authorization: `Bearer ${token}` },
         params: { membershipId: selectedMembershipId },
-      })
-      .then((res) => {
-        setReservableClasses(res.data || []);
-        const grouped = {};
-        (res.data || []).forEach((item) => {
-          const date = item.classTime.split("T")[0];
-          grouped[date] = (grouped[date] || []).concat({
-            time: item.classTime,
-            trainer: item.trainerName,
-            subject: item.classSubject,
-            classId: item.classId,
-          });
+      });
+
+      const result = res.data || [];
+      setReservableClasses(result);
+
+      const grouped = {};
+      result.forEach((item) => {
+        const date = item.classTime.split("T")[0];
+        grouped[date] = (grouped[date] || []).concat({
+          time: item.classTime,
+          trainer: item.trainerName,
+          subject: item.classSubject,
+          classId: item.classId,
         });
-        setScheduleData(grouped);
-      })
-      .catch((err) => console.error("❌ 예약 가능 수업 로드 실패", err));
-  }, [selectedMembershipId]);
+      });
 
-  useEffect(() => {
+      setScheduleData(grouped);
+    } catch (err) {
+      console.error("❌ 예약 가능 수업 로드 실패", err);
+    }
+  };
+
+  const fetchTodayReservations = async () => {
     const token = localStorage.getItem("accessToken");
     if (!token || !selectedMembershipId) return;
 
-    axios
-      .get("/api/makefitness/reservation/today", {
+    try {
+      const res = await axios.get("/api/makefitness/reservation/today", {
         headers: { Authorization: `Bearer ${token}` },
         params: { membershipId: selectedMembershipId },
-      })
-      .then((res) => setTodayReservations(res.data || []))
-      .catch((err) => console.error("❌ 오늘 예약 로딩 실패", err));
+      });
+      setTodayReservations(res.data || []);
+    } catch (err) {
+      console.error("❌ 오늘 예약 로딩 실패", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchReservableClasses();
+    fetchTodayReservations();
   }, [selectedMembershipId]);
 
   useEffect(() => {
-    const selectedDateStr = currentDate.toISOString().split("T")[0];
+    const selectedDateStr = formatDate(currentDate);
     const filtered = reservableClasses.filter((cls) =>
       cls.classTime.startsWith(selectedDateStr)
     );
@@ -90,7 +103,8 @@ function Daymanagement() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert("✅ 예약 성공!");
-      window.location.reload();
+      await fetchReservableClasses();
+      await fetchTodayReservations();
     } catch (err) {
       console.error("❌ 예약 실패", err);
       alert("예약 실패: " + (err.response?.data?.message || err.message));
@@ -109,14 +123,15 @@ function Daymanagement() {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("✅ 예약이 취소되었습니다.");
-      window.location.reload();
+      await fetchReservableClasses();
+      await fetchTodayReservations();
     } catch (err) {
       console.error("❌ 예약 취소 실패", err);
       alert("예약 취소 실패: " + (err.response?.data?.message || err.message));
     }
   };
 
-  const selectedDateStr = currentDate.toISOString().split("T")[0];
+  const selectedDateStr = formatDate(currentDate);
   const availableClassMap = {};
   selectedDateReservations.forEach((cls) => {
     const hour = new Date(cls.classTime).getHours();
@@ -150,20 +165,31 @@ function Daymanagement() {
             <p>예약 가능한 수업이 없습니다.</p>
           ) : (
             <ul css={s.reservationList}>
-              {selectedDateReservations.map((item, i) => (
-                <li key={i} css={s.reservationItem}>
-                  {new Date(item.classTime).toLocaleTimeString("ko-KR", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                  <button
-                    onClick={() => handleReserveClass(item.classId)}
-                    css={modal.confirmButton}
-                  >
-                    예약하기
-                  </button>
-                </li>
-              ))}
+              {[...selectedDateReservations]
+                .sort((a, b) => new Date(a.classTime) - new Date(b.classTime))
+                .map((item, i) => {
+                  const current = item.currentCustomer || 0;
+                  const max = item.maxCustomer || 0;
+                  const remaining = max - current;
+                  const isFull = remaining <= 0;
+
+                  return (
+                    <li key={i} css={s.reservationItem}>
+                      {new Date(item.classTime).toLocaleTimeString("ko-KR", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}{" "}
+                      ({isFull ? "정원 마감" : `${remaining}명 남음`})
+                      <button
+                        onClick={() => handleReserveClass(item.classId)}
+                        css={isFull ? s.disabledButton : s.buttonCommon}  // 동일한 스타일 적용
+                        disabled={isFull}
+                      >
+                        {isFull ? "정원 마감" : "예약하기"}
+                      </button>
+                    </li>
+                  );
+                })}
             </ul>
           )}
 
@@ -180,7 +206,7 @@ function Daymanagement() {
                   })}
                   <button
                     onClick={() => handleCancelReservation(item.reservationId)}
-                    css={s.cancelButton}
+                    css={s.cancelButton} // 동일한 스타일 적용
                   >
                     취소
                   </button>
@@ -197,7 +223,9 @@ function Daymanagement() {
           availableClassMap={availableClassMap}
           selectedTime={selectedTime}
           onSelectTime={(hour) => setSelectedTime(hour)}
-          onConfirmReserve={() => handleReserveClass(availableClassMap[selectedTime])}
+          onConfirmReserve={() =>
+            handleReserveClass(availableClassMap[selectedTime])
+          }
           onClose={() => setIsModalOpen(false)}
         />
       )}

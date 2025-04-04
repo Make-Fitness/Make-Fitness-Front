@@ -1,10 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "axios";  // axios 임포트 추가 
 import Calendar from "../../components/common/Calendar/Calendar";
 import TimeModalForRegistration from "../../components/common/Modal/TimeModalForRegistration/TimeModalForRegistration";
 import * as s from "./style";
-import * as modal from "../../components/common/Modal/style";
 
 function ClassPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
