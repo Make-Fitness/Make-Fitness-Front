@@ -4,7 +4,8 @@ import * as PortOne from "@portone/browser-sdk/v2";
 import { v4 as uuid } from "uuid";
 import * as s from "./style";
 import { AuthContext } from "../../../../context/AuthContext";
-import { postHealthPayment } from "../../../../apis/payApi"; // ✅ API 분리된 부분
+import { jwtDecode } from "jwt-decode";
+import { postHealthPayment } from "../../../../apis/payApi";
 
 const plans = [
   { name: "BASIC", sessions: 12, bonus: "+ 헬스 1개월", price: "₩360,000", amount: 360000 },
@@ -18,7 +19,24 @@ const promotionMap = { 12: 5, 24: 6, 36: 7, 50: 8 };
 const Pilates = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const { loginUser } = useContext(AuthContext);
-  const user_id = loginUser?.jti;
+
+  // ✅ accessToken을 직접 decode하여 user_id 확보
+  let user_id = loginUser?.jti || null;
+
+  if (!user_id) {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        console.log("✅ 디코딩된 accessToken:", decoded);
+        user_id = decoded.jti || decoded.sub || decoded.id || decoded.nickname || null;
+      } catch (err) {
+        console.error("❌ 토큰 디코딩 실패:", err);
+      }
+    }
+  }
+
+  console.log("✅ 로그인된 유저 ID:", user_id);
 
   const handlePayment = async () => {
     const plan = plans.find(p => p.sessions === selectedPlan);
@@ -52,7 +70,7 @@ const Pilates = () => {
         ],
       });
 
-      console.log("결제 성공 응답:", paymentResponse);
+      console.log("✅ 결제 성공 응답:", paymentResponse);
 
       const payload = {
         reqMembershipDto: {
@@ -68,12 +86,10 @@ const Pilates = () => {
         },
       };
 
-      await postHealthPayment(payload); // ✅ API 분리 사용
-
+      await postHealthPayment(payload);
       alert("필라테스 결제가 완료되었습니다!");
-
     } catch (error) {
-      console.error("결제 실패:", error);
+      console.error("❌ 결제 실패:", error);
       alert("결제에 실패했습니다. 다시 시도해주세요.");
     }
   };
