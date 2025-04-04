@@ -10,14 +10,21 @@ export const topcon = css`
   margin-top: 5rem;
 
   input {
-    width: 80%;
+    width: 55rem;  /* 인풋 길이를 60%로 설정하여 화면에 맞게 길이를 줄임 */
     padding: 1rem;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
     border: none;
     border-radius: 0.5rem;
     background-color: #d1d1d1;
     font-size: 1.5rem;
     color: black;
+  }
+  
+  label {
+    display: block; /* 라벨을 블록 요소로 설정하여 인풋 위에 배치 */
+    font-size: 1.5rem;
+    color: #dbdbdb;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -40,6 +47,7 @@ export const maincontainer = css`
   }
 
   label {
+    display: block;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
     color: #dbdbdb;
@@ -65,6 +73,7 @@ export const expandedContainer = css`
   }
 
   label {
+    display: block;
     font-size: 1.4rem;
     color: #ccc;
     margin-top: 1rem;
@@ -93,12 +102,11 @@ export const button2 = css`
   background-color: #b71c1c;
   color: white;
   border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
   cursor: pointer;
   font-size: 1.2rem;
   transition: 0.3s;
-  margin-left: 1.5rem;
   margin-bottom: 0.75rem;
 
   &:hover {
@@ -172,4 +180,3 @@ export const attendanceInputBox = css`
   gap: 1rem;
   margin-top: 1rem;
 `;
-

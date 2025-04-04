@@ -117,8 +117,7 @@ function MasterMyPage() {
               변경
           </button>
         </div>
-
-        <label>비밀번호</label>
+          <label>비밀번호</label>
         <input
           type="password"
           name="password"
