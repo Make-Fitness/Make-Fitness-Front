@@ -16,13 +16,37 @@ function MyPage() {
     classstatus: "",
   });
 
-  const [membershipInfo, setMembershipInfo] = useState(null);
   const [scheduleData, setScheduleData] = useState({});
+
+  // ✅ 출석 내역 조회 함수
+  const loadAttendance = async (accessToken) => {
+    try {
+      const res = await axios.get("/api/makefitness/attendance/me", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // attendDate가 ISO 문자열로 오는 경우 그대로 사용
+      const attendDates = res.data.map((item) => item.attendDate);
+      console.log("✅ 출석한 날짜 목록:", attendDates);
+
+      const calendarData = {};
+      [...new Set(attendDates)].forEach((date) => {
+        calendarData[date] = "red";
+      });
+
+      setScheduleData(calendarData);
+    } catch (err) {
+      console.error("❌ 출석 정보 불러오기 실패:", err);
+    }
+  };
 
   useEffect(() => {
     const nickname = localStorage.getItem("nickname") || "";
     const ph = localStorage.getItem("ph") || "";
     const roleName = localStorage.getItem("roleName") || "";
+    const accessToken = localStorage.getItem("accessToken");
 
     setForm((prev) => ({
       ...prev,
@@ -31,15 +55,13 @@ function MyPage() {
       classstatus: roleName,
     }));
 
-    // 회원권 정보 불러오기
-    axios
-      .get(`/api/makefitness/membership?ph=${ph}`)
-      .then((res) => {
-        setMembershipInfo(res.data); // 예: { promotionName: "30회 PT" }
-      })
-      .catch((err) => {
-        console.error("회원권 정보 불러오기 실패", err);
-      });
+    if (!accessToken) {
+      console.log("⛔ AccessToken 없음");
+      return;
+    }
+
+    // ✅ 출석 내역만 불러옴
+    loadAttendance(accessToken);
   }, []);
 
   const handleChange = (e) => {
@@ -48,26 +70,6 @@ function MyPage() {
 
   const handleUpdate = (type) => {
     alert(`${type}이(가) 변경되었습니다.`);
-  };
-
-  const handleUpdate2 = (type) => {
-    alert(`${type} 페이지로 이동합니다.`);
-    if (type === "멤버십" || type === "회원권") {
-      navigate("/makefitness/membership");
-    }
-  };
-
-  const classstatusValue = form.classstatus.trim();
-  const scheduleColor =
-    classstatusValue === "PT"
-      ? "#87CEEB"
-      : classstatusValue === "PILATES"
-      ? "#FFC0CB"
-      : "#87CEEB";
-
-  const shouldDisplayMembership = () => {
-    const classstatus = form.classstatus.trim();
-    return classstatus !== "ROLE_MANAGER" && classstatus !== "ROLE_MASTER";
   };
 
   return (
@@ -121,28 +123,10 @@ function MyPage() {
             변경
           </button>
         </div>
-
-        {shouldDisplayMembership() && (
-          <>
-            <label>이용중인 회원권</label>
-            {membershipInfo === null ? (
-              <p>회원권 정보를 불러오는 중...</p>
-            ) : (
-              <input
-                css={s.input2}
-                type="text"
-                name="promotionName"
-                value={membershipInfo.promotionName}
-                readOnly
-              />
-            )}
-          </>
-        )}
       </div>
 
       <div css={s.calendarWrapper}>
         <Calendar
-          scheduleColor={scheduleColor}
           isEditable={false}
           scheduleData={scheduleData}
           setScheduleData={setScheduleData}

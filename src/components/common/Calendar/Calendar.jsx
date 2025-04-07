@@ -2,9 +2,11 @@
 // Emotion의 css prop 사용 가능하게 설정
 
 import React, { useMemo, useState } from "react";
+import { css } from "@emotion/react";
 import * as s from "./style";
 
 function Calendar({
+<<<<<<< HEAD
   scheduleColor,         // 수업이 있는 날짜에 칠할 배경색
   isEditable,            // 편집 가능 여부 (지금은 사용 X)
   scheduleData,          // 날짜별 수업 정보 객체 { yyyy-mm-dd: [{ time, subject }] }
@@ -12,6 +14,15 @@ function Calendar({
   userRole,              // 사용자 권한 (지금은 사용 X)
   disablePastDates = false, // 과거 날짜 클릭 불가 설정 여부
   onDateClick,           // 날짜 클릭 시 실행할 함수
+=======
+  scheduleColor,
+  isEditable,
+  scheduleData,
+  setScheduleData,
+  userRole,
+  disablePastDates = false,
+  onDateClick,
+>>>>>>> 33519dab432c57bf7398f69be5df4e102915b15b
 }) {
   const [currentDate, setCurrentDateState] = useState(new Date());
 
@@ -26,7 +37,10 @@ function Calendar({
   const calendarDays = ["일", "월", "화", "수", "목", "금", "토"];
   const titleText = `${year}년 ${formattedMonth}월 스케줄`;
 
+<<<<<<< HEAD
   // 오늘 날짜 (시간 제거해서 비교용)
+=======
+>>>>>>> 33519dab432c57bf7398f69be5df4e102915b15b
   const today = useMemo(() => {
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
@@ -48,6 +62,7 @@ function Calendar({
     return null;
   };
 
+<<<<<<< HEAD
   // 셀 배경 스타일: 수업이 있는 날짜는 색칠함
   const getCellStyle = (dateNumber) => {
     const dateStr = `${year}-${formattedMonth}-${String(dateNumber).padStart(2, "0")}`;
@@ -64,6 +79,11 @@ function Calendar({
     const fullDate = new Date(year, month, dateNumber, 0, 0, 0, 0);
 
     // disablePastDates가 true이고 과거 날짜이면 클릭 막음
+=======
+  const handleCellClick = (dateNumber) => {
+    if (!dateNumber) return;
+    const fullDate = new Date(year, month, dateNumber, 0, 0, 0, 0);
+>>>>>>> 33519dab432c57bf7398f69be5df4e102915b15b
     if (disablePastDates && fullDate < today) return;
 
     // 날짜 클릭 시 부모로 전달
@@ -80,7 +100,10 @@ function Calendar({
   const handleNextMonth = () => {
     const nextMonthDate = new Date(year, month + 1, 1);
     setCurrentDateState(nextMonthDate);
+<<<<<<< HEAD
     setScheduleData({}); // 다음 달로 이동 시 스케줄 초기화
+=======
+>>>>>>> 33519dab432c57bf7398f69be5df4e102915b15b
   };
 
   return (
@@ -97,15 +120,27 @@ function Calendar({
         {calendarDays.map((day, idx) => {
           const dayColor = idx === 0 ? "red" : idx === 6 ? "blue" : "#333";
           return (
+<<<<<<< HEAD
             <div key={idx} css={[s.calendarDayHeader, { color: dayColor }]}> {day} </div>
+=======
+            <div key={idx} css={[s.calendarDayHeader, { color: dayColor }]}>
+              {day}
+            </div>
+>>>>>>> 33519dab432c57bf7398f69be5df4e102915b15b
           );
         })}
 
         {/* 날짜 셀들 */}
         {calendarCells.map((dateNum, idx) => {
+<<<<<<< HEAD
           if (!dateNum) return <div key={idx} css={s.emptyCell}></div>; // 공백 처리
 
           const dayIndex = idx % 7; // 일~토 순서
+=======
+          if (!dateNum) return <div key={idx} css={s.emptyCell}></div>;
+
+          const dayIndex = idx % 7;
+>>>>>>> 33519dab432c57bf7398f69be5df4e102915b15b
           const textColor = dayIndex === 0 ? "red" : dayIndex === 6 ? "blue" : "black";
           const dateKey = `${year}-${formattedMonth}-${String(dateNum).padStart(2, "0")}`;
 
@@ -114,16 +149,25 @@ function Calendar({
               key={idx}
               css={[
                 s.calendarDateCell,
+<<<<<<< HEAD
                 getCellClass(dateNum), // 회색 처리 여부
                 getCellStyle(dateNum), // 배경색 표시
                 { color: textColor },  // 텍스트 색상 (일/토/평일)
+=======
+                getCellClass(dateNum),
+                { color: textColor },
+>>>>>>> 33519dab432c57bf7398f69be5df4e102915b15b
               ]}
               onClick={() => handleCellClick(dateNum)}
             >
               {dateNum}
+<<<<<<< HEAD
               {scheduleData[dateKey]?.length > 0 && (
                 <span css={s.checkMark}>✔</span> // 수업 있으면 체크 표시
               )}
+=======
+              {scheduleData[dateKey] && <span css={s.checkMarkBig}>✔</span>}
+>>>>>>> 33519dab432c57bf7398f69be5df4e102915b15b
             </div>
           );
         })}

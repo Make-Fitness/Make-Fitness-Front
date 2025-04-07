@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as s from "./style";
 import { fetchSalesReport } from "../../../apis/salesApi";
 
@@ -10,11 +10,11 @@ const SalesPage = () => {
 
     const toComma = (num) => num.toLocaleString();
 
-    const handleFilter = async () => {
-        if (!startDate || !endDate) return;
+    const handleFilter = async (sDate = startDate, eDate = endDate) => {
+        if (!sDate || !eDate) return;
 
         try {
-            const rows = await fetchSalesReport(startDate, endDate);
+            const rows = await fetchSalesReport(sDate, eDate);
             console.log("📦 매출 응답:", rows);
 
             const result = rows.map((row) => {
@@ -55,6 +55,13 @@ const SalesPage = () => {
         }
     );
 
+    useEffect(() => {
+        const today = new Date().toISOString().slice(0, 10);
+        setStartDate(today);
+        setEndDate(today);
+        handleFilter(today, today);
+    }, []);
+
     return (
         <div css={s.sales}>
             <h2>매출</h2>
@@ -71,7 +78,7 @@ const SalesPage = () => {
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
                 />
-                <button onClick={handleFilter} css={s.button}>기간적용</button>
+                <button onClick={() => handleFilter()} css={s.button}>기간적용</button>
             </div>
 
             <table css={s.salesTable}>
