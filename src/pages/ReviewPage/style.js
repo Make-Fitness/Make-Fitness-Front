@@ -164,3 +164,26 @@ export const footer = css`
   color: #aaa;
   margin-top: 4rem;
 `;
+
+export const paginationWrapperStyle = css`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding-bottom: 20px;
+`;
+
+export const pageButtonStyle = (isActive) => css`
+  background-color: ${isActive ? "#2196f3" : "#444"};
+  color: ${isActive ? "#fff" : "#ccc"};
+  font-weight: ${isActive ? "bold" : "normal"};
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin: 0 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: ${isActive ? "#1976d2" : "#555"};
+  }
+`;

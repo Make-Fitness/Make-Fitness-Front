@@ -11,6 +11,10 @@ const ReviewPage = () => {
   const [rating, setRating] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const reviewsPerPage = 5;
+
   const roleName = localStorage.getItem("roleName");
 
   // ✅ 전체 리뷰 불러오기
@@ -145,6 +149,7 @@ const ReviewPage = () => {
               }
             }}
           />
+          
           <button css={s.submitButton} onClick={handleReviewSubmit}>
             등록
           </button>
