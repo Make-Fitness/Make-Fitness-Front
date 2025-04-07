@@ -86,3 +86,12 @@ export const titleBlack = css`
   font-weight: bold;
   color: black;
 `;
+
+export const checkMark = css`
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  font-size: 1rem;
+  color: green;
+  font-weight: bold;
+`;

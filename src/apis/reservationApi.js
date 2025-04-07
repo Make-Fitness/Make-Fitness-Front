@@ -19,7 +19,7 @@ export const getTodayReservations = (membershipId) => {
   });
 };
 
-// 과거 예약 이력 조회 (← 새로 추가한 API)
+// 과거 예약 이력 조회 
 export const getReservationHistory = (membershipId) => {
   return axiosInstance.get("/api/makefitness/reservation/history", {
     params: { membershipId },

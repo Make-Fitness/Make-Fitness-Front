@@ -81,7 +81,6 @@ function Calendar({
   const handleNextMonth = () => {
     const nextMonthDate = new Date(year, month + 1, 1);
     setCurrentDateState(nextMonthDate);
-    setScheduleData({}); // 다음 달로 이동 시 스케줄 초기화
   };
 
   return (
