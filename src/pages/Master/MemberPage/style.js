@@ -25,6 +25,10 @@ export const memberTableWrapper = css`
   &::-webkit-scrollbar {
     display: none;
   }
+
+  td:last-of-type {
+    text-align: center;
+  }
 `;
 
 export const memberTable = css`
@@ -39,7 +43,6 @@ export const memberTable = css`
     border: 1px solid #444;
     padding: 1rem 0.5rem;
     text-align: center;
-
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -71,7 +74,6 @@ export const selectBox = css`
   border: 1px solid #666;
   border-radius: 0.4rem;
   font-size: 1.4rem;
-
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -86,14 +88,22 @@ export const successMessage = css`
 `;
 
 export const button = css`
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 1rem;
-  color: black;
-  background-color: rgb(96, 96, 96);
+  padding: 0.8rem 2rem;
+  color: white;
+  background-color: red;
   border: none;
+  border-radius: 6px;
+  font-size: 1.4rem;
+  font-weight: bold;
   cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color:rgb(161, 2, 2);
+  }
 `;
 
 export const footer = css`

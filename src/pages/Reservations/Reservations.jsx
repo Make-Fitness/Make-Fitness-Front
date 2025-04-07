@@ -1,19 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from "react";
 import * as s from "./style";
-import Calendar from "../../components/common/Calendar/Calendar";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import { getAvailablePromotions } from "../../apis/reservationApi";
 
 function Reservation() {
   const navigate = useNavigate();
-  const [view, setView] = useState("dashboard");
-  const [promotionData, setPromotionData] = useState([]);
-  const [selectedMembershipId, setSelectedMembershipId] = useState(null);
 
+  // ✅ 예약 선택용 상태들
+  const [view, setView] = useState("dashboard"); // 현재 뷰: 'dashboard'만 사용 중
+  const [promotionData, setPromotionData] = useState([]); // 프로모션 리스트
+  const [selectedMembershipId, setSelectedMembershipId] = useState(null); // 선택된 멤버십
+
+  // ✅ 유효 토큰 확인 + 프로모션 데이터 조회
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
+
     if (!token || typeof token !== "string" || token.length < 20) {
       console.error("유효하지 않은 토큰입니다. 다시 로그인하세요.");
       return;
@@ -21,14 +24,15 @@ function Reservation() {
 
     getAvailablePromotions()
       .then((res) => {
-        console.log("프로모션 데이터:", res.data);
+        console.log("📦 프로모션 데이터:", res.data);
         setPromotionData(res.data || []);
       })
       .catch((err) => {
-        console.error("강사 및 예약 정보 불러오기 실패", err);
+        console.error("❌ 강사 및 예약 정보 불러오기 실패", err);
       });
   }, []);
 
+  // ✅ '예약하기' 버튼 클릭 시, 해당 멤버십 ID를 상태로 전달
   const handleReserveDashboard = (membershipId) => {
     setSelectedMembershipId(membershipId);
     navigate("/makefitness/reservations/daymanagement", {
@@ -36,10 +40,12 @@ function Reservation() {
     });
   };
 
+  // ✅ 메인 뷰 렌더링 (대시보드)
   if (view === "dashboard") {
     return (
       <div css={s.container}>
         <h1 css={s.title}>내 프로모션 관리</h1>
+
         <table
           css={css`
             width: 100%;
@@ -57,6 +63,7 @@ function Reservation() {
               <th css={s.tableHeader}>확인</th>
             </tr>
           </thead>
+
           <tbody>
             {promotionData.map((item) => (
               <tr key={item.membershipId}>

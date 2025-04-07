@@ -11,6 +11,7 @@ const MemberTable = () => {
 
   const membersPerPage = 10;
 
+  // ✅ 최초 회원 목록 로드
   useEffect(() => {
     fetch("/api/makefitness/admin/users")
       .then((res) => res.json())
@@ -23,6 +24,7 @@ const MemberTable = () => {
       .catch((err) => console.error("회원 목록 조회 실패:", err));
   }, []);
 
+  // ✅ 유저별로 프로모션 그룹핑
   const groupMembersByUserId = (data) => {
     return data.reduce((acc, curr) => {
       const existing = acc.find((m) => m.userId === curr.userId);
@@ -44,10 +46,12 @@ const MemberTable = () => {
     }, []);
   };
 
+  // ✅ 권한 선택 변경 감지
   const handleRoleSelect = (userId, newRole) => {
     setEditedRoles((prev) => ({ ...prev, [userId]: newRole }));
   };
 
+  // ✅ 권한 저장 요청
   const handleSave = (userId) => {
     const newRole = editedRoles[userId];
     if (!newRole) return;
@@ -63,12 +67,14 @@ const MemberTable = () => {
       .then((res) => {
         if (!res.ok) throw new Error("권한 변경 실패");
 
+        // 변경된 권한 UI에 반영
         setMembers((prev) =>
           prev.map((m) =>
             m.userId === userId ? { ...m, roleName: newRole } : m
           )
         );
 
+        // 수정 중 상태 초기화
         setEditedRoles((prev) => {
           const updated = { ...prev };
           delete updated[userId];
@@ -81,6 +87,7 @@ const MemberTable = () => {
       .catch((err) => console.error(`${userId} 저장 실패:`, err));
   };
 
+  // ✅ 날짜 포맷 변환
   const formatDate = (date) => {
     if (!date) return "-";
     return new Date(date).toLocaleDateString("ko-KR", {
@@ -90,17 +97,20 @@ const MemberTable = () => {
     });
   };
 
+  // ✅ 권한 목록
   const roleOptions = [
     { value: "ROLE_MANAGER", label: "강사" },
     { value: "ROLE_CUSTOMER", label: "회원" },
     { value: "ROLE_ANONYMOUS", label: "익명" },
   ];
 
+  // ✅ 페이징 처리
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
   const currentMembers = members.slice(indexOfFirstMember, indexOfLastMember);
   const totalPages = Math.ceil(members.length / membersPerPage);
 
+  // ✅ 페이지 번호 렌더링
   const renderPageNumbers = () => {
     const pages = [];
 
@@ -141,15 +151,14 @@ const MemberTable = () => {
     return pages;
   };
 
+  // ✅ 메인 렌더링
   return (
     <div css={s.memberPage}>
       <div css={s.headerArea}>
         <h2>회원 관리</h2>
       </div>
 
-      {successMessage && (
-        <div css={s.alertBox}>{successMessage}</div>
-      )}
+      {successMessage && <div css={s.alertBox}>{successMessage}</div>}
 
       <div css={s.memberTableWrapper}>
         <table css={s.memberTable}>
@@ -175,9 +184,7 @@ const MemberTable = () => {
                   <td>
                     <select
                       value={editedRoles[m.userId] ?? m.roleName}
-                      onChange={(e) =>
-                        handleRoleSelect(m.userId, e.target.value)
-                      }
+                      onChange={(e) => handleRoleSelect(m.userId, e.target.value)}
                       css={s.selectBox}
                     >
                       {roleOptions.map((opt) => (
@@ -192,11 +199,7 @@ const MemberTable = () => {
                   <td>{m.gender || "-"}</td>
                   <td>
                     {m.promotionList && m.promotionList.length > 0 ? (
-                      <select
-                        css={s.selectBox}
-                        value={m.promotionList[0]?.promotionName}
-                        onChange={(e) => e.preventDefault()} // 선택 방지
-                      >
+                      <select css={s.selectBox} value={m.promotionList[0]?.promotionName} disabled>
                         {m.promotionList.map((p, idx) => (
                           <option key={idx}>{p.promotionName}</option>
                         ))}
@@ -207,17 +210,11 @@ const MemberTable = () => {
                   </td>
                   <td>
                     {m.promotionList && m.promotionList.length > 0
-                      ? formatDate(
-                          m.promotionList[m.promotionList.length - 1]
-                            .expiredDate
-                        )
+                      ? formatDate(m.promotionList[m.promotionList.length - 1].expiredDate)
                       : "-"}
                   </td>
                   <td>
-                    <button
-                      onClick={() => handleSave(m.userId)}
-                      css={s.button}
-                    >
+                    <button onClick={() => handleSave(m.userId)} css={s.button}>
                       저장
                     </button>
                   </td>
@@ -232,6 +229,8 @@ const MemberTable = () => {
             )}
           </tbody>
         </table>
+
+        {/* 페이지네이션 표시 */}
         {totalPages > 1 && (
           <div css={s.paginationWrapperStyle}>{renderPageNumbers()}</div>
         )}

@@ -147,17 +147,6 @@ const SignUpPage = () => {
                 {errors.email && <p css={s.errorText}>{errors.email}</p>}
             </form>
             
-            <div css={s.socialLogin}>
-                <button css={s.googleLogin}>
-                    <span><FcGoogle /></span> 
-                    <div  css={s.letterg}>구글로 시작</div> 
-                </button>
-                <button css={s.naverLogin}>
-                    <span><SiNaver /></span>  
-                    <div css={s.lettern}>네이버로 시작</div> 
-                </button>
-            </div>
-            
             <button css={s.signUpButton} onClick={handleJoinOnClick}>회원가입</button>
             
             <div css={s.signinContainer}>

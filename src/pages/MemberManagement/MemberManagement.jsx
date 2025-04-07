@@ -1,14 +1,16 @@
 /** @jsxImportSource @emotion/react */
-import api from '../../configs/axiosConfig';
-import * as s from './style';
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import api from "../../configs/axiosConfig";
+import * as s from "./style";
 
 function MemberManagement() {
+  // ✅ 상태 정의
   const [members, setMembers] = useState([]);
   const [searchnickname, setSearchnickname] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const membersPerPage = 10;
 
+  // ✅ API 호출 함수
   const fetchMembers = (nickname = "") => {
     console.log("🔁 [fetchMembers] 호출됨, nickname:", nickname);
 
@@ -22,45 +24,46 @@ function MemberManagement() {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      params: {},
+      params: nickname ? { nickName: nickname } : {},
     };
-
-    if (nickname !== "") {
-      config.params.nickName = nickname;
-    }
 
     api.get("/api/makefitness/manager/membermanagement", config)
       .then((response) => {
         console.log("✅ [fetchMembers] 응답 성공:", response.data);
         setMembers(response.data);
-        setCurrentPage(1);
+        setCurrentPage(1); // 새 검색 시 페이지 초기화
       })
       .catch((error) => {
         console.error("❌ [fetchMembers] 요청 실패:", error);
       });
   };
 
+  // ✅ 첫 마운트 시 초기 전체 데이터 조회
   useEffect(() => {
     console.log("🧠 [useEffect] 컴포넌트 마운트됨, fetchMembers 실행");
     fetchMembers();
   }, []);
 
+  // ✅ 조회 버튼 클릭 시
   const handleSearch = () => {
     console.log("🔍 [handleSearch] 검색 실행:", searchnickname);
     fetchMembers(searchnickname);
   };
 
+  // ✅ Enter 키 입력 시 검색 실행
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();
     }
   };
 
+  // ✅ 페이지네이션 계산
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
   const currentMembers = members.slice(indexOfFirstMember, indexOfLastMember);
   const totalPages = Math.ceil(members.length / membersPerPage);
 
+  // ✅ 페이지네이션 버튼 렌더링
   const renderPageNumbers = () => {
     const pages = [];
 
@@ -101,10 +104,12 @@ function MemberManagement() {
     return pages;
   };
 
+  // ✅ 렌더링
   return (
     <div css={s.containerStyle}>
       <h1 css={s.titleStyle}>회원 관리표</h1>
 
+      {/* 검색 필터 영역 */}
       <div css={s.searchWrapperStyle}>
         <label htmlFor="nicknameInput" css={s.labelStyle}>
           이름 입력:
@@ -123,6 +128,7 @@ function MemberManagement() {
         </button>
       </div>
 
+      {/* 회원 리스트 테이블 */}
       <table css={s.tableStyle}>
         <thead>
           <tr>
@@ -158,6 +164,7 @@ function MemberManagement() {
         </tbody>
       </table>
 
+      {/* 페이지네이션 */}
       {totalPages > 1 && (
         <div css={s.paginationWrapperStyle}>{renderPageNumbers()}</div>
       )}

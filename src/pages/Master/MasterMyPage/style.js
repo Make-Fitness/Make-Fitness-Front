@@ -10,7 +10,7 @@ export const topcon = css`
   margin-top: 5rem;
 
   input {
-    width: 55rem;  /* 인풋 길이를 60%로 설정하여 화면에 맞게 길이를 줄임 */
+    width: 55rem;
     padding: 1rem;
     margin-bottom: 1rem;
     border: none;
@@ -19,38 +19,12 @@ export const topcon = css`
     font-size: 1.5rem;
     color: black;
   }
-  
-  label {
-    display: block; /* 라벨을 블록 요소로 설정하여 인풋 위에 배치 */
-    font-size: 1.5rem;
-    color: #dbdbdb;
-    margin-bottom: 0.5rem;
-  }
-`;
-
-export const maincontainer = css`
-  width: 50rem;
-  padding: 2rem;
-  margin-top: 5rem;
-  margin-bottom: 15rem;
-  background-color: black;
-  border-radius: 1.75rem;
-  border: 0.125rem solid #444;
-  color: white;
-  box-shadow: 0rem 0.25rem 0.625rem rgba(255, 255, 255, 0.1);
-
-  h2 {
-    text-align: center;
-    font-size: 3rem;
-    color: white;
-    margin-bottom: 3rem;
-  }
 
   label {
     display: block;
     font-size: 1.5rem;
-    margin-bottom: 0.5rem;
     color: #dbdbdb;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -82,11 +56,7 @@ export const expandedContainer = css`
 `;
 
 export const numbercontainer = css`
-  display: flex;
-  align-items: center;
   width: 100%;
-  margin-bottom: 1rem;
-  gap: 1rem;
 `;
 
 export const passwordcon = css`
@@ -142,35 +112,67 @@ export const modalOverlay = css`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
+  background-color: black;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 9999;
 `;
 
 export const modalBox = css`
-  background: black;
-  padding: 2rem;
+  background: #111;
+  padding: 2rem 3rem;
   border-radius: 1.25rem;
   box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
-  min-width: 300px;
+  width: 90%;
+  max-width: 60rem;
+  height: 20rem;
   color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* ✅ 중앙 정렬 추가 */
 
   h3 {
     font-size: 1.8rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     text-align: center;
+  }
+
+  input {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.4rem;
+    background-color: #2f2f2f;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    margin-bottom: 2rem;
   }
 `;
 
 export const modalBtnGroup = css`
   display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
+  justify-content: center; /* ✅ 버튼 가운데로 */
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;             /* ✅ 너비 꽉 채워서 중앙 정렬 가능하게 */
+  margin-top: 1rem;
+`;
+
+export const input = css`
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  margin-bottom: 2rem;
+  background-color: #333;
+  color: white;
+
+  &::placeholder {
+    color: #aaa;
+  }
 `;
 
 export const attendanceInputBox = css`

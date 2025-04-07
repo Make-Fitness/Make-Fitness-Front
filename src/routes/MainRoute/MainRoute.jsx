@@ -20,6 +20,7 @@ import MemberManagement from '../../pages/MemberManagement/MemberManagement.jsx'
 import Hmembership from '../../pages/Anonymous/Membership/Hmembership/Hmembership.jsx'
 import ClassesPage from '../../pages/ClassesPage/ClassesPage.jsx';
 import MasterMyPage from '../../pages/Master/MasterMyPage/MasterMyPage.jsx';
+import PtPltPage from '../../pages/PtPltPage/PtPltPage.jsx';
 
 function MainRoute() {
     return (
@@ -44,6 +45,7 @@ function MainRoute() {
                 <Route path="makefitness/manager/membermanagement" element={<MemberManagement />} />
                 <Route path="makefitness/reservations" element={<Reservations />} />
                 <Route path="makefitness/mastermypage" element={<MasterMyPage />} />
+                <Route path="makefitness/ptplt" element={<PtPltPage />} />
             </Routes>
         </MainContainer>
     );

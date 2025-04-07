@@ -79,7 +79,7 @@ export const MENUS = {
     {
       id: "pt_pilates",
       name: "PT/PILATES",
-      path: "/PT/PILATES 주소",
+      path: "/makefitness/ptplt",
     },
     {
       id: "location",

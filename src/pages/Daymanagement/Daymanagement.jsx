@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import * as s from "./style";
 import Calendar from "../../components/common/Calendar/Calendar";
-import ClassReservationModal from "../../components/common/Modal/ClassReservationModal";
+import ClassReservationModal from "../../components/common/Modal/ClassReservationModal/ClassReservationModal";
 import { useLocation } from "react-router-dom";
 import {
   getReservableClasses,

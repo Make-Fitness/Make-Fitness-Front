@@ -15,7 +15,6 @@ function TrainerPage() {
       <div css={s.topGroup}>
         <div css={s.toptext1}>START YOUR FIT</div>
         <div css={s.toptext2}>근력운동 시작을 위한 모든것</div>
-      
     
         <h2 css={s.managerIntroduceTitle}>
           강사진 소개
@@ -81,14 +80,6 @@ function TrainerPage() {
           </div>
         </div>
       </div>
-          
-    
-      <div css={s.mainImgs2}><img src="/Trainer/ppmain1.jpg" alt="메인 이미지3" /></div>
-      <div css={s.mainImgs2}><img src="/Trainer/ppmain2.jpg" alt="메인 이미지3" /></div>
-      <div css={s.mainImgs2}><img src="/Trainer/ppmain3.jpg" alt="메인 이미지3" /></div>
-      <div css={s.mainImgs2}><img src="/Trainer/ppmain4.jpg" alt="메인 이미지3" /></div>
-      <div css={s.mainImgs2}><img src="/Trainer/ppmain5.jpg" alt="메인 이미지3" /></div>
-      <div css={s.mainImgs2}><img src="/Trainer/ppmain6.jpg" alt="메인 이미지3" /></div>
 
       <div css={s.buttonbox}>
         <button css={s.floatingButton} onClick={() => navigate("/makefitness/membership")}>

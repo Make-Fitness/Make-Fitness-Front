@@ -65,17 +65,6 @@ const LogInPage = () => {
 
         {message && <div css={s.message}>{message}</div>}
 
-        <div css={s.socialLogin}>
-          <button type="button" css={s.googleLogin} onClick={() => handleOAuth2LoginOnClick("google")}>
-            <span><FcGoogle /></span>
-            <div css={s.letterg}>구글로 로그인</div>
-          </button>
-          <button type="button" css={s.naverLogin} onClick={() => handleOAuth2LoginOnClick("naver")}>
-            <span><SiNaver /></span>
-            <div>네이버로 로그인</div>
-          </button>
-        </div>
-
         <button type="submit" css={s.loginButton}>로그인</button>
       </form>
 

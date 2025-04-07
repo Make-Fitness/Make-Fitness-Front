@@ -24,8 +24,6 @@ export const container = css`
   @media (min-height: 700px) {
     height: auto;
   }
-
-  
 `;
 
 export const errorText = css`
@@ -48,7 +46,7 @@ export const logo = css`
 `;
 
 export const genderContainer = css`
-   display: flex;
+  display: flex;
   align-items: center;
   justify-content: left;
   gap: 1rem; 
@@ -99,71 +97,6 @@ export const form = css`
   }
 `;
 
-
-
-export const socialLogin = css`
-  display: flex;
-  justify-content: space-between;
-  width: calc(100%);
-  margin-top: 2rem;
-  padding: 0.6;
-  gap: 5rem;
-`;
-
-export const googleLogin = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: black;
-  border: none;
-  border-radius: 0.625rem;
-  cursor: pointer;
-  width: 48%;
-  font-size: 1.3rem;
-  font-weight: bold;
-  text-align: center;
-  
-
-  & > span {
-    padding-top:0.3rem;
-    margin: -3rem;
-    width: 4rem;
-    margin-right: 0.875rem;  
-
-    & > svg {
-      height: 1.8rem;
-      width: 1.8rem;
-    
-    }
-  }
-
-  
-`;
-
-export const naverLogin = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #03c75a;
-  color: white;
-  border: none;
-  padding: 1rem 1.5rem;
-  border-radius: 0.625rem;
-  cursor: pointer;
-  width: 48%;
-  font-size: 1.3rem;
-  font-weight: bold;
-  text-align: center;
-  
-
-  & > span {
-    padding-top:0.3rem;
-    margin: -3rem;
-    width: 4rem;
-    margin-right: 0.875rem;  
-  }
-`;
-
 export const letterg = css`
   display: flex;
   color: black;
@@ -206,6 +139,7 @@ export const qtext = css`
 `;
 
 export const highlightedText = css`
+  padding-left: 1rem;
   color:rgb(37, 102, 242);
   font-weight: bold;
 
