@@ -1,8 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import React, { useMemo, useState } from "react";
+import { css } from "@emotion/react";
 import * as s from "./style";
 
-function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, userRole, disablePastDates = false, onDateClick }) {
+function Calendar({
+  scheduleColor,
+  isEditable,
+  scheduleData,
+  setScheduleData,
+  userRole,
+  disablePastDates = false,
+  onDateClick,
+}) {
   const [currentDate, setCurrentDateState] = useState(new Date());
 
   const year = currentDate.getFullYear();
@@ -13,7 +22,6 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
   const calendarDays = ["일", "월", "화", "수", "목", "금", "토"];
   const titleText = `${year}년 ${formattedMonth}월 스케줄`;
 
-  // 오늘 날짜 (시간 제거된 로컬 Date)
   const today = useMemo(() => {
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
@@ -33,18 +41,9 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
     return null;
   };
 
-  const getCellStyle = (dateNumber) => {
-    const dateStr = `${year}-${formattedMonth}-${String(dateNumber).padStart(2, "0")}`;
-    let style = { position: "relative" };
-    if (scheduleData[dateStr] && scheduleData[dateStr].length > 0) {
-      style.backgroundColor = scheduleColor;
-    }
-    return style;
-  };
-
   const handleCellClick = (dateNumber) => {
     if (!dateNumber) return;
-    const fullDate = new Date(year, month, dateNumber, 0, 0, 0, 0); // ← 타임존 안전 방식
+    const fullDate = new Date(year, month, dateNumber, 0, 0, 0, 0);
     if (disablePastDates && fullDate < today) return;
     onDateClick?.(fullDate);
   };
@@ -57,7 +56,6 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
   const handleNextMonth = () => {
     const nextMonthDate = new Date(year, month + 1, 1);
     setCurrentDateState(nextMonthDate);
-    setScheduleData({});
   };
 
   return (
@@ -72,12 +70,15 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
         {calendarDays.map((day, idx) => {
           const dayColor = idx === 0 ? "red" : idx === 6 ? "blue" : "#333";
           return (
-            <div key={idx} css={[s.calendarDayHeader, { color: dayColor }]}>{day}</div>
+            <div key={idx} css={[s.calendarDayHeader, { color: dayColor }]}>
+              {day}
+            </div>
           );
         })}
 
         {calendarCells.map((dateNum, idx) => {
           if (!dateNum) return <div key={idx} css={s.emptyCell}></div>;
+
           const dayIndex = idx % 7;
           const textColor = dayIndex === 0 ? "red" : dayIndex === 6 ? "blue" : "black";
           const dateKey = `${year}-${formattedMonth}-${String(dateNum).padStart(2, "0")}`;
@@ -85,13 +86,15 @@ function Calendar({ scheduleColor, isEditable, scheduleData, setScheduleData, us
           return (
             <div
               key={idx}
-              css={[s.calendarDateCell, getCellClass(dateNum), getCellStyle(dateNum), { color: textColor }]}
+              css={[
+                s.calendarDateCell,
+                getCellClass(dateNum),
+                { color: textColor },
+              ]}
               onClick={() => handleCellClick(dateNum)}
             >
               {dateNum}
-              {scheduleData[dateKey]?.length > 0 && (
-                <span css={s.checkMark}>✔</span>
-              )}
+              {scheduleData[dateKey] && <span css={s.checkMarkBig}>✔</span>}
             </div>
           );
         })}
