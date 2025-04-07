@@ -1,147 +1,147 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import * as s from "./style";
 import Calendar from "../../components/common/Calendar/Calendar";
+import ClassReservationModal from "../../components/common/Modal/ClassReservationModal";
 import { useLocation } from "react-router-dom";
-import TimeModal from "../../components/common/Modal/TimeModal";
+import {
+  getReservableClasses,
+  getTodayReservations,
+  reserveClass,
+  cancelReservation,
+  getReservationHistory,
+} from "../../apis/reservationApi";
 
 function Daymanagement() {
-  const [selectedClass, setSelectedClass] = useState("pt");
-  const [scheduleData, setScheduleData] = useState({});
+  const location = useLocation();
+  const [selectedClass] = useState("pt");
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [scheduleData, setScheduleData] = useState({});
   const [selectedMembershipId, setSelectedMembershipId] = useState(null);
   const [reservableClasses, setReservableClasses] = useState([]);
-  const [todayReservations, setTodayReservations] = useState([]);
   const [selectedDateReservations, setSelectedDateReservations] = useState([]);
+  const [todayReservations, setTodayReservations] = useState([]);
+  const [pastReservations, setPastReservations] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
 
-  const location = useLocation();
+  const formatDate = (date) =>
+    `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  const selectedDateStr = formatDate(currentDate);
 
   const colorMap = {
     pt: "#87CEEB",
     pilates: "#FFC0CB",
   };
 
-  const formatDate = (date) =>
-    `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-
-  useEffect(() => {
-    const state = location.state;
-    if (state?.selectedMembershipId) {
-      setSelectedMembershipId(state.selectedMembershipId);
-    }
-  }, [location]);
-
-  const fetchReservableClasses = async () => {
-    const token = localStorage.getItem("accessToken");
-    if (!token || !selectedMembershipId) return;
-
+  const loadReservableClasses = async () => {
+    if (!selectedMembershipId) return;
     try {
-      const res = await axios.get("/api/makefitness/classes/reservable", {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { membershipId: selectedMembershipId },
-      });
-
-      const result = res.data || [];
-      setReservableClasses(result);
-
-      const grouped = {};
-      result.forEach((item) => {
-        const date = item.classTime.split("T")[0];
-        grouped[date] = (grouped[date] || []).concat({
-          time: item.classTime,
-          trainer: item.trainerName,
-          subject: item.classSubject,
-          classId: item.classId,
-        });
-      });
-
-      setScheduleData(grouped);
+      const { data = [] } = await getReservableClasses(selectedMembershipId);
+      setReservableClasses(data);
+      const grouped = data.reduce((acc, cls) => {
+        const date = cls.classTime.split("T")[0];
+        acc[date] = [...(acc[date] || []), {
+          time: cls.classTime,
+          trainer: cls.trainerName,
+          subject: cls.classSubject,
+          classId: cls.classId,
+        }];
+        return acc;
+      }, {});
+      setScheduleData((prev) => ({ ...prev, ...grouped }));
     } catch (err) {
       console.error("❌ 예약 가능 수업 로드 실패", err);
     }
   };
 
-  const fetchTodayReservations = async () => {
-    const token = localStorage.getItem("accessToken");
-    if (!token || !selectedMembershipId) return;
-
+  const loadReservationHistory = async () => {
+    if (!selectedMembershipId) return;
     try {
-      const res = await axios.get("/api/makefitness/reservation/today", {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { membershipId: selectedMembershipId },
-      });
-      setTodayReservations(res.data || []);
+      const { data = [] } = await getReservationHistory(selectedMembershipId);
+      setPastReservations(data);
+      const grouped = data.reduce((acc, cls) => {
+        const date = cls.classTime.split("T")[0];
+        acc[date] = [...(acc[date] || []), {
+          time: cls.classTime,
+          trainer: cls.trainerName,
+          subject: cls.classSubject,
+          classId: cls.classId,
+        }];
+        return acc;
+      }, {});
+      setScheduleData((prev) => ({ ...prev, ...grouped }));
     } catch (err) {
-      console.error("❌ 오늘 예약 로딩 실패", err);
+      console.error("❌ 과거 수업 이력 로드 실패", err);
     }
   };
 
-  useEffect(() => {
-    fetchReservableClasses();
-    fetchTodayReservations();
-  }, [selectedMembershipId]);
-
-  useEffect(() => {
-    const selectedDateStr = formatDate(currentDate);
-    const filtered = reservableClasses.filter((cls) =>
-      cls.classTime.startsWith(selectedDateStr)
-    );
-    setSelectedDateReservations(filtered);
-  }, [currentDate, reservableClasses]);
-
-  const handleReserveClass = async (classId) => {
-    const token = localStorage.getItem("accessToken");
-    if (!token || !selectedMembershipId) return;
-
+  const loadTodayReservations = async () => {
+    if (!selectedMembershipId) return;
     try {
-      await axios.post(
-        "/api/makefitness/reservation",
-        { classId, membershipId: selectedMembershipId },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      alert("✅ 예약 성공!");
-      await fetchReservableClasses();
-      await fetchTodayReservations();
+      const { data = [] } = await getTodayReservations(selectedMembershipId);
+      setTodayReservations(data);
     } catch (err) {
-      console.error("❌ 예약 실패", err);
+      console.error("❌ 오늘 예약 로드 실패", err);
+    }
+  };
+
+  const handleReserve = async (classId) => {
+    if (!selectedMembershipId) return;
+    try {
+      await reserveClass(classId, selectedMembershipId);
+      alert("✅ 예약 성공!");
+      await loadReservableClasses();
+      await loadTodayReservations();
+    } catch (err) {
       alert("예약 실패: " + (err.response?.data?.message || err.message));
     }
   };
 
-  const handleCancelReservation = async (reservationId) => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) return;
-
-    const confirmed = window.confirm("정말 이 예약을 취소하시겠습니까?");
-    if (!confirmed) return;
-
+  const handleCancel = async (reservationId) => {
+    if (!window.confirm("정말 이 예약을 취소하시거낭요?")) return;
     try {
-      await axios.delete(`/api/makefitness/reservations/${reservationId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await cancelReservation(reservationId);
       alert("✅ 예약이 취소되었습니다.");
-      await fetchReservableClasses();
-      await fetchTodayReservations();
+      await loadReservableClasses();
+      await loadTodayReservations();
     } catch (err) {
-      console.error("❌ 예약 취소 실패", err);
       alert("예약 취소 실패: " + (err.response?.data?.message || err.message));
     }
   };
 
-  const selectedDateStr = formatDate(currentDate);
-  const availableClassMap = {};
-  selectedDateReservations.forEach((cls) => {
+  useEffect(() => {
+    const filtered = reservableClasses.filter(cls =>
+      cls.classTime.startsWith(selectedDateStr)
+    );
+    setSelectedDateReservations(filtered);
+  }, [reservableClasses, selectedDateStr]);
+
+  useEffect(() => {
+    const id = location.state?.selectedMembershipId;
+    if (id) setSelectedMembershipId(id);
+  }, [location]);
+
+  useEffect(() => {
+    if (!selectedMembershipId) return;
+    loadReservableClasses();
+    loadTodayReservations();
+    loadReservationHistory();
+  }, [selectedMembershipId]);
+
+  const availableClassMap = selectedDateReservations.reduce((acc, cls) => {
     const hour = new Date(cls.classTime).getHours();
-    availableClassMap[hour] = cls.classId;
-  });
+    acc[hour] = cls.classId;
+    return acc;
+  }, {});
+
+  const today = new Date();
+  const isPastDate = new Date(selectedDateStr) < new Date(today.toISOString().split("T")[0]);
 
   return (
     <div css={s.container}>
       <h1 css={s.title}>수업 예약</h1>
-      <p css={s.description}>수업 예약 및 캘린더 기반 예약 등록</p>
+      <p css={s.description}>수업 예약 및 캔리너 기반 예약 등록</p>
 
       <div css={s.contentWrapper}>
         <div css={s.box}>
@@ -151,8 +151,9 @@ function Daymanagement() {
             scheduleData={scheduleData}
             setScheduleData={setScheduleData}
             setCurrentDate={setCurrentDate}
-            disablePastDates={true}
+            disablePastDates={false}
             onDateClick={(date) => {
+              setSelectedTime(null);
               setCurrentDate(date);
               setIsModalOpen(true);
             }}
@@ -165,28 +166,30 @@ function Daymanagement() {
             <p>예약 가능한 수업이 없습니다.</p>
           ) : (
             <ul css={s.reservationList}>
-              {[...selectedDateReservations]
+              {selectedDateReservations
                 .sort((a, b) => new Date(a.classTime) - new Date(b.classTime))
-                .map((item, i) => {
-                  const current = item.currentCustomer || 0;
-                  const max = item.maxCustomer || 0;
+                .map((cls, i) => {
+                  const current = cls.currentCustomer || 0;
+                  const max = cls.maxCustomer || 0;
                   const remaining = max - current;
                   const isFull = remaining <= 0;
 
                   return (
                     <li key={i} css={s.reservationItem}>
-                      {new Date(item.classTime).toLocaleTimeString("ko-KR", {
+                      {new Date(cls.classTime).toLocaleTimeString("ko-KR", {
                         hour: "2-digit",
                         minute: "2-digit",
-                      })}{" "}
+                      })} {" "}
                       ({isFull ? "정원 마감" : `${remaining}명 남음`})
-                      <button
-                        onClick={() => handleReserveClass(item.classId)}
-                        css={isFull ? s.disabledButton : s.buttonCommon}  // 동일한 스타일 적용
-                        disabled={isFull}
-                      >
-                        {isFull ? "정원 마감" : "예약하기"}
-                      </button>
+                      {!isPastDate && (
+                        <button
+                          onClick={() => handleReserve(cls.classId)}
+                          css={isFull ? s.disabledButton : s.buttonCommon}
+                          disabled={isFull}
+                        >
+                          {isFull ? "정원 마감" : "예약하기"}
+                        </button>
+                      )}
                     </li>
                   );
                 })}
@@ -198,15 +201,15 @@ function Daymanagement() {
             <p>오늘은 예약 내역이 없습니다.</p>
           ) : (
             <ul css={s.reservationList}>
-              {todayReservations.map((item, i) => (
+              {todayReservations.map((res, i) => (
                 <li key={i} css={s.reservationItem}>
-                  {new Date(item.classTime).toLocaleTimeString("ko-KR", {
+                  {new Date(res.classTime).toLocaleTimeString("ko-KR", {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
                   <button
-                    onClick={() => handleCancelReservation(item.reservationId)}
-                    css={s.cancelButton} // 동일한 스타일 적용
+                    onClick={() => handleCancel(res.reservationId)}
+                    css={s.cancelButton}
                   >
                     취소
                   </button>
@@ -217,16 +220,21 @@ function Daymanagement() {
         </div>
       </div>
 
-      {isModalOpen && (
-        <TimeModal
-          selectedDateStr={selectedDateStr}
-          availableClassMap={availableClassMap}
+      {isModalOpen && !isPastDate && (
+        <ClassReservationModal
+          selectedDateLabel={selectedDateStr}
+          reservableClassMap={availableClassMap}
           selectedTime={selectedTime}
-          onSelectTime={(hour) => setSelectedTime(hour)}
-          onConfirmReserve={() =>
-            handleReserveClass(availableClassMap[selectedTime])
-          }
-          onClose={() => setIsModalOpen(false)}
+          onSelectTime={setSelectedTime}
+          onConfirmReserve={() => {
+            handleReserve(availableClassMap[selectedTime]);
+            setIsModalOpen(false);
+            setSelectedTime(null);
+          }}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedTime(null);
+          }}
         />
       )}
     </div>

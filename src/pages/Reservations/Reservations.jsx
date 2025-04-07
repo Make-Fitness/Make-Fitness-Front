@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import * as s from "./style";
 import Calendar from "../../components/common/Calendar/Calendar";
 import { css } from "@emotion/react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getAvailablePromotions } from "../../apis/reservationApi";
 
 function Reservation() {
   const navigate = useNavigate();
@@ -19,10 +19,7 @@ function Reservation() {
       return;
     }
 
-    axios
-      .get("/api/makefitness/reservations/available-promotions", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    getAvailablePromotions()
       .then((res) => {
         console.log("프로모션 데이터:", res.data);
         setPromotionData(res.data || []);
@@ -73,9 +70,7 @@ function Reservation() {
                 </td>
                 <td css={s.tableCell}>
                   <button
-                    onClick={() =>
-                      handleReserveDashboard(item.membershipId)
-                    }
+                    onClick={() => handleReserveDashboard(item.membershipId)}
                     css={s.reserveButton}
                   >
                     예약하기
