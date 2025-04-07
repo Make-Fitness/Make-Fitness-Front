@@ -5,7 +5,7 @@ import React, { useContext } from 'react';
 import * as PortOne from "@portone/browser-sdk/v2";
 import { v4 as uuid } from "uuid";
 import axios from '../../../../src/apis/axiosInstance';
-import { AuthContext } from '../../../../src/context/AuthContext'; // 상대경로로 수정
+import { AuthContext } from '../../../../src/context/AuthContext';
 
 function Membership() {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ function Membership() {
   const manager_id = 0; // 1회 이용권은 담당 트레이너 없음
 
   const handleSingleUsePayment = async () => {
-    if (!user_id) return alert("로그인이 필요합니다.");
+    if (!user_id) return;
 
     const paymentId = uuid();
     const amount = 15000;
@@ -72,20 +72,32 @@ function Membership() {
 
   return (
     <div css={s.main}>
-      <h1 css={s.title}>MAKE YOUR BODY, MAKE YOUR LIFE. 몸이 변하면 인생이 변한다.</h1>              
+      <h1 css={s.title}>MAKE YOUR BODY, MAKE YOUR LIFE. 몸이 변하면 인생이 변한다.</h1>
+
+      {!user_id && (
+        <p css={s.warning}>※ 로그인이 필요합니다. 로그인 후 이용해주세요.</p>
+      )}
+
       <div css={s.buttonGrid}>
-        <button css={s.button} onClick={handleSingleUsePayment}>
+        <button
+          css={[s.button, !user_id && s.disabledButton]}
+          onClick={user_id ? handleSingleUsePayment : null}
+          disabled={!user_id}
+        >
           <h3>1회 이용권</h3>
           <p>15,000원</p>
         </button>
+
         <button css={s.button} onClick={() => navigate("/makefitness/hmembership")}>
           <h3>헬스 멤버십</h3>
           <p>느리지만 단단하게</p>
         </button>
+
         <button css={s.button} onClick={() => navigate("/makefitness/pilates")}>
           <h3>그룹 필라테스</h3>
           <p>혼자보다 강하게! 그룹 필라테스로 최상의 시너지!</p>
         </button>
+
         <button css={s.button} onClick={() => navigate("/makefitness/selecttrainer")}>
           <h3>1:1 PT</h3>
           <p>조각같은 몸을 위한 첫걸음</p>
