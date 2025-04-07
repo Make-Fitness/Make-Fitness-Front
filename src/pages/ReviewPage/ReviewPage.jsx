@@ -8,6 +8,10 @@ const ReviewPage = () => {
   const [newReview, setNewReview] = useState("");
   const [rating, setRating] = useState(0);
 
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const reviewsPerPage = 5;
+
   const roleName = localStorage.getItem("roleName");
 
   // ✅ 리뷰 목록 불러오기
@@ -52,6 +56,52 @@ const ReviewPage = () => {
     }
   };
 
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
+  const totalPages = Math.ceil(reviews.length / reviewsPerPage);
+  
+    const renderPageNumbers = () => {
+      const pages = [];
+  
+      pages.push(
+        <button
+          key="prev"
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          css={s.pageButtonStyle(false)}
+        >
+          ◀
+        </button>
+      );
+  
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(
+          <button
+            key={`page-${i}`}
+            onClick={() => setCurrentPage(i)}
+            css={s.pageButtonStyle(i === currentPage)}
+          >
+            {i}
+          </button>
+        );
+      }
+  
+      pages.push(
+        <button
+          key="next"
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          css={s.pageButtonStyle(false)}
+        >
+          ▶
+        </button>
+      );
+  
+      return pages;
+    };
+  
+
   return (
     <>
       <div css={s.mainImg}>
@@ -65,7 +115,7 @@ const ReviewPage = () => {
           <p>등록된 리뷰가 없습니다.</p>
         ) : (
           <div css={s.reviewGrid}>
-            {reviews.map((review, index) => (
+            {currentReviews.map((review, index) => (
               <div key={index} css={s.reviewBox}>
                 <div css={s.reviewRating}>
                   {"★".repeat(review.likeStar) + "☆".repeat(5 - review.likeStar)}
@@ -77,6 +127,10 @@ const ReviewPage = () => {
         )}
       </div>
 
+      {totalPages > 1 && (
+        <div css={s.paginationWrapperStyle}>{renderPageNumbers()}</div>
+      )}
+      
       {/* ✅ 고객만 리뷰 작성 UI 노출 */}
       {roleName === "ROLE_CUSTOMER" && (
         <div css={s.reviewContainer}>
@@ -105,6 +159,7 @@ const ReviewPage = () => {
               }
             }}
           />
+          
           <button css={s.submitButton} onClick={handleReviewSubmit}>
             등록
           </button>
