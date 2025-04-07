@@ -3,13 +3,10 @@ import React, { useState, useEffect } from "react";
 import * as s from "./style";
 import { fetchReviews, postReview } from "../../apis/reviewApi";
 
-const reviewsPerPage = 6;
-
 const ReviewPage = () => {
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState("");
   const [rating, setRating] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
 
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,7 +14,7 @@ const ReviewPage = () => {
 
   const roleName = localStorage.getItem("roleName");
 
-  // ✅ 전체 리뷰 불러오기
+  // ✅ 리뷰 목록 불러오기
   const loadReviews = async () => {
     try {
       const data = await fetchReviews();
@@ -31,7 +28,7 @@ const ReviewPage = () => {
     loadReviews();
   }, []);
 
-  // ✅ 리뷰 등록
+  // ✅ 리뷰 등록 핸들러
   const handleReviewSubmit = async () => {
     if (roleName !== "ROLE_CUSTOMER") {
       alert("리뷰 작성은 고객만 가능합니다.");
@@ -53,18 +50,57 @@ const ReviewPage = () => {
       setNewReview("");
       setRating(0);
       await loadReviews();
-      setCurrentPage(1); // 리뷰 등록 시 첫 페이지로 이동
     } catch (error) {
       console.error("리뷰 등록 실패:", error);
       alert("리뷰 등록 중 문제가 발생했습니다.");
     }
   };
 
-  // ✅ 페이징 관련 계산
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
   const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
   const totalPages = Math.ceil(reviews.length / reviewsPerPage);
+  
+    const renderPageNumbers = () => {
+      const pages = [];
+  
+      pages.push(
+        <button
+          key="prev"
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          css={s.pageButtonStyle(false)}
+        >
+          ◀
+        </button>
+      );
+  
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(
+          <button
+            key={`page-${i}`}
+            onClick={() => setCurrentPage(i)}
+            css={s.pageButtonStyle(i === currentPage)}
+          >
+            {i}
+          </button>
+        );
+      }
+  
+      pages.push(
+        <button
+          key="next"
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          css={s.pageButtonStyle(false)}
+        >
+          ▶
+        </button>
+      );
+  
+      return pages;
+    };
+  
 
   return (
     <>
@@ -72,65 +108,39 @@ const ReviewPage = () => {
         <img src="/main/PT_3.jpg" alt="메인 이미지" />
       </div>
 
+      {/* ✅ 누구나 볼 수 있는 리뷰 목록 */}
       <div css={s.reviewList}>
         <h2>리뷰 목록</h2>
         {reviews.length === 0 ? (
           <p>등록된 리뷰가 없습니다.</p>
         ) : (
-          <>
-            <div css={s.reviewGrid}>
-              {currentReviews.map((review, index) => (
-                <div key={index} css={s.reviewBox}>
-                  <div css={s.reviewRating}>
-                    {"★".repeat(review.likeStar) + "☆".repeat(5 - review.likeStar)}
-                  </div>
-                  <p>{review.content}</p>
+          <div css={s.reviewGrid}>
+            {currentReviews.map((review, index) => (
+              <div key={index} css={s.reviewBox}>
+                <div css={s.reviewRating}>
+                  {"★".repeat(review.likeStar) + "☆".repeat(5 - review.likeStar)}
                 </div>
-              ))}
-            </div>
-
-            {totalPages > 1 && (
-              <div css={s.paginationWrapper}>
-                <button
-                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                  css={s.pageButton(currentPage === 1)}
-                >
-                  ◀
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    css={s.pageButton(currentPage === page)}
-                  >
-                    {page}
-                  </button>
-                ))}
-
-                <button
-                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                  disabled={currentPage === totalPages}
-                  css={s.pageButton(currentPage === totalPages)}
-                >
-                  ▶
-                </button>
+                <p>{review.content}</p>
               </div>
-            )}
-          </>
+            ))}
+          </div>
         )}
       </div>
 
+      {totalPages > 1 && (
+        <div css={s.paginationWrapperStyle}>{renderPageNumbers()}</div>
+      )}
+      
+      {/* ✅ 고객만 리뷰 작성 UI 노출 */}
       {roleName === "ROLE_CUSTOMER" && (
         <div css={s.reviewContainer}>
           <h2>리뷰 남기기</h2>
           <div css={s.ratingContainer}>
-            {[1, 2, 3, 4, 5].map((star) => (
+            {[1, 2, 3, 4, 5].map((별) => (
               <span
                 key={star}
                 css={s.star}
-                onClick={() => setRating(star)}
+                onClick={() => setRating(별)}
                 style={{ cursor: "pointer" }}
               >
                 {star <= rating ? "★" : "☆"}
@@ -144,8 +154,8 @@ const ReviewPage = () => {
             placeholder="리뷰를 작성하세요..."
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleReviewSubmit();
+                e.preventDefault(); // 줄바꿈 막고
+                handleReviewSubmit(); // 리뷰 등록
               }
             }}
           />
