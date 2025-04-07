@@ -88,7 +88,11 @@ function Membership() {
       </h1>
 
       <div css={s.buttonGrid}>
-        <button css={s.button} onClick={handleSingleUsePayment}>
+        <button
+          css={[s.button, !user_id && s.disabledButton]}
+          onClick={user_id ? handleSingleUsePayment : null}
+          disabled={!user_id}
+        >
           <h3>1회 이용권</h3>
           <p>15,000원</p>
         </button>
