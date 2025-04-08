@@ -14,7 +14,7 @@ function Membership() {
   const manager_id = 0;                   // 1회 이용권은 트레이너 지정 없음
 
   /**
-   * ✅ 1회 이용권 결제 처리
+   *  1회 이용권 결제 처리
    */
   const handleSingleUsePayment = async () => {
     if (!user_id) {
@@ -28,7 +28,7 @@ function Membership() {
     const payMethodName = "KAKAOPAY";    // 결제 수단
 
     try {
-      // ✅ 포트원 결제 요청
+      // 포트원 결제 요청
       const paymentResponse = await PortOne.requestPayment({
         storeId: import.meta.env.VITE_PORTONE_STOREID,
         paymentId,
@@ -52,14 +52,16 @@ function Membership() {
         ],
       });
 
-      console.log("✅ 결제 성공:", paymentResponse);
+      console.log(" 결제 성공:", paymentResponse);
 
-      // ✅ 백엔드로 결제 데이터 전송
+      // 백엔드로 결제 데이터 전송
       const payload = {
+
         reqMembershipDto: {
           userId: user_id,
           promotionId,
         },
+
         reqPayDto: {
           uuid: paymentId,
           userId: user_id,
@@ -79,7 +81,7 @@ function Membership() {
   };
 
   /**
-   * ✅ UI 렌더링
+   *  UI 렌더링
    */
   return (
     <div css={s.main}>

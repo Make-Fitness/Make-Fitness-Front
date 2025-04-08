@@ -2,12 +2,12 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:8080/api/makefitness/review";
 
-// ✅ 토큰 유효성 검사 함수
+// 토큰 유효성 검사 함수
     const isValidToken = (token) => {
     return token && token.split(".").length === 3;
 };
 
-// ✅ 리뷰 목록 불러오기 (GET) — 누구나 가능
+// 리뷰 목록 불러오기 (GET) — 누구나 가능
     export const fetchReviews = async () => {
     try {
         const token = localStorage.getItem("accessToken");
@@ -25,7 +25,7 @@ const BASE_URL = "http://localhost:8080/api/makefitness/review";
     }
     };
 
-    // ✅ 리뷰 등록 (POST) — 로그인 + 고객만 가능
+    // 리뷰 등록 (POST) — 로그인 + 고객만 가능
     export const postReview = async (reviewData) => {
     try {
         const token = localStorage.getItem("accessToken");

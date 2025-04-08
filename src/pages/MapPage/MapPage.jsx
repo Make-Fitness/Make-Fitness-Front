@@ -9,20 +9,20 @@ import * as s from './style';
 import { TbCircleNumber1Filled, TbCircleNumber2Filled } from "react-icons/tb";
 
 function MapPage() {
-  // ✅ Kakao 지도 SDK 로드 상태 체크
+  // Kakao 지도 SDK 로드 상태 체크
   const [isLoading] = useKakaoLoader({
-    appkey: import.meta.env.VITE_KAKAO_API_KEY,
+    appkey: import.meta.env.VITE_KAKAO_API_KEY, // env 발급
     libraries: ['services', 'clusterer', 'drawing'],
   });
 
-  // ✅ 주소 좌표 상태
+  // 주소 좌표 상태
   const [latAndLng, setLatAndLng] = useState({
     lat: 0,
     lng: 0,
   });
 
   /**
-   * ✅ 주소 → 좌표 변환 (Geocoder)
+   * 주소 → 좌표 변환 (Geocoder)
    */
   useEffect(() => {
     if (isLoading || !window.kakao) return;
@@ -41,14 +41,13 @@ function MapPage() {
   }, [isLoading]);
 
   /**
-   * ✅ 컴포넌트 렌더링
+   *  컴포넌트 렌더링
    */
   return (
     <>
-      {/* 타이틀 */}
+      
       <div css={s.title}>MakeFitness 오시는 길</div>
 
-      {/* 지도 영역 */}
       {!isLoading && (
         <div css={s.mapContainer}>
           <Map
@@ -66,17 +65,14 @@ function MapPage() {
         </div>
       )}
 
-      {/* 상세 정보 영역 */}
       <div css={s.addressbox}>
         <div css={s.contentWrapper}>
           
-          {/* 주소 */}
           <div css={s.address}>
             <div css={s.button}>주소</div>
             <span>부산 부산진구 중앙대로 668</span>
           </div>
 
-          {/* 지하철 */}
           <div css={s.subwayinfo}>
             <div css={s.button}>지하철</div>
             <span>
@@ -93,7 +89,6 @@ function MapPage() {
             </span>
           </div>
 
-          {/* 버스 */}
           <div css={s.businfo}>
             <div css={s.button}>버스</div>
             <span>서면한전 정류장 하차 후 도보 2분</span>

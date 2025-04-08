@@ -12,9 +12,15 @@ const ReviewPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 5;
 
+  
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
+  const totalPages = Math.ceil(reviews.length / reviewsPerPage);
+  
   const roleName = localStorage.getItem("roleName");
 
-  // ✅ 리뷰 목록 불러오기
+  // 리뷰 목록 불러오기
   const loadReviews = async () => {
     try {
       const data = await fetchReviews();
@@ -28,7 +34,7 @@ const ReviewPage = () => {
     loadReviews();
   }, []);
 
-  // ✅ 리뷰 등록 핸들러
+  // 리뷰 등록 핸들러
   const handleReviewSubmit = async () => {
     if (roleName !== "ROLE_CUSTOMER") {
       alert("리뷰 작성은 고객만 가능합니다.");
@@ -56,11 +62,6 @@ const ReviewPage = () => {
     }
   };
 
-  const indexOfLastReview = currentPage * reviewsPerPage;
-  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-  const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
-  const totalPages = Math.ceil(reviews.length / reviewsPerPage);
-  
     const renderPageNumbers = () => {
       const pages = [];
   
@@ -108,7 +109,6 @@ const ReviewPage = () => {
         <img src="/main/PT_3.jpg" alt="메인 이미지" />
       </div>
 
-      {/* ✅ 누구나 볼 수 있는 리뷰 목록 */}
       <div css={s.reviewList}>
         <h2>리뷰 목록</h2>
         {reviews.length === 0 ? (
@@ -131,16 +131,15 @@ const ReviewPage = () => {
         <div css={s.paginationWrapperStyle}>{renderPageNumbers()}</div>
       )}
       
-      {/* ✅ 고객만 리뷰 작성 UI 노출 */}
       {roleName === "ROLE_CUSTOMER" && (
         <div css={s.reviewContainer}>
           <h2>리뷰 남기기</h2>
           <div css={s.ratingContainer}>
-            {[1, 2, 3, 4, 5].map((별) => (
+            {[1, 2, 3, 4, 5].map((star) => (
               <span
                 key={star}
                 css={s.star}
-                onClick={() => setRating(별)}
+                onClick={() => setRating(star)}
                 style={{ cursor: "pointer" }}
               >
                 {star <= rating ? "★" : "☆"}
