@@ -21,12 +21,12 @@ function Membership() {
       alert("로그인이 필요합니다.");
       return;
     }
-
+  
     const paymentId = uuid();            // 고유 결제 ID 생성
     const amount = 15000;                // 결제 금액
     const promotionId = 13;              // 1회 이용권 프로모션 ID
     const payMethodName = "KAKAOPAY";    // 결제 수단
-
+  
     try {
       // 포트원 결제 요청
       const paymentResponse = await PortOne.requestPayment({
@@ -51,6 +51,7 @@ function Membership() {
           },
         ],
       });
+<<<<<<< HEAD
 
       console.log(" 결제 성공:", paymentResponse);
 
@@ -74,12 +75,39 @@ function Membership() {
       await axios.post("/api/makefitness/pay", payload);
       alert("1회 이용권 결제가 완료되었습니다!");
 
+=======
+  
+      console.log("✅ 결제 응답:", paymentResponse);
+  
+      // ✅ 결제 성공 여부 확인
+      if (paymentResponse.status === "DONE") {
+        // 백엔드로 결제 데이터 전송
+        const payload = {
+          reqMembershipDto: {
+            userId: user_id,
+            promotionId,
+          },
+          reqPayDto: {
+            uuid: paymentId,
+            userId: user_id,
+            managerId: manager_id,
+            promotionId,
+            paymentMethod: payMethodName,
+          },
+        };
+  
+        await axios.post("/api/makefitness/pay", payload);
+        alert("✅ 1회 이용권 결제가 완료되었습니다!");
+      } else {
+        alert("❌ 결제가 완료되지 않았습니다.");
+      }
+>>>>>>> 85cb7101737d76c40d3cf748cdfd6e66ffcba032
     } catch (error) {
-      console.error("❌ 결제 실패:", error);
-      alert("결제에 실패했습니다. 다시 시도해주세요.");
+      console.error("❌ 결제 요청 중 오류:", error);
+      alert("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
-
+  
   /**
    *  UI 렌더링
    */
