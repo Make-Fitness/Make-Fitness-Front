@@ -20,7 +20,6 @@ const Pilates = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const { loginUser } = useContext(AuthContext);
 
-  // ✅ accessToken을 직접 decode하여 user_id 확보
   let user_id = loginUser?.jti || null;
 
   if (!user_id) {
@@ -39,7 +38,7 @@ const Pilates = () => {
   console.log("✅ 로그인된 유저 ID:", user_id);
 
   const handlePayment = async () => {
-    const plan = plans.find(p => p.sessions === selectedPlan);
+    const plan = plans.find((p) => p.sessions === selectedPlan);
     if (!plan || !user_id) return alert("로그인이 필요합니다.");
 
     const promotion_id = promotionMap[selectedPlan];
@@ -49,8 +48,8 @@ const Pilates = () => {
     try {
       const paymentResponse = await PortOne.requestPayment({
         storeId: import.meta.env.VITE_PORTONE_STOREID,
-        paymentId: paymentId,
-        orderName: plan.name + " 필라테스 플랜",
+        paymentId,
+        orderName: `${plan.name} 필라테스 플랜`,
         totalAmount: plan.amount,
         currency: "CURRENCY_KRW",
         payMethod: "EASY_PAY",
@@ -63,34 +62,55 @@ const Pilates = () => {
         products: [
           {
             id: plan.sessions.toString(),
-            name: plan.name + " 플랜",
+            name: `${plan.name} 플랜`,
             amount: plan.amount,
             quantity: 1,
           },
         ],
       });
 
-      console.log("✅ 결제 성공 응답:", paymentResponse);
+      console.log("✅ 결제 응답:", paymentResponse);
 
-      const payload = {
-        reqMembershipDto: {
-          userId: user_id,
-          promotionId: promotion_id,
-        },
-        reqPayDto: {
-          uuid: paymentId,
-          userId: user_id,
-          managerId: 5, // 필라테스는 고정 트레이너 ID
-          promotionId: promotion_id,
-          paymentMethod: payMethodName,
-        },
-      };
+      const { status, code, pgCode, message, txId, paymentId: resPid } = paymentResponse;
 
-      await postHealthPayment(payload);
-      alert("필라테스 결제가 완료되었습니다!");
+      const isExplicitSuccess =
+        status === "DONE" && code === "SUCCESS" && (!pgCode || pgCode !== "CANCEL");
+
+      const isImplicitSuccess =
+        !status && !code && txId && resPid;
+
+      const isFailure =
+        pgCode === "CANCEL" || code?.includes("FAILURE");
+
+      if (isExplicitSuccess || isImplicitSuccess) {
+        const payload = {
+          reqMembershipDto: {
+            userId: user_id,
+            promotionId: promotion_id,
+          },
+          reqPayDto: {
+            uuid: paymentId,
+            userId: user_id,
+            managerId: 5,
+            promotionId: promotion_id,
+            paymentMethod: payMethodName,
+          },
+        };
+
+        await postHealthPayment(payload);
+        alert("✅ 필라테스 결제가 완료되었습니다!");
+      } else if (isFailure) {
+        console.warn("❌ 결제 실패 또는 취소:", paymentResponse);
+        alert(`❌ 결제가 완료되지 않았습니다.\n사유: ${message || "사용자 결제 취소 또는 실패"}`);
+      } else {
+        console.warn("❓ 결제 상태 불확실:", paymentResponse);
+        alert(
+          "결제 상태를 확인할 수 없습니다. 결제 내역에서 상태를 확인해주세요.\n\nTXID: " + txId
+        );
+      }
     } catch (error) {
-      console.error("❌ 결제 실패:", error);
-      alert("결제에 실패했습니다. 다시 시도해주세요.");
+      console.error("❌ 결제 중 오류:", error);
+      alert("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
 

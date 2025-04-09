@@ -11,7 +11,6 @@ function TimeModalForRegistration({
   alreadyRegisteredTimes = [],// 이미 등록된 시간 배열 (숫자 배열)
   isDeleteMode = false,       // 현재 삭제 모드 여부
   toggleDeleteMode = () => {},// 삭제 모드 전환 함수
-  onDeleteClasses = () => {}, // 삭제 실행 핸들러 (미사용, API 직접 호출함)
   isPast = false              // 과거 날짜 여부 (버튼 비활성화 조건)
 }) {
   const [selectedTimes, setSelectedTimes] = useState([]); // 현재 선택된 시간들
@@ -70,12 +69,12 @@ function TimeModalForRegistration({
 
   return (
     <div css={s.modalWrapper}>
-      {/* ✅ 모달 상단 제목 */}
+      {/* 모달 상단 제목 */}
       <h4 css={isDeleteMode ? s.deleteTitle : undefined}>
         {selectedDateStr} 수업 시간 {isDeleteMode ? "삭제" : "선택"}
       </h4>
 
-      {/* ✅ 시간 버튼 그리드 */}
+      {/* 시간 버튼 그리드 */}
       <div css={s.timeGrid}>
         {allHours.map((hour) => {
           const isSelected = selectedTimes.includes(hour);
@@ -128,7 +127,7 @@ function TimeModalForRegistration({
         })}
       </div>
 
-      {/* ✅ 하단 버튼 영역 */}
+      {/* 하단 버튼 영역 */}
       <div css={s.buttonWrapper}>
         {/* 등록 모드 컨트롤 */}
         {!isDeleteMode && (

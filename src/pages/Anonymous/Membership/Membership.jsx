@@ -10,25 +10,22 @@ import * as s from './style';
 function Membership() {
   const navigate = useNavigate();
   const { loginUser } = useContext(AuthContext);
-  const user_id = loginUser?.jti;         // 현재 로그인한 사용자 ID
-  const manager_id = 0;                   // 1회 이용권은 트레이너 지정 없음
 
-  /**
-   *  1회 이용권 결제 처리
-   */
+  const user_id = loginUser?.jti;
+  const manager_id = 0;
+  const amount = 15000;
+  const promotionId = 13;
+  const payMethodName = "KAKAOPAY";
+
   const handleSingleUsePayment = async () => {
     if (!user_id) {
       alert("로그인이 필요합니다.");
       return;
     }
-  
-    const paymentId = uuid();            // 고유 결제 ID 생성
-    const amount = 15000;                // 결제 금액
-    const promotionId = 13;              // 1회 이용권 프로모션 ID
-    const payMethodName = "KAKAOPAY";    // 결제 수단
-  
+
+    const paymentId = uuid();
+
     try {
-      // 포트원 결제 요청
       const paymentResponse = await PortOne.requestPayment({
         storeId: import.meta.env.VITE_PORTONE_STOREID,
         paymentId,
@@ -52,37 +49,48 @@ function Membership() {
         ],
       });
 
-      console.log(" 결제 성공:", paymentResponse);
+      console.log("✅ 결제 응답:", paymentResponse);
 
-      // 백엔드로 결제 데이터 전송
-      const payload = {
+      const { status, code, pgCode, message, txId, paymentId: resPid } = paymentResponse;
 
-        reqMembershipDto: {
-          userId: user_id,
-          promotionId,
-        },
+      const isExplicitSuccess =
+        status === "DONE" && code === "SUCCESS" && (!pgCode || pgCode !== "CANCEL");
 
-        reqPayDto: {
-          uuid: paymentId,
-          userId: user_id,
-          managerId: manager_id,
-          promotionId,
-          paymentMethod: payMethodName,
-        },
-      };
+      const isImplicitSuccess =
+        !status && !code && txId && resPid;
 
-      await axios.post("/api/makefitness/pay", payload);
-      alert("1회 이용권 결제가 완료되었습니다!");
+      const isFailure = pgCode === "CANCEL" || code?.includes("FAILURE");
 
+      if (isExplicitSuccess || isImplicitSuccess) {
+        const payload = {
+          reqMembershipDto: {
+            userId: user_id,
+            promotionId,
+          },
+          reqPayDto: {
+            uuid: paymentId,
+            userId: user_id,
+            managerId: manager_id,
+            promotionId,
+            paymentMethod: payMethodName,
+          },
+        };
+
+        await axios.post("/api/makefitness/pay", payload);
+        alert("✅ 1회 이용권 결제가 완료되었습니다!");
+      } else if (isFailure) {
+        console.warn("❌ 결제 실패 또는 취소:", paymentResponse);
+        alert(`❌ 결제가 완료되지 않았습니다.\n사유: ${message || "결제가 중단되었거나 실패했습니다."}`);
+      } else {
+        console.warn("❓ 결제 상태 불확실:", paymentResponse);
+        alert("결제 상태를 확인할 수 없습니다. 결제 내역에서 확인해주세요.\n\nTXID: " + txId);
+      }
     } catch (error) {
       console.error("❌ 결제 요청 중 오류:", error);
       alert("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
-  
-  /**
-   *  UI 렌더링
-   */
+
   return (
     <div css={s.main}>
       <h1 css={s.title}>

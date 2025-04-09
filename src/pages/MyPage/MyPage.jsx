@@ -18,7 +18,7 @@ function MyPage() {
 
   const [scheduleData, setScheduleData] = useState({});
 
-  // ✅ 출석 내역 조회 함수
+  // 출석 내역 조회 함수
   const loadAttendance = async (accessToken) => {
     try {
       const res = await axios.get("/api/makefitness/attendance/me", {
@@ -29,7 +29,7 @@ function MyPage() {
 
       // attendDate가 ISO 문자열로 오는 경우 그대로 사용
       const attendDates = res.data.map((item) => item.attendDate);
-      console.log("✅ 출석한 날짜 목록:", attendDates);
+      console.log("출석한 날짜 목록:", attendDates);
 
       const calendarData = {};
       [...new Set(attendDates)].forEach((date) => {
@@ -38,7 +38,7 @@ function MyPage() {
 
       setScheduleData(calendarData);
     } catch (err) {
-      console.error("❌ 출석 정보 불러오기 실패:", err);
+      console.error("출석 정보 불러오기 실패:", err);
     }
   };
 
@@ -56,11 +56,11 @@ function MyPage() {
     }));
 
     if (!accessToken) {
-      console.log("⛔ AccessToken 없음");
+      console.log("AccessToken 없음");
       return;
     }
 
-    // ✅ 출석 내역만 불러옴
+    // 출석 내역만 불러옴
     loadAttendance(accessToken);
   }, []);
 
@@ -69,7 +69,23 @@ function MyPage() {
   };
 
   const handleUpdate = (type) => {
-    alert(`${type}이(가) 변경되었습니다.`);
+    
+    if (type === "비밀번호") {
+      if (!form.password || !form.confirmPassword) {
+        alert("비밀번호를 모두 입력해주세요.");
+        return;
+      }
+  
+      if (form.password !== form.confirmPassword) {
+        alert("비밀번호가 일치하지 않습니다.");
+        return;
+      }
+  
+      // 실제 서버로 비밀번호 변경 요청이 필요하다면 여기서 처리
+      alert("비밀번호가 성공적으로 변경되었습니다.");
+    } else {
+      alert(`${type}이(가) 변경되었습니다.`);
+    }
   };
 
   return (
@@ -83,22 +99,18 @@ function MyPage() {
           type="text"
           name="name"
           value={form.name}
-          onChange={handleChange}
           readOnly
         />
 
         <label>전화번호</label>
         <div css={s.numbercontainer}>
-          <input
+          <input 
             css={s.input}
             type="text"
             name="ph"
             value={form.ph}
-            onChange={handleChange}
+            readOnly
           />
-          <button css={s.button2} onClick={() => handleUpdate("전화번호")}>
-            변경
-          </button>
         </div>
 
         <label>비밀번호</label>
@@ -118,6 +130,11 @@ function MyPage() {
             name="confirmPassword"
             value={form.confirmPassword}
             onChange={handleChange}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleUpdate("비밀번호");
+              }
+            }}
           />
           <button css={s.button2} onClick={() => handleUpdate("비밀번호")}>
             변경

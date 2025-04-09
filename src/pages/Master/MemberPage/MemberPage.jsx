@@ -11,7 +11,7 @@ const MemberTable = () => {
 
   const membersPerPage = 10;
 
-  // ✅ 최초 회원 목록 로드
+  // 최초 회원 목록 로드
   useEffect(() => {
     fetch("/api/makefitness/admin/users")
       .then((res) => res.json())
@@ -24,7 +24,7 @@ const MemberTable = () => {
       .catch((err) => console.error("회원 목록 조회 실패:", err));
   }, []);
 
-  // ✅ 유저별로 프로모션 그룹핑
+  // 유저별로 프로모션 그룹핑
   const groupMembersByUserId = (data) => {
     return data.reduce((acc, curr) => {
       const existing = acc.find((m) => m.userId === curr.userId);
@@ -46,12 +46,12 @@ const MemberTable = () => {
     }, []);
   };
 
-  // ✅ 권한 선택 변경 감지
+  // 권한 선택 변경 감지
   const handleRoleSelect = (userId, newRole) => {
     setEditedRoles((prev) => ({ ...prev, [userId]: newRole }));
   };
 
-  // ✅ 권한 저장 요청
+  // 권한 저장 요청
   const handleSave = (userId) => {
     const newRole = editedRoles[userId];
     if (!newRole) return;
@@ -76,9 +76,9 @@ const MemberTable = () => {
 
         // 수정 중 상태 초기화
         setEditedRoles((prev) => {
-          const updated = { ...prev };
-          delete updated[userId];
-          return updated;
+        const updated = { ...prev };
+        delete updated[userId];
+        return updated;
         });
 
         setSuccessMessage(`회원번호 ${userId} 저장되었습니다.`);
@@ -87,30 +87,30 @@ const MemberTable = () => {
       .catch((err) => console.error(`${userId} 저장 실패:`, err));
   };
 
-  // ✅ 날짜 포맷 변환
+  // 날짜 포맷 변환
   const formatDate = (date) => {
     if (!date) return "-";
     return new Date(date).toLocaleDateString("ko-KR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
     });
   };
 
-  // ✅ 권한 목록
+  // 권한 목록
   const roleOptions = [
     { value: "ROLE_MANAGER", label: "강사" },
     { value: "ROLE_CUSTOMER", label: "회원" },
     { value: "ROLE_ANONYMOUS", label: "익명" },
   ];
 
-  // ✅ 페이징 처리
+  // 페이징 처리
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
   const currentMembers = members.slice(indexOfFirstMember, indexOfLastMember);
   const totalPages = Math.ceil(members.length / membersPerPage);
 
-  // ✅ 페이지 번호 렌더링
+  // 페이지 번호 렌더링
   const renderPageNumbers = () => {
     const pages = [];
 
@@ -151,11 +151,11 @@ const MemberTable = () => {
     return pages;
   };
 
-  // ✅ 메인 렌더링
+  // 메인 렌더링
   return (
     <div css={s.memberPage}>
       <div css={s.headerArea}>
-        <h2>회원 관리</h2>
+          <h2>회원 관리</h2>
       </div>
 
       {successMessage && <div css={s.alertBox}>{successMessage}</div>}

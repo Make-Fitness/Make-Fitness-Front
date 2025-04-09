@@ -5,7 +5,6 @@ import { v4 as uuid } from "uuid";
 import * as s from "./style";
 import { AuthContext } from "../../../../context/AuthContext";
 import { postHealthPayment } from "../../../../apis/payApi";
-import { jwtDecode } from "jwt-decode";
 
 const plans = [
   { name: "BASIC", month: 1, price: "₩120,000", amount: 120000 },
@@ -22,29 +21,12 @@ const HealthMembership = () => {
 
   if (loading) return <div>로그인 확인 중...</div>;
 
-  // ✅ user_id 확보: loginUser에서 or 토큰 디코딩
-  let user_id = loginUser?.jti || null;
-
-  if (!user_id) {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        console.log("✅ accessToken 디코딩 결과:", decoded);
-        user_id = decoded.jti || decoded.sub || decoded.id || decoded.nickname || null;
-      } catch (err) {
-        console.error("❌ 토큰 디코딩 실패:", err);
-      }
-    }
-  }
-
-  console.log("🟢 로그인된 유저 ID:", user_id);
+  const user_id = loginUser?.jti;
 
   const handlePayment = async () => {
     const plan = plans.find((p) => p.month === selectedPlan);
     if (!plan || !user_id) {
       alert("로그인이 필요합니다.");
-      console.log("❌ 플랜 또는 유저 ID 없음:", plan, user_id);
       return;
     }
 
@@ -57,8 +39,8 @@ const HealthMembership = () => {
 
       const paymentResponse = await PortOne.requestPayment({
         storeId: import.meta.env.VITE_PORTONE_STOREID,
-        paymentId: paymentId,
-        orderName: plan.name + " 헬스 멤버십 플랜",
+        paymentId,
+        orderName: `${plan.name} 헬스 멤버십 플랜`,
         totalAmount: plan.amount,
         currency: "CURRENCY_KRW",
         payMethod: "EASY_PAY",
@@ -71,35 +53,55 @@ const HealthMembership = () => {
         products: [
           {
             id: plan.month.toString(),
-            name: plan.name + " 플랜",
+            name: `${plan.name} 플랜`,
             amount: plan.amount,
             quantity: 1,
           },
         ],
       });
 
-      console.log("🟢 결제 성공:", paymentResponse);
+      console.log("결제 응답:", paymentResponse);
 
-      const payload = {
-        reqMembershipDto: {
-          userId: user_id,
-          promotionId: promotion_id,
-        },
-        reqPayDto: {
-          uuid: paymentId,
-          userId: user_id,
-          managerId: 0,
-          promotionId: promotion_id,
-          paymentMethod: payMethodName,
-        },
-      };
+      const { status, code, pgCode, message, paymentId: resPid, txId } = paymentResponse;
 
-      await postHealthPayment(payload); // ✅ API 호출 분리
+      const isExplicitSuccess = status === "DONE" && code === "SUCCESS";
 
-      alert("헬스 멤버십 결제가 완료되었습니다!");
+      const isImplicitSuccess =
+        !status && !code && paymentResponse.txId && paymentResponse.paymentId;
+
+      const isFailure = pgCode === "CANCEL" || code?.includes("FAILURE");
+
+      if (isExplicitSuccess || isImplicitSuccess) {
+        const payload = {
+          reqMembershipDto: {
+            userId: user_id,
+            promotionId: promotion_id,
+          },
+          reqPayDto: {
+            uuid: paymentId,
+            userId: user_id,
+            managerId: 0,
+            promotionId: promotion_id,
+            paymentMethod: payMethodName,
+          },
+        };
+
+        await postHealthPayment(payload);
+        alert("헬스 멤버십 결제가 완료되었습니다!");
+      } else if (isFailure) {
+        console.warn("❌ 결제 실패 또는 취소:", paymentResponse);
+        alert(
+          `결제가 완료되지 않았습니다.\n사유: ${message || "사용자가 결제를 취소했거나 실패했습니다."}`
+        );
+      } else {
+        console.warn("❓ 결제 상태 불확실:", paymentResponse);
+        alert(
+          "결제 상태를 확인할 수 없습니다. 결제 내역에서 상태를 확인해주세요.\n\nTXID: " + txId
+        );
+      }
     } catch (error) {
-      console.error("❌ 결제 실패:", error);
-      alert("결제에 실패했습니다. 다시 시도해주세요.");
+      console.error("❌ 결제 요청 중 오류:", error);
+      alert("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
 
