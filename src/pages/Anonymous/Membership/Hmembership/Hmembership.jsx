@@ -22,10 +22,16 @@ const HealthMembership = () => {
   if (loading) return <div>로그인 확인 중...</div>;
 
   const user_id = loginUser?.jti;
+  const isLoggedIn = !!user_id;
+  const selectedPlanObj = plans.find((p) => p.month === selectedPlan);
 
   const handlePayment = async () => {
-    const plan = plans.find((p) => p.month === selectedPlan);
-    if (!plan || !user_id) {
+    if (!selectedPlanObj) {
+      alert("구매하실 플랜을 먼저 선택해주세요.");
+      return;
+    }
+
+    if (!isLoggedIn) {
       alert("로그인이 필요합니다.");
       return;
     }
@@ -40,21 +46,21 @@ const HealthMembership = () => {
       const paymentResponse = await PortOne.requestPayment({
         storeId: import.meta.env.VITE_PORTONE_STOREID,
         paymentId,
-        orderName: `${plan.name} 헬스 멤버십 플랜`,
-        totalAmount: plan.amount,
+        orderName: `${selectedPlanObj.name} 헬스 멤버십 플랜`,
+        totalAmount: selectedPlanObj.amount,
         currency: "CURRENCY_KRW",
         payMethod: "EASY_PAY",
         easyPay: { provider: payMethodName },
         channelKey: "channel-key-2ddfd112-33ac-4c5d-8d4d-a98848300f31",
         customer: {
           customerId: user_id,
-          fullName: "홍길동",
+          fullName: loginUser?.nickName || "비회원",
         },
         products: [
           {
-            id: plan.month.toString(),
-            name: `${plan.name} 플랜`,
-            amount: plan.amount,
+            id: selectedPlan.toString(),
+            name: `${selectedPlanObj.name} 플랜`,
+            amount: selectedPlanObj.amount,
             quantity: 1,
           },
         ],
@@ -65,10 +71,8 @@ const HealthMembership = () => {
       const { status, code, pgCode, message, paymentId: resPid, txId } = paymentResponse;
 
       const isExplicitSuccess = status === "DONE" && code === "SUCCESS";
-
       const isImplicitSuccess =
         !status && !code && paymentResponse.txId && paymentResponse.paymentId;
-
       const isFailure = pgCode === "CANCEL" || code?.includes("FAILURE");
 
       if (isExplicitSuccess || isImplicitSuccess) {
@@ -89,18 +93,14 @@ const HealthMembership = () => {
         await postHealthPayment(payload);
         alert("헬스 멤버십 결제가 완료되었습니다!");
       } else if (isFailure) {
-        console.warn("❌ 결제 실패 또는 취소:", paymentResponse);
-        alert(
-          `결제가 완료되지 않았습니다.\n사유: ${message || "사용자가 결제를 취소했거나 실패했습니다."}`
-        );
+        console.warn("결제 실패 또는 취소:", paymentResponse);
+        alert(`결제가 완료되지 않았습니다.\n사유: ${message || "결제 취소 또는 실패"}`);
       } else {
-        console.warn("❓ 결제 상태 불확실:", paymentResponse);
-        alert(
-          "결제 상태를 확인할 수 없습니다. 결제 내역에서 상태를 확인해주세요.\n\nTXID: " + txId
-        );
+        console.warn("결제 상태 불확실:", paymentResponse);
+        alert("결제 상태를 확인할 수 없습니다.\nTXID: " + txId);
       }
     } catch (error) {
-      console.error("❌ 결제 요청 중 오류:", error);
+      console.error("결제 요청 중 오류:", error);
       alert("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
@@ -126,8 +126,12 @@ const HealthMembership = () => {
           ))}
         </div>
         {selectedPlan && (
-          <button css={s.purchaseBtn} onClick={handlePayment}>
-            구매하기
+          <button
+            css={s.purchaseBtn}
+            onClick={handlePayment}
+            disabled={!isLoggedIn}
+          >
+            {isLoggedIn ? "구매하기" : "로그인 후 결제"}
           </button>
         )}
       </div>
