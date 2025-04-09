@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
         console.log("🔥 디코딩된 JWT:", decoded);
   
         setLoginUser({
-          jti: decoded.jti,                     // ✅ 반드시 포함
+          jti: decoded.jti,                     // 반드시 포함
           nickname: decoded.nickname,          // 선택
           role: decoded.role || decoded.roleName, // 이름 다르면 처리
           ph: decoded.ph                       // 전화번호도 가능

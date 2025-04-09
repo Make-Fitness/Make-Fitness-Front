@@ -4,17 +4,17 @@ import * as s from "./style";
 import { fetchSalesReport } from "../../../apis/salesApi";
 
 const SalesPage = () => {
-  // ✅ 날짜 상태
+  // 날짜 상태
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  // ✅ 필터된 매출 목록
+  // 필터된 매출 목록
   const [filtered, setFiltered] = useState([]);
 
-  // ✅ 숫자를 쉼표포함 문자열로 포맷
+  // 숫자를 쉼표포함 문자열로 포맷
   const toComma = (num) => num.toLocaleString();
 
-  // ✅ 날짜 기반 매출 조회 함수
+  // 날짜 기반 매출 조회 함수
   const handleFilter = async (sDate = startDate, eDate = endDate) => {
     if (!sDate || !eDate) return;
 
@@ -40,7 +40,7 @@ const SalesPage = () => {
     }
   };
 
-  // ✅ 총합계 계산
+  // 총합계 계산
   const total = filtered.reduce(
     (acc, row) => {
       acc.totalAmount += row.totalAmount;
@@ -57,7 +57,7 @@ const SalesPage = () => {
     }
   );
 
-  // ✅ 초기 날짜 세팅: 오늘 날짜
+  // 초기 날짜 세팅: 오늘 날짜
   useEffect(() => {
     const today = new Date().toISOString().slice(0, 10);
     setStartDate(today);
@@ -65,7 +65,7 @@ const SalesPage = () => {
     handleFilter(today, today);
   }, []);
 
-  // ✅ 메인 렌더링
+  // 메인 렌더링
   return (
     <div css={s.sales}>
       <h2>매출</h2>

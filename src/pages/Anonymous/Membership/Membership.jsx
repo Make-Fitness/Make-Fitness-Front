@@ -49,7 +49,7 @@ function Membership() {
         ],
       });
 
-      console.log("✅ 결제 응답:", paymentResponse);
+      console.log("결제 응답:", paymentResponse);
 
       const { status, code, pgCode, message, txId, paymentId: resPid } = paymentResponse;
 
@@ -77,16 +77,16 @@ function Membership() {
         };
 
         await axios.post("/api/makefitness/pay", payload);
-        alert("✅ 1회 이용권 결제가 완료되었습니다!");
+        alert("1회 이용권 결제가 완료되었습니다!");
       } else if (isFailure) {
-        console.warn("❌ 결제 실패 또는 취소:", paymentResponse);
+        console.warn("결제 실패 또는 취소:", paymentResponse);
         alert(`❌ 결제가 완료되지 않았습니다.\n사유: ${message || "결제가 중단되었거나 실패했습니다."}`);
       } else {
-        console.warn("❓ 결제 상태 불확실:", paymentResponse);
+        console.warn("결제 상태 불확실:", paymentResponse);
         alert("결제 상태를 확인할 수 없습니다. 결제 내역에서 확인해주세요.\n\nTXID: " + txId);
       }
     } catch (error) {
-      console.error("❌ 결제 요청 중 오류:", error);
+      console.error("결제 요청 중 오류:", error);
       alert("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };

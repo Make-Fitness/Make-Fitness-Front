@@ -59,7 +59,7 @@ function Daymanagement() {
         return merged;
       });
     } catch (err) {
-      console.error("❌ 예약 가능 수업 로드 실패", err);
+      console.error("예약 가능 수업 로드 실패", err);
     }
   };
 
@@ -90,7 +90,7 @@ function Daymanagement() {
         return merged;
       });
     } catch (err) {
-      console.error("❌ 과거 수업 이력 로드 실패", err);
+      console.error("과거 수업 이력 로드 실패", err);
     }
   };
 
@@ -100,7 +100,7 @@ function Daymanagement() {
       const { data = [] } = await getTodayReservations(selectedMembershipId);
       setTodayReservations(data);
     } catch (err) {
-      console.error("❌ 오늘 예약 로드 실패", err);
+      console.error("오늘 예약 로드 실패", err);
     }
   };
 
@@ -108,7 +108,7 @@ function Daymanagement() {
     if (!selectedMembershipId) return;
     try {
       await reserveClass(classId, selectedMembershipId);
-      alert("✅ 예약 성공!");
+      alert("예약 성공!");
       await loadReservableClasses();
       await loadTodayReservations();
     } catch (err) {
@@ -120,7 +120,7 @@ function Daymanagement() {
     if (!window.confirm("정말 이 예약을 취소하시겠습니까?")) return;
     try {
       await cancelReservation(reservationId);
-      alert("✅ 예약이 취소되었습니다.");
+      alert("예약이 취소되었습니다.");
       await loadReservableClasses();
       await loadTodayReservations();
     } catch (err) {

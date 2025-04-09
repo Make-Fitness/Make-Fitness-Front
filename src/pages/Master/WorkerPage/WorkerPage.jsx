@@ -4,14 +4,14 @@ import * as s from "./style";
 import axios from "axios";
 
 const WorkerPage = () => {
-  // ✅ 필터 상태 (년도/월)
+  // 필터 상태 (년도/월)
   const [selectedYear, setSelectedYear] = useState("2025");
   const [selectedMonth, setSelectedMonth] = useState("03");
 
-  // ✅ 백엔드에서 받아온 근무자 리스트
+  // 백엔드에서 받아온 근무자 리스트
   const [workers, setWorkers] = useState([]);
 
-  // ✅ 백엔드 근무자 실적 조회 요청 함수
+  // 백엔드 근무자 실적 조회 요청 함수
   const fetchWorkers = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -30,22 +30,22 @@ const WorkerPage = () => {
     }
   };
 
-  // ✅ 년/월 변경 시 자동 조회
+  // 년/월 변경 시 자동 조회
   useEffect(() => {
     fetchWorkers();
   }, [selectedYear, selectedMonth]);
 
-  // ✅ 수동 조회 버튼 핸들러
+  // 수동 조회 버튼 핸들러
   const handleSearch = () => {
     fetchWorkers();
   };
 
-  // ✅ 렌더링
+  // 렌더링
   return (
     <div css={s.staffPage}>
       <h2 css={s.description}>근무자 목록</h2>
 
-      {/* ✅ 날짜 필터 영역 */}
+      {/* 날짜 필터 영역 */}
       <div css={s.filterBox}>
         <label>
           년도:
@@ -79,7 +79,7 @@ const WorkerPage = () => {
         </button>
       </div>
 
-      {/* ✅ 근무자 실적 표 */}
+      {/* 근무자 실적 표 */}
       <table css={s.staffTable}>
         <thead>
           <tr>

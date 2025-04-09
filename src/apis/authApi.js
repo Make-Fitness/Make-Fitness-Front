@@ -1,11 +1,11 @@
 import { api } from "../configs/axiosConfig";
 
-// ✅ 회원가입 API
+// 회원가입 API
 export const joinApi = async (joinInfo) => {
     return api.post("api/auth/signup", joinInfo);
 };
 
-// ✅ 로그인 API
+// 로그인 API
 export const loginApi = async (loginInfo) => {
   try {
     const response = await api.post("/api/auth/signin", loginInfo);
@@ -38,7 +38,7 @@ export const loginApi = async (loginInfo) => {
       localStorage.setItem("classstatus", "");
     }
 
-    // ✅ roleName을 최종적으로 저장
+    // roleName을 최종적으로 저장
     const finalRole = roleName || role_name;
     if (finalRole) {
       localStorage.setItem("roleName", finalRole);
@@ -52,7 +52,7 @@ export const loginApi = async (loginInfo) => {
   }
 };
 
-// ✅ 로그아웃 함수
+// 로그아웃 함수
 export const logout = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("nickname");

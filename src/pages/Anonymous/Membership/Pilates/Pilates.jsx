@@ -27,7 +27,7 @@ const Pilates = () => {
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        console.log("✅ 디코딩된 accessToken:", decoded);
+        console.log("디코딩된 accessToken:", decoded);
         user_id = decoded.jti || decoded.sub || decoded.id || decoded.nickname || null;
       } catch (err) {
         console.error("❌ 토큰 디코딩 실패:", err);
@@ -35,7 +35,7 @@ const Pilates = () => {
     }
   }
 
-  console.log("✅ 로그인된 유저 ID:", user_id);
+  console.log("로그인된 유저 ID:", user_id);
 
   const handlePayment = async () => {
     const plan = plans.find((p) => p.sessions === selectedPlan);
@@ -69,7 +69,7 @@ const Pilates = () => {
         ],
       });
 
-      console.log("✅ 결제 응답:", paymentResponse);
+      console.log("결제 응답:", paymentResponse);
 
       const { status, code, pgCode, message, txId, paymentId: resPid } = paymentResponse;
 
@@ -98,18 +98,18 @@ const Pilates = () => {
         };
 
         await postHealthPayment(payload);
-        alert("✅ 필라테스 결제가 완료되었습니다!");
+        alert("필라테스 결제가 완료되었습니다!");
       } else if (isFailure) {
-        console.warn("❌ 결제 실패 또는 취소:", paymentResponse);
-        alert(`❌ 결제가 완료되지 않았습니다.\n사유: ${message || "사용자 결제 취소 또는 실패"}`);
+        console.warn("결제 실패 또는 취소:", paymentResponse);
+        alert(`결제가 완료되지 않았습니다.\n사유: ${message || "사용자 결제 취소 또는 실패"}`);
       } else {
-        console.warn("❓ 결제 상태 불확실:", paymentResponse);
+        console.warn("결제 상태 불확실:", paymentResponse);
         alert(
           "결제 상태를 확인할 수 없습니다. 결제 내역에서 상태를 확인해주세요.\n\nTXID: " + txId
         );
       }
     } catch (error) {
-      console.error("❌ 결제 중 오류:", error);
+      console.error("결제 중 오류:", error);
       alert("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };

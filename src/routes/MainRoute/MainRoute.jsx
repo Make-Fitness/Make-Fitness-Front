@@ -10,7 +10,7 @@ import ReviewPage from '../../pages/ReviewPage/ReviewPage';
 import MainContainer from '../../components/common/MainContainer/MainContainer';
 import SalesPage from '../../pages/Master/SalesPage/SalesPage.jsx';
 import MemberPage from '../../pages/Master/MemberPage/MemberPage.jsx';
-import WorkerPage from '../../pages/Master/WorkerPage/Workerpage.jsx';
+import WorkerPage from '../../pages/Master/WorkerPage/WorkerPage.jsx';
 import Daymanagement from '../../pages/Daymanagement/Daymanagement.jsx';
 import Pay from '../../Pay.jsx';
 import Pt from '../../pages/Anonymous/Membership/Pt/Pt.jsx';

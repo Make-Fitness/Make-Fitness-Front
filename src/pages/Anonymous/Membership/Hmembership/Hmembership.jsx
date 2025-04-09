@@ -35,7 +35,7 @@ const HealthMembership = () => {
     const payMethodName = "KAKAOPAY";
 
     try {
-      console.log("🟡 결제 시작");
+      console.log("결제 시작");
 
       const paymentResponse = await PortOne.requestPayment({
         storeId: import.meta.env.VITE_PORTONE_STOREID,

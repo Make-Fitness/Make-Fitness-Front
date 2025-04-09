@@ -8,12 +8,12 @@ import { getAvailablePromotions } from "../../apis/reservationApi";
 function Reservation() {
   const navigate = useNavigate();
 
-  // ✅ 예약 선택용 상태들
+  // 예약 선택용 상태들
   const [view, setView] = useState("dashboard"); // 현재 뷰: 'dashboard'만 사용 중
   const [promotionData, setPromotionData] = useState([]); // 프로모션 리스트
   const [selectedMembershipId, setSelectedMembershipId] = useState(null); // 선택된 멤버십
 
-  // ✅ 유효 토큰 확인 + 프로모션 데이터 조회
+  // 유효 토큰 확인 + 프로모션 데이터 조회
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
@@ -28,11 +28,11 @@ function Reservation() {
         setPromotionData(res.data || []);
       })
       .catch((err) => {
-        console.error("❌ 강사 및 예약 정보 불러오기 실패", err);
+        console.error("강사 및 예약 정보 불러오기 실패", err);
       });
   }, []);
 
-  // ✅ '예약하기' 버튼 클릭 시, 해당 멤버십 ID를 상태로 전달
+  // '예약하기' 버튼 클릭 시, 해당 멤버십 ID를 상태로 전달
   const handleReserveDashboard = (membershipId) => {
     setSelectedMembershipId(membershipId);
     navigate("/makefitness/reservations/daymanagement", {
@@ -40,7 +40,7 @@ function Reservation() {
     });
   };
 
-  // ✅ 메인 뷰 렌더링 (대시보드)
+  // 메인 뷰 렌더링 (대시보드)
   if (view === "dashboard") {
     return (
       <div css={s.container}>

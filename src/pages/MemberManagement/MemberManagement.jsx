@@ -4,19 +4,19 @@ import api from "../../configs/axiosConfig";
 import * as s from "./style";
 
 function MemberManagement() {
-  // ✅ 상태 정의
+  // 상태 정의
   const [members, setMembers] = useState([]);
   const [searchnickname, setSearchnickname] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const membersPerPage = 10;
 
-  // ✅ API 호출 함수
+  // API 호출 함수
   const fetchMembers = (nickname = "") => {
     console.log("🔁 [fetchMembers] 호출됨, nickname:", nickname);
 
     const token = localStorage.getItem("accessToken");
     if (!token) {
-      console.warn("⛔ accessToken 없음, 요청 중단");
+      console.warn("accessToken 없음, 요청 중단");
       return;
     }
 
@@ -29,41 +29,41 @@ function MemberManagement() {
 
     api.get("/api/makefitness/manager/membermanagement", config)
       .then((response) => {
-        console.log("✅ [fetchMembers] 응답 성공:", response.data);
+        console.log("[fetchMembers] 응답 성공:", response.data);
         setMembers(response.data);
         setCurrentPage(1); // 새 검색 시 페이지 초기화
       })
       .catch((error) => {
-        console.error("❌ [fetchMembers] 요청 실패:", error);
+        console.error("[fetchMembers] 요청 실패:", error);
       });
   };
 
-  // ✅ 첫 마운트 시 초기 전체 데이터 조회
+  // 첫 마운트 시 초기 전체 데이터 조회
   useEffect(() => {
     console.log("🧠 [useEffect] 컴포넌트 마운트됨, fetchMembers 실행");
     fetchMembers();
   }, []);
 
-  // ✅ 조회 버튼 클릭 시
+  // 조회 버튼 클릭 시
   const handleSearch = () => {
     console.log("🔍 [handleSearch] 검색 실행:", searchnickname);
     fetchMembers(searchnickname);
   };
 
-  // ✅ Enter 키 입력 시 검색 실행
+  // Enter 키 입력 시 검색 실행
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();
     }
   };
 
-  // ✅ 페이지네이션 계산
+  // 페이지네이션 계산
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
   const currentMembers = members.slice(indexOfFirstMember, indexOfLastMember);
   const totalPages = Math.ceil(members.length / membersPerPage);
 
-  // ✅ 페이지네이션 버튼 렌더링
+  // 페이지네이션 버튼 렌더링
   const renderPageNumbers = () => {
     const pages = [];
 
@@ -104,7 +104,7 @@ function MemberManagement() {
     return pages;
   };
 
-  // ✅ 렌더링
+  // 렌더링
   return (
     <div css={s.containerStyle}>
       <h1 css={s.titleStyle}>회원 관리표</h1>

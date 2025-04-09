@@ -4,7 +4,7 @@ import axios from "axios";
 import * as s from "./style";
 
 function MasterMyPage() {
-  // ✅ 폼 데이터 (이름, 전화번호, 비밀번호 등)
+  // 폼 데이터 (이름, 전화번호, 비밀번호 등)
   const [form, setForm] = useState({
     name: "",
     ph: "",
@@ -13,13 +13,13 @@ function MasterMyPage() {
     classstatus: "",
   });
 
-  // ✅ 출석용 전화번호 입력 상태
+  // 출석용 전화번호 입력 상태
   const [inputPhone, setInputPhone] = useState("");
 
-  // ✅ 출석 입력 모달 상태
+  // 출석 입력 모달 상태
   const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
 
-  // ✅ 컴포넌트 마운트 시 로컬스토리지에서 유저 정보 불러오기
+  // 컴포넌트 마운트 시 로컬스토리지에서 유저 정보 불러오기
   useEffect(() => {
     const nickname = localStorage.getItem("nickname") || "";
     const ph = localStorage.getItem("ph") || "";
@@ -33,12 +33,12 @@ function MasterMyPage() {
     }));
   }, []);
 
-  // ✅ 입력 필드 변경 핸들러
+  // 입력 필드 변경 핸들러
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ✅ 비밀번호 or 전화번호 변경 처리 (기능 연결 예정 시 확장)
+  // 비밀번호 or 전화번호 변경 처리 (기능 연결 예정 시 확장)
   const handleUpdate = (type) => {
     if (type === "비밀번호") {
       if (!form.password || !form.confirmPassword) {
@@ -55,8 +55,7 @@ function MasterMyPage() {
     }
   };
 
-  // 여기부터 모달임
-  // ✅ 출석 등록 처리 (전화번호로 유저 조회 후 출석 등록 요청)
+  // 출석 등록 처리 (전화번호로 유저 조회 후 출석 등록 요청)
   const handleAttendance = async () => {
     const phone = inputPhone.trim();
     if (!phone) return alert("전화번호를 입력해주세요.");
@@ -65,7 +64,7 @@ function MasterMyPage() {
     const adminName = localStorage.getItem("nickname");
     
     try {
-      // ✅ 전화번호로 사용자 ID 조회
+      // 전화번호로 사용자 ID 조회
       const resolveRes = await axios.get("/api/makefitness/attendance/resolve-user", {
         params: { ph: phone },
         headers: { Authorization: `Bearer ${token}` },
@@ -73,13 +72,13 @@ function MasterMyPage() {
 
       const userId = resolveRes.data.userId;
 
-      // ✅ 출석 요청 페이로드
+      // 출석 요청 페이로드
       const payload = {
         username: `${adminName} 등록`,
         ph: phone,
       };
 
-      // ✅ 출석 등록 요청
+      // 출석 등록 요청
       await axios.post(`/api/makefitness/attendance/users/${userId}`, payload, {
         headers: {
           "Content-Type": "application/json",
@@ -102,7 +101,7 @@ function MasterMyPage() {
     }
   };
 
-  // ✅ UI 렌더링
+  // UI 렌더링
   return (
     <div css={s.topcon}>
       <div css={s.expandedContainer}>
