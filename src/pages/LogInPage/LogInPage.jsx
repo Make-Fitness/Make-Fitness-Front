@@ -48,9 +48,6 @@ const LogInPage = () => {
       setMessage("로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.");
     }
   };
-    const handleOAuth2LoginOnClick = (provider) => {
-      window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
-  }
 
   return (
     <div css={s.container}>
