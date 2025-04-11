@@ -1,8 +1,9 @@
 import axios from "axios";
 
 const api = axios.create({
-    // baseURL: "http://localhost:8080/",
+    //baseURL: "http://localhost:8080/",
     baseURL: "https://makefitness.store",
+    
 });
 
 // 요청 인터셉터 추가 (AccessToken 자동 추가)
